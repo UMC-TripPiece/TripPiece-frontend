@@ -21,6 +21,18 @@
 		335666DE2C4F970200100C0E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DD2C4F970200100C0E /* SearchViewController.swift */; };
 		335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DF2C4F971500100C0E /* MyPageViewController.swift */; };
 		335666E32C4F973400100C0E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666E22C4F973400100C0E /* LoginViewController.swift */; };
+		335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666E42C5254C300100C0E /* PuzzleViewCell.swift */; };
+		335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667632C5765BF00100C0E /* PuzzleItem.swift */; };
+		335667682C5CBE5700100C0E /* PhotoLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667672C5CBE5700100C0E /* PhotoLogViewController.swift */; };
+		3356676A2C5CBE6900100C0E /* VideoLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667692C5CBE6900100C0E /* VideoLogViewController.swift */; };
+		3356676C2C5CBE8100100C0E /* MemoLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */; };
+		3356676E2C5CCE0900100C0E /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356676D2C5CCE0900100C0E /* CustomNavigationBar.swift */; };
+		335667752C609AE400100C0E /* LogStartNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667742C609AE400100C0E /* LogStartNavigationBar.swift */; };
+		335667772C609D9800100C0E /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667762C609D9800100C0E /* LogViewController.swift */; };
+		3356677A2C60A1E900100C0E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 335667792C60A1E900100C0E /* Alamofire */; };
+		3356677C2C60A42100100C0E /* Back.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356677B2C60A42100100C0E /* Back.swift */; };
+		3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356677E2C60A4E000100C0E /* StartLogViewController.swift */; };
+		335667882C66152200100C0E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667872C66152200100C0E /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +70,18 @@
 		335666DD2C4F970200100C0E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		335666DF2C4F971500100C0E /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		335666E22C4F973400100C0E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		335666E42C5254C300100C0E /* PuzzleViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewCell.swift; sourceTree = "<group>"; };
+		335667632C5765BF00100C0E /* PuzzleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleItem.swift; sourceTree = "<group>"; };
+		335667672C5CBE5700100C0E /* PhotoLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLogViewController.swift; sourceTree = "<group>"; };
+		335667692C5CBE6900100C0E /* VideoLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLogViewController.swift; sourceTree = "<group>"; };
+		3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoLogViewController.swift; sourceTree = "<group>"; };
+		3356676D2C5CCE0900100C0E /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		335667742C609AE400100C0E /* LogStartNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogStartNavigationBar.swift; sourceTree = "<group>"; };
+		335667762C609D9800100C0E /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		3356677B2C60A42100100C0E /* Back.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Back.swift; sourceTree = "<group>"; };
+		3356677E2C60A4E000100C0E /* StartLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartLogViewController.swift; sourceTree = "<group>"; };
+		335667872C66152200100C0E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		335667892C6617C200100C0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +90,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				335666D02C4F937400100C0E /* SnapKit in Frameworks */,
+				3356677A2C60A1E900100C0E /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +114,7 @@
 		335666922C4F92E800100C0E = {
 			isa = PBXGroup;
 			children = (
+				335667892C6617C200100C0E /* Secrets.xcconfig */,
 				3356669D2C4F92E800100C0E /* MyWorldApp */,
 				335666B42C4F92EB00100C0E /* MyWorldAppTests */,
 				335666BE2C4F92EB00100C0E /* MyWorldAppUITests */,
@@ -109,6 +135,8 @@
 		3356669D2C4F92E800100C0E /* MyWorldApp */ = {
 			isa = PBXGroup;
 			children = (
+				335667842C66146B00100C0E /* Alamofire */,
+				3356677D2C60A42C00100C0E /* Function */,
 				335666D62C4F953800100C0E /* Button */,
 				335666D52C4F952800100C0E /* My Page */,
 				335666D42C4F951F00100C0E /* Search */,
@@ -160,7 +188,9 @@
 		335666D32C4F94EA00100C0E /* My Log */ = {
 			isa = PBXGroup;
 			children = (
-				335666DB2C4F96F200100C0E /* MyLogViewController.swift */,
+				335667762C609D9800100C0E /* LogViewController.swift */,
+				335667812C60AEE500100C0E /* Write Log */,
+				335667802C60AEB300100C0E /* Start Log */,
 			);
 			path = "My Log";
 			sourceTree = "<group>";
@@ -185,8 +215,47 @@
 			isa = PBXGroup;
 			children = (
 				335666D72C4F965700100C0E /* TabBar.swift */,
+				3356676D2C5CCE0900100C0E /* CustomNavigationBar.swift */,
+				335667742C609AE400100C0E /* LogStartNavigationBar.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		3356677D2C60A42C00100C0E /* Function */ = {
+			isa = PBXGroup;
+			children = (
+				3356677B2C60A42100100C0E /* Back.swift */,
+			);
+			path = Function;
+			sourceTree = "<group>";
+		};
+		335667802C60AEB300100C0E /* Start Log */ = {
+			isa = PBXGroup;
+			children = (
+				3356677E2C60A4E000100C0E /* StartLogViewController.swift */,
+				335666DB2C4F96F200100C0E /* MyLogViewController.swift */,
+				335666E42C5254C300100C0E /* PuzzleViewCell.swift */,
+				335667632C5765BF00100C0E /* PuzzleItem.swift */,
+			);
+			path = "Start Log";
+			sourceTree = "<group>";
+		};
+		335667812C60AEE500100C0E /* Write Log */ = {
+			isa = PBXGroup;
+			children = (
+				335667672C5CBE5700100C0E /* PhotoLogViewController.swift */,
+				335667692C5CBE6900100C0E /* VideoLogViewController.swift */,
+				3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */,
+			);
+			path = "Write Log";
+			sourceTree = "<group>";
+		};
+		335667842C66146B00100C0E /* Alamofire */ = {
+			isa = PBXGroup;
+			children = (
+				335667872C66152200100C0E /* NetworkManager.swift */,
+			);
+			path = Alamofire;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +276,7 @@
 			name = MyWorldApp;
 			packageProductDependencies = (
 				335666CF2C4F937400100C0E /* SnapKit */,
+				335667792C60A1E900100C0E /* Alamofire */,
 			);
 			productName = MyWorldApp;
 			productReference = 3356669B2C4F92E800100C0E /* MyWorldApp.app */;
@@ -282,6 +352,7 @@
 			mainGroup = 335666922C4F92E800100C0E;
 			packageReferences = (
 				335666CE2C4F937400100C0E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				335667782C60A1E900100C0E /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 3356669C2C4F92E800100C0E /* Products */;
 			projectDirPath = "";
@@ -328,11 +399,22 @@
 				335666E32C4F973400100C0E /* LoginViewController.swift in Sources */,
 				335666DE2C4F970200100C0E /* SearchViewController.swift in Sources */,
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
+				335667772C609D9800100C0E /* LogViewController.swift in Sources */,
 				3356669F2C4F92E800100C0E /* AppDelegate.swift in Sources */,
+				335667682C5CBE5700100C0E /* PhotoLogViewController.swift in Sources */,
+				3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */,
+				335667752C609AE400100C0E /* LogStartNavigationBar.swift in Sources */,
 				335666A12C4F92E800100C0E /* SceneDelegate.swift in Sources */,
+				3356676E2C5CCE0900100C0E /* CustomNavigationBar.swift in Sources */,
 				335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */,
+				335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */,
 				335666D82C4F965700100C0E /* TabBar.swift in Sources */,
+				3356677C2C60A42100100C0E /* Back.swift in Sources */,
+				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,
 				335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */,
+				3356676C2C5CBE8100100C0E /* MemoLogViewController.swift in Sources */,
+				335667882C66152200100C0E /* NetworkManager.swift in Sources */,
+				3356676A2C5CBE6900100C0E /* VideoLogViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,6 +755,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		335667782C60A1E900100C0E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -680,6 +770,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 335666CE2C4F937400100C0E /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		335667792C60A1E900100C0E /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 335667782C60A1E900100C0E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

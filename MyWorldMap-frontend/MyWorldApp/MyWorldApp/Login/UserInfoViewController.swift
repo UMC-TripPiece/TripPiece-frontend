@@ -129,6 +129,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         startButton.isEnabled = false
         startButton.backgroundColor = UIColor(hex: "#D3D3D3")
         startButton.layer.cornerRadius = 8
+        startButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         
         // 뷰에 추가
         view.addSubview(profileLabel)
@@ -204,6 +205,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     // 추가적인 기능 구현 (예: 프로필 이미지 선택, 생년월일 변경 등)
+    
+    func findViewController() -> UIViewController? {
+            if let nextResponder = self.next as? UIViewController {
+                return nextResponder
+            } else if let nextResponder = self.next as? UIView {
+                return nextResponder.findViewController()
+            } else {
+                return nil
+            }
+        }
+    
+    @objc func signUpButtonTapped() {
+        let tabBarController = TabBar()
+               tabBarController.modalPresentationStyle = .fullScreen
+               present(tabBarController, animated: true, completion: nil)
+    }
     
     func configureTapGestureForProfileImage() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectProfileImage))

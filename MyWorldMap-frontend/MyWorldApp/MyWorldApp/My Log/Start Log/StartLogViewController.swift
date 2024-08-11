@@ -336,11 +336,9 @@ extension StartLogViewController: UISearchResultsUpdating {
             switch response.result {
             case .success(let value):
                 // 전체 JSON 응답을 프린트
-                print("전체 JSON 응답: \(value)")
-                
-                if let json = value as? [String: Any], let cities = json["cities"] as? [String] {
-                    // cities 배열을 처리하고 UI를 업데이트하는 코드
-                    print("도시 목록: \(cities)")
+                if let data = response.data, let jsonString = String(data: data, encoding: .utf8) {
+                    print("전체 JSON 응답: \(jsonString)")
+                    
                 }
             case .failure(let error):
                 print("Error: \(error)")

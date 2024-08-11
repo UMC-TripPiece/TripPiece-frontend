@@ -11,8 +11,9 @@ import SnapKit
 class LogViewController: UIViewController {
     lazy var logButton: UIButton = {
         let button = UIButton()
-        button.setTitle("여행 시작", for: .normal)
-        button.backgroundColor = .main
+        button.setImage(UIImage(named: "dummyim"), for: .normal)
+        button.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(startTravel), for: .touchUpInside)
         return button
@@ -23,8 +24,7 @@ class LogViewController: UIViewController {
         self.view.backgroundColor = .white
         view.addSubview(logButton)
         logButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.edges.equalToSuperview()  // 화면 전체에 버튼이 꽉 차도록 설정
         }
     }
     
@@ -33,5 +33,4 @@ class LogViewController: UIViewController {
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
-
 }

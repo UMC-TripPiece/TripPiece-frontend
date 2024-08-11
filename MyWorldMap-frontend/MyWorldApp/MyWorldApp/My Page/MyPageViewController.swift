@@ -66,7 +66,7 @@ class MyPageViewController: UIViewController {
         return label
     }()
     
-    let logoutButton: UIButton = {
+    private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("로그아웃", for: .normal)
         button.setTitleColor(.white, for: .normal)

@@ -9,11 +9,15 @@ import UIKit
 import SnapKit
 
 class LogViewController: UIViewController {
-    lazy var logButton: UIButton = {
+    private lazy var navBar: GradientNavigationBar = {
+        let nav = GradientNavigationBar(title: "여행자님의 기록")
+        return nav
+    }()
+    private lazy var logButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "dummyim"), for: .normal)
-        button.contentMode = .scaleAspectFill
+        button.setTitle("추가", for: .normal)
         button.clipsToBounds = true
+        button.backgroundColor = .lightGray
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(startTravel), for: .touchUpInside)
         return button
@@ -22,9 +26,23 @@ class LogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.view.addSubview(navBar)
+        setupUI()
+    }
+    //MARK: Set Up UI
+    private func setupUI() {
         view.addSubview(logButton)
+        setConstraints()
+    }
+    func setConstraints() {
+        navBar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalTo(107)
+        }
         logButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()  // 화면 전체에 버튼이 꽉 차도록 설정
+            make.height.equalTo(50)
+            make.centerX.centerY.equalToSuperview()
         }
     }
     

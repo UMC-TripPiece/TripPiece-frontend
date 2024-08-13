@@ -42,6 +42,8 @@ extension UIView {
 
 class SignUpView: UIView {
 
+    var userInfo: [String: Any] = [:]
+    
     class PaddedTextField: UITextField {
         var padding: UIEdgeInsets
         
@@ -104,13 +106,11 @@ class SignUpView: UIView {
             textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
             textField.layer.borderWidth = 1.0  // 원하는 테두리 두께로 설정
             textField.layer.cornerRadius = 5.0  // 테두리에 둥근 모서리를 주고 싶을 때 설정
-            textField.layer.masksToBounds = true
             
             textField.layer.shadowColor = UIColor.black.cgColor
             textField.layer.shadowOpacity = 0.1 // 투명도 설정 (0.0 ~ 1.0)
             textField.layer.shadowOffset = CGSize(width: 3, height: 3) // 섀도우의 위치 설정
             textField.layer.shadowRadius = 5.0 // 섀도우의 블러 정도 설정
-
 
             // ValidationLabel setup
             validationLabel.text = validationText
@@ -152,17 +152,24 @@ class SignUpView: UIView {
             self.setTitle(title, for: .normal)
             self.setTitleColor(.black, for: .normal)
             self.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            self.contentHorizontalAlignment = .left
+            
+            self.imageView?.translatesAutoresizingMaskIntoConstraints = false
+                    self.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
             
             if let imageView = self.imageView, let titleLabel = self.titleLabel {
                 imageView.snp.makeConstraints { make in
-                    make.width.equalTo(20)
-                    make.height.equalTo(20)
-                }
-                titleLabel.snp.makeConstraints { make in
-                    make.leading.equalTo(imageView.snp.trailing).offset(10)
-                }
+                                make.leading.equalToSuperview()
+                                make.centerY.equalToSuperview()
+                                make.width.equalTo(20)
+                                make.height.equalTo(20)
+                            }
+                            titleLabel.snp.makeConstraints { make in
+                                make.leading.equalTo(imageView.snp.trailing).offset(10)
+                                make.trailing.equalToSuperview()
+                                make.centerY.equalToSuperview()
+                            }
             }
+            self.contentHorizontalAlignment = .left
         }
         
         required init?(coder: NSCoder) {
@@ -254,7 +261,6 @@ class SignUpView: UIView {
         addSubview(allAgreeCheckBox)
         
         addSubview(signUpButton)
-
         addSubview(termsValidationLabel)
         
         backgroundColor = UIColor(hex: "#F8F8F8")
@@ -329,31 +335,20 @@ class SignUpView: UIView {
         @objc private func dismissKeyboard() {
             self.endEditing(true)
     }
-
+    
     // MARK: - Actions
     @objc func signUpButtonTapped() {
-            if isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isTermsAgreeValid {
+            if isValid {
                 print("회원가입 버튼 클릭")
+                userInfo["name"] = usernameField.text
+                userInfo["email"] = emailField.text
+                userInfo["password"] = passwordField.text
                 if let currentViewController = self.findViewController() {
-                                let userInfoVC = ProfileViewController()
-                                userInfoVC.modalPresentationStyle = .fullScreen
-                                currentViewController.present(userInfoVC, animated: true, completion: nil)
-                                
-                                if let email = emailField.text {
-                                    print(email)
-                                }
-                                
-                                if let pw = passwordField.text {
-                                    print(pw)
-                                }
-                            }
-                        if let email = emailField.text {
-                            print(email)
-                        }
-                        
-                        if let pw = passwordField.text {
-                            print(pw)
-                        }
+                    let userInfoVC = ProfileViewController()
+                    userInfoVC.userInfo = userInfo
+                    print(userInfo)
+                    userInfoVC.modalPresentationStyle = .fullScreen
+                    currentViewController.present(userInfoVC, animated: true, completion: nil)}
             } else {
                 print("조건값 확인 필요")
             }
@@ -462,8 +457,9 @@ class SignUpView: UIView {
         validateInputs()
     }
     
+    var isValid = false
     @objc func validateInputs() {
-        let isValid = isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isTermsAgreeValid
+        isValid = isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isTermsAgreeValid
         signUpButton.isEnabled = isValid
         signUpButton.backgroundColor = isValid ? UIColor(hex: "6744FF") : UIColor(hex: "D3D3D3")
     }
@@ -476,7 +472,8 @@ class SignUpView: UIView {
     }
     
     func isValidPassword(_ password: String) -> Bool {
-        // Password validation: at least 8 characters, max 20 characters
-        return password.count >= 8 && password.count <= 20
+        let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=?.,<>]).{8,15}$"
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+        return passwordTest.evaluate(with: password)
     }
 }

@@ -8,8 +8,11 @@
 import UIKit
 import SnapKit
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var userInfo: [String: Any]?
+    var selectedImageData: Data?
+    var status = false
     class PaddedTextField: UITextField {
         
         var padding: UIEdgeInsets
@@ -85,8 +88,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         configureTapGestureForProfileImage()
         configureTapGestureForDismissingPicker()
         configureDatePicker()
-    
-        
     }
     
     func setupViews() {
@@ -96,7 +97,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileLabel.textColor = UIColor(hex: "#5833FF")
         
         // 프로필 이미지 설정
-        profileImageView.image = UIImage(named: "profileCircle")
+        profileImageView.image = UIImage(named: "profileExample")
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.clipsToBounds = true
@@ -217,9 +218,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     
     @objc func signUpButtonTapped() {
-        let tabBarController = TabBar()
-               tabBarController.modalPresentationStyle = .fullScreen
-               present(tabBarController, animated: true, completion: nil)
+        sendSignupRequest()
     }
     
     func configureTapGestureForProfileImage() {
@@ -253,11 +252,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    // 이미지 선택 완료 시 호출
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             profileImageView.image = selectedImage
+            
+            // 선택된 이미지를 jpegData로 변환하여 저장
+            selectedImageData = selectedImage.jpegData(compressionQuality: 0.2)
+            
+            if selectedImageData != nil {
+                print("이미지 데이터 저장 완료")
+            } else {
+                print("이미지 데이터 변환 실패")
+            }
+        } else {
+            print("이미지 선택 실패")
         }
+        
+        // 이미지 피커 닫기
         dismiss(animated: true, completion: nil)
     }
     
@@ -268,6 +279,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // 성별 선택 시 호출
     @objc func segmentChanged(_ sender: UISegmentedControl) {
+        let selectedIndex = sender.selectedSegmentIndex
+        let selectedValue = sender.titleForSegment(at: selectedIndex)
+        if selectedValue == "남성" {
+            userInfo?["gender"] = "MALE"
+        } else if selectedValue == "여성" {
+            userInfo?["gender"] = "FEMALE"
+        }
         checkFormValidity()
     }
     
@@ -276,6 +294,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
         birthdateTextField.text = dateFormatter.string(from: sender.date)
+        userInfo?["birth"] = birthdateTextField.text
         checkFormValidity()
     }
     
@@ -285,7 +304,85 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             !(birthdateTextField.text?.isEmpty ?? true) &&
             (genderSegmentedControl.selectedSegmentIndex != UISegmentedControl.noSegment)
         
+        userInfo?["nickname"] = nicknameTextField.text
+        userInfo?["country"] = "South Korea"
+        
         startButton.isEnabled = isFormValid
         startButton.backgroundColor = isFormValid ? UIColor(hex: "#6744FF") : UIColor(hex: "#D3D3D3")
+    }
+    
+    func sendSignupRequest() {
+        guard let url = URL(string: "http://3.34.123.244:8080/user/signup") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+
+        // JSON 데이터를 문자열로 변환
+        let jsonData = try! JSONSerialization.data(withJSONObject: userInfo, options: [])
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        
+        // 멀티파트 데이터 생성
+        var body = Data()
+        
+        // 'info' 필드 추가
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(jsonString)\r\n".data(using: .utf8)!)
+        
+        // 이미지 파일 추가
+        
+        if let imageData = selectedImageData {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"profileImg\"; filename=\"Group 2085663362.png\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making POST request: \(error)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Unexpected response: \(String(describing: response))")
+                return
+            }
+            
+            if !(200...299).contains(httpResponse.statusCode) {
+                print("Unexpected response: \(String(describing: response))")
+                if let data = data, let errorMessage = String(data: data, encoding: .utf8) {
+                    print("Error message: \(errorMessage)")
+                }
+                return
+            }
+            
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                print("Response data: \(responseString)")
+                DispatchQueue.main.async {
+                                // 응답이 성공적일 경우 status를 true로 변경
+                    self.status = true
+                                self.proceedIfSignupSuccessful()
+                            }
+            }
+        }
+        task.resume()
+    }
+
+    func proceedIfSignupSuccessful() {
+        if status {
+            let tabBarController = TabBar()
+            tabBarController.modalPresentationStyle = .fullScreen
+            present(tabBarController, animated: true, completion: nil)
+        }
     }
 }

@@ -210,8 +210,6 @@ class LoginViewController: UIViewController {
     @objc func checkFormValidity() {
         let email = loginField.text1 ?? ""
         let password = loginField.text2 ?? ""
-        print(password)
-        print(email)
         let isFormValid = (isValidEmail(email)) && (isValidPassword(password))
         
         loginInfo?["email"] = loginField.text1
@@ -283,11 +281,25 @@ class LoginViewController: UIViewController {
                 if let data = data, let responseString = String(data: data, encoding: .utf8) {
                     print("Response data: \(responseString)")
                     DispatchQueue.main.async {
-                        // 응답이 성공적일 경우 status를 true로 변경
-                        self.status = true
-                        self.proceedIfSignupSuccessful()
-                        //Token 관련 코드 추가 필요
-                    }
+                            // JSON 파싱을 통해 refreshToken을 추출
+                            if let jsonData = responseString.data(using: .utf8) {
+                                do {
+                                    if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
+                                       let result = json["result"] as? [String: Any],
+                                       let refreshToken = result["refreshToken"] as? String {
+                                        
+                                        // refreshToken을 UserDefaults에 저장
+                                        UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
+                                        
+                                        // 응답이 성공적일 경우 status를 true로 변경
+                                        self.status = true
+                                        self.proceedIfSignupSuccessful()
+                                    }
+                                } catch {
+                                    print("JSON 파싱 에러: \(error.localizedDescription)")
+                                }
+                            }
+                        }
                 }
             }
             task.resume()

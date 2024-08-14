@@ -110,7 +110,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         genderLabel.text = "성별"
         
-        genderSegmentedControl.selectedSegmentIndex = 1
+        genderSegmentedControl.selectedSegmentIndex = 0
+        userInfo?["gender"] = "MALE"
         genderSegmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
         
         birthdateLabel.text = "생년월일"

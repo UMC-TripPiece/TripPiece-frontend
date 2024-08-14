@@ -1,10 +1,3 @@
-//
-//  TabBar.swift
-//  MyWorldApp
-//
-//  Created by 김나연 on 7/23/24.
-//
-
 import UIKit
 
 class TabBar: UITabBarController {

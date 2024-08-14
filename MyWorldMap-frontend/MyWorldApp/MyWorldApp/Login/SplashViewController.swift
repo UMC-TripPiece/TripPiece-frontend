@@ -10,6 +10,10 @@ import SnapKit
 
 class SplashViewController: UIViewController {
     
+    func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
+    }
+    
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "splashView"))
         imageView.contentMode = .scaleAspectFill
@@ -22,22 +26,33 @@ class SplashViewController: UIViewController {
         
         setupSplashScreen()
         setConstraints()
-        navigateToMainScreen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if self.getRefreshToken() != nil {
+                        // refreshToken 이 있으면 메인 화면으로 이동
+                self.navigateToMainScreen()
+                    } else {
+                        // refreshToken 이 없으면 로그인 화면으로 이동
+                        self.navigateToSignUpScreen()
+                    }
+        }
         
     }
     
     private func setupSplashScreen() {
         view.addSubview(backgroundImageView)
     }
+
+    func navigateToMainScreen() {
+        let tabBarController = TabBar()
+        tabBarController.modalPresentationStyle = .fullScreen
+        present(tabBarController, animated: true, completion: nil)
+    }
     
-    private func navigateToMainScreen() {
-        // 2초 후에 메인 화면으로 이동
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let SignUpViewController = SignUpViewController()
-            SignUpViewController.modalTransitionStyle = .crossDissolve
-            SignUpViewController.modalPresentationStyle = .fullScreen
-            self.present(SignUpViewController, animated: true, completion: nil)
-        }
+    // 로그인 화면 (SignUpViewController)으로 이동하는 함수
+    func navigateToSignUpScreen() {
+        let signUpVC = SignUpViewController()
+        signUpVC.modalPresentationStyle = .fullScreen
+        present(signUpVC, animated: true, completion: nil)
     }
     
     func setConstraints() {
@@ -48,6 +63,5 @@ class SplashViewController: UIViewController {
             make.leading.equalToSuperview().offset(-UIScreen.main.bounds.width * 0.1)
             make.trailing.equalToSuperview().offset(UIScreen.main.bounds.width * 0.1)
         }
-
     }
 }

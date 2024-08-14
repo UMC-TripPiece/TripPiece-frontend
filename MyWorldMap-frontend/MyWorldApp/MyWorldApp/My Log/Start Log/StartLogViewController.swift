@@ -6,10 +6,10 @@
 //
 
 import UIKit
-import SnapKit
 import Alamofire
 
 class StartLogViewController: UIViewController {
+    
     //MARK: - UI
     private lazy var startNavBar: LogStartNavigationBar = {
         let nav = LogStartNavigationBar()
@@ -155,6 +155,17 @@ class StartLogViewController: UIViewController {
         return searchController
     }()
     
+    ///검색결과
+    private var searchResults: [[String: String]] = []
+    private lazy var searchTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isHidden = true
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return tableView
+    }()
+
     //MARK: - Init
     override func viewDidLoad() {
         self.view.addSubview(startNavBar)
@@ -173,6 +184,7 @@ class StartLogViewController: UIViewController {
         view.addSubview(addCountryButton)
         view.addSubview(titleLabel)
         view.addSubview(grayBackgroundView)
+        view.addSubview(searchTableView)
         grayBackgroundView.addSubview(contentStackView)
         
         contentStackView.addArrangedSubview(createSpacer(height: 30))
@@ -227,11 +239,16 @@ class StartLogViewController: UIViewController {
         }
         
         travelTextView.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(50) // 원하는 높이 설정
         }
         
         startLogButton.snp.makeConstraints { make in
             make.height.equalTo(44)
+        }
+        searchTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(21)
+            make.top.equalTo(grayBackgroundView.snp.top).offset(20)
+            make.bottom.equalToSuperview().offset(-20)
         }
     }
     
@@ -288,6 +305,36 @@ class StartLogViewController: UIViewController {
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    //MARK: - Alamofire
+    private func searchCities(keyword: String) {
+        let url = "http://3.34.123.244:8080/search/cities"
+        let parameters: [String: String] = ["keyword": keyword]
+            
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                if let data = response.data, let jsonString = String(data: data, encoding: .utf8) {
+                    print("전체 JSON 응답: \(jsonString)")
+                    if let json = value as? [String: Any], let cities = json["result"] as? [[String: Any]] {
+                        self.searchResults = cities.map { cityData in
+                            var cityDataDecoded = [String: String]()
+                            cityData.forEach { key, value in
+                                if let stringValue = value as? String {
+                                    cityDataDecoded[key] = stringValue
+                                }
+                            }
+                            return cityDataDecoded
+                        }
+                        self.searchTableView.isHidden = false
+                        self.searchTableView.reloadData()
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
 }
 
 //MARK: - UITextViewDelegate
@@ -326,6 +373,13 @@ extension StartLogViewController: UISearchResultsUpdating {
             return
         }
         searchCities(keyword: keyword)
+    }
+}
+
+//MARK: - UITableViewDataSource, UITableViewDelegate
+extension StartLogViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

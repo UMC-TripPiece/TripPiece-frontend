@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import Alamofire
 
 class StartLogViewController: UIViewController {
@@ -239,7 +240,7 @@ class StartLogViewController: UIViewController {
         }
         
         travelTextView.snp.makeConstraints { make in
-            make.height.equalTo(50) // 원하는 높이 설정
+            make.height.equalTo(50)
         }
         
         startLogButton.snp.makeConstraints { make in
@@ -399,22 +400,3 @@ extension StartLogViewController: UITableViewDataSource, UITableViewDelegate {
         // 선택된 도시에 대한 추가 작업
     }
 }
-/*
-    //MARK: - Alamofire request
-    private func searchCities(keyword: String) {
-        let url = "http://3.34.123.244:8080/search/cities"
-        let parameters: [String: String] = ["keyword": keyword]
-        
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                // 전체 JSON 응답을 프린트
-                if let data = response.data, let jsonString = String(data: data, encoding: .utf8) {
-                    print("전체 JSON 응답: \(jsonString)")
-                }
-            case .failure(let error):
-                print("Error: \(error)")
-            }
-        }
-    }
-*/

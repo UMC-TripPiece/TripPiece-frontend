@@ -6,16 +6,28 @@
 //
 
 import UIKit
+import SnapKit
 
-class MyPageViewController: UIViewController {
+class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "profile_image")) // Replace with actual image name
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 50
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 4
-        imageView.layer.borderColor = UIColor.white.cgColor
+    var selectedImageData: Data?
+    
+    var backgroundImageView: UIImageView!
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "My Page"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = UIColor(hex: "#FFFFFF")
+        label.textAlignment = .center
+        return label
+    }()
+
+    let profileImageView = UIImageView()
+    
+    let profileEditIconView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "profileImageEdit"))
+        imageView.isUserInteractionEnabled = true // Enable user interaction
         return imageView
     }()
     
@@ -66,13 +78,13 @@ class MyPageViewController: UIViewController {
         return label
     }()
     
-    private lazy var logoutButton: UIButton = {
+    let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("로그아웃", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .red
+        button.backgroundColor = UIColor(hex: "FD2D69")
         button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
+        button.addTarget(MyPageViewController.self, action: #selector(logoutTapped), for: .touchUpInside)
         return button
     }()
     
@@ -80,94 +92,98 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
         setupViews()
+        
+        configureTapGestureForProfileEditIcon()
     }
     
     func setupViews() {
-        // Background view for purple top
-        let topBackgroundView = UIView()
-        topBackgroundView.backgroundColor = .purple
-        topBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(topBackgroundView)
-        
-        NSLayoutConstraint.activate([
-            topBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            topBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topBackgroundView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        // MY PAGE label
-        let myPageLabel = UILabel()
-        myPageLabel.text = "MY PAGE"
-        myPageLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        myPageLabel.textColor = .white
-        myPageLabel.textAlignment = .center
-        myPageLabel.translatesAutoresizingMaskIntoConstraints = false
-        topBackgroundView.addSubview(myPageLabel)
-        
-        NSLayoutConstraint.activate([
-            myPageLabel.topAnchor.constraint(equalTo: topBackgroundView.topAnchor, constant: 40),
-            myPageLabel.centerXAnchor.constraint(equalTo: topBackgroundView.centerXAnchor)
-        ])
-        
-        // Profile image
+        backgroundImageView = UIImageView(image: UIImage(named: "myPageTop"))
+        backgroundImageView.contentMode = .scaleAspectFill
+        view.addSubview(backgroundImageView)
+        backgroundImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(view.frame.height * 0.3) // You can adjust this height as needed
+        }
+        backgroundImageView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(50)
+            make.centerX.equalToSuperview()
+        }
+        profileImageView.image = UIImage(named: "profileExample")
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = 70
+        profileImageView.clipsToBounds = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileImageView)
         
-        NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: myPageLabel.bottomAnchor, constant: 20),
-            profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: 100),
-            profileImageView.heightAnchor.constraint(equalToConstant: 100)
-        ])
+        profileImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(backgroundImageView.snp.bottom).offset(-95) // Overlaps the background image
+            make.width.height.equalTo(140) // Profile image size
+        }
         
+        view.addSubview(profileEditIconView)
+
+        profileEditIconView.snp.makeConstraints { make in
+            make.width.height.equalTo(50)
+            make.centerX.equalTo(profileImageView.snp.trailing).inset(17)
+            make.centerY.equalTo(profileImageView.snp.top).inset(17)
+        }
         // Name label
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         
-        NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
-            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalTo(profileImageView.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+        }
         
         // Followers, following, and travel logs labels
         let stackView = UIStackView(arrangedSubviews: [followersLabel, followingLabel, travelLogsLabel])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
-        ])
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+        }
         
         // Map public switch and label
         let mapStackView = UIStackView(arrangedSubviews: [mapPublicLabel, mapPublicSwitch])
         mapStackView.axis = .horizontal
         mapStackView.spacing = 10
-        mapStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapStackView)
         
-        NSLayoutConstraint.activate([
-            mapStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
-            mapStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30)
-        ])
+        mapStackView.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(30)
+        }
         
         // Logout button
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
         
-        NSLayoutConstraint.activate([
-            logoutButton.topAnchor.constraint(equalTo: mapStackView.bottomAnchor, constant: 20),
-            logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            logoutButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-
+        logoutButton.snp.makeConstraints { make in
+            make.top.equalTo(mapStackView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+            make.height.equalTo(50)
+        }
+    }
+    
+    func configureTapGestureForProfileEditIcon() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileEdit))
+        profileEditIconView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func profileEdit() {
+        let editViewController = MyPageEditViewController()
+        editViewController.modalPresentationStyle = .fullScreen // Present the edit view controller full screen
+        present(editViewController, animated: true, completion: nil)
     }
     
     @objc func logoutTapped() {
@@ -175,4 +191,3 @@ class MyPageViewController: UIViewController {
         print("Logout tapped")
     }
 }
-

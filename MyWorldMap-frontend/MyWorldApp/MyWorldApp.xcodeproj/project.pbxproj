@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		334A48C22C69E82F0090B44F /* GradientNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334A48C12C69E82F0090B44F /* GradientNavigationBar.swift */; };
 		3356669F2C4F92E800100C0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356669E2C4F92E800100C0E /* AppDelegate.swift */; };
 		335666A12C4F92E800100C0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666A02C4F92E800100C0E /* SceneDelegate.swift */; };
 		335666A82C4F92EA00100C0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 335666A72C4F92EA00100C0E /* Assets.xcassets */; };
@@ -34,13 +33,13 @@
 		3356677C2C60A42100100C0E /* Back.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356677B2C60A42100100C0E /* Back.swift */; };
 		3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356677E2C60A4E000100C0E /* StartLogViewController.swift */; };
 		335667882C66152200100C0E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667872C66152200100C0E /* NetworkManager.swift */; };
-		33A14FDE2C68A3AF001B6FA1 /* LogSearchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A14FDD2C68A3AF001B6FA1 /* LogSearchItem.swift */; };
-		33A14FE02C68A681001B6FA1 /* LogSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A14FDF2C68A681001B6FA1 /* LogSearchResultsViewController.swift */; };
 		A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35452C67D02500FCE186 /* SignUpView.swift */; };
 		A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */; };
 		A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */; };
 		A90C354D2C67D02600FCE186 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35482C67D02500FCE186 /* LoginView.swift */; };
-		A90C354E2C67D02600FCE186 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35492C67D02500FCE186 /* UserInfoViewController.swift */; };
+		A90C354E2C67D02600FCE186 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35492C67D02500FCE186 /* ProfileViewController.swift */; };
+		A926CB5B2C6A59DD00DDADE0 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A926CB5A2C6A59DC00DDADE0 /* SplashViewController.swift */; };
+		A926CB5D2C6A855900DDADE0 /* MyPageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */; };
 		A9596B4E2C67CD2600950E12 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B4D2C67CD2600950E12 /* FirebaseAnalytics */; };
 		A9596B502C67CD2600950E12 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B4F2C67CD2600950E12 /* FirebaseAnalyticsOnDeviceConversion */; };
 		A9596B522C67CD2600950E12 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B512C67CD2600950E12 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -97,7 +96,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		334A48C12C69E82F0090B44F /* GradientNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientNavigationBar.swift; sourceTree = "<group>"; };
 		3356669B2C4F92E800100C0E /* MyWorldApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWorldApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3356669E2C4F92E800100C0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		335666A02C4F92E800100C0E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -127,13 +125,13 @@
 		3356677E2C60A4E000100C0E /* StartLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartLogViewController.swift; sourceTree = "<group>"; };
 		335667872C66152200100C0E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		335667892C6617C200100C0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
-		33A14FDD2C68A3AF001B6FA1 /* LogSearchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSearchItem.swift; sourceTree = "<group>"; };
-		33A14FDF2C68A681001B6FA1 /* LogSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSearchResultsViewController.swift; sourceTree = "<group>"; };
 		A90C35452C67D02500FCE186 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIgnUpViewController.swift; sourceTree = "<group>"; };
 		A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kakaoAuthVM.swift; sourceTree = "<group>"; };
 		A90C35482C67D02500FCE186 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		A90C35492C67D02500FCE186 /* UserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		A90C35492C67D02500FCE186 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		A926CB5A2C6A59DC00DDADE0 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,8 +278,9 @@
 				A90C35482C67D02500FCE186 /* LoginView.swift */,
 				A90C35452C67D02500FCE186 /* SignUpView.swift */,
 				A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */,
-				A90C35492C67D02500FCE186 /* UserInfoViewController.swift */,
+				A90C35492C67D02500FCE186 /* ProfileViewController.swift */,
 				335666E22C4F973400100C0E /* LoginViewController.swift */,
+				A926CB5A2C6A59DC00DDADE0 /* SplashViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -316,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				335666DF2C4F971500100C0E /* MyPageViewController.swift */,
+				A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */,
 			);
 			path = "My Page";
 			sourceTree = "<group>";
@@ -326,7 +326,6 @@
 				335666D72C4F965700100C0E /* TabBar.swift */,
 				3356676D2C5CCE0900100C0E /* CustomNavigationBar.swift */,
 				335667742C609AE400100C0E /* LogStartNavigationBar.swift */,
-				334A48C12C69E82F0090B44F /* GradientNavigationBar.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -346,8 +345,6 @@
 				335666DB2C4F96F200100C0E /* MyLogViewController.swift */,
 				335666E42C5254C300100C0E /* PuzzleViewCell.swift */,
 				335667632C5765BF00100C0E /* PuzzleItem.swift */,
-				33A14FDD2C68A3AF001B6FA1 /* LogSearchItem.swift */,
-				33A14FDF2C68A681001B6FA1 /* LogSearchResultsViewController.swift */,
 			);
 			path = "Start Log";
 			sourceTree = "<group>";
@@ -548,25 +545,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				335666E32C4F973400100C0E /* LoginViewController.swift in Sources */,
-				A90C354E2C67D02600FCE186 /* UserInfoViewController.swift in Sources */,
+				A90C354E2C67D02600FCE186 /* ProfileViewController.swift in Sources */,
 				335666DE2C4F970200100C0E /* SearchViewController.swift in Sources */,
 				A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */,
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
 				A90C354D2C67D02600FCE186 /* LoginView.swift in Sources */,
 				A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */,
 				335667772C609D9800100C0E /* LogViewController.swift in Sources */,
-				334A48C22C69E82F0090B44F /* GradientNavigationBar.swift in Sources */,
 				3356669F2C4F92E800100C0E /* AppDelegate.swift in Sources */,
+				A926CB5B2C6A59DD00DDADE0 /* SplashViewController.swift in Sources */,
 				335667682C5CBE5700100C0E /* PhotoLogViewController.swift in Sources */,
 				3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */,
 				335667752C609AE400100C0E /* LogStartNavigationBar.swift in Sources */,
+				A926CB5D2C6A855900DDADE0 /* MyPageEditViewController.swift in Sources */,
 				335666A12C4F92E800100C0E /* SceneDelegate.swift in Sources */,
-				33A14FDE2C68A3AF001B6FA1 /* LogSearchItem.swift in Sources */,
 				3356676E2C5CCE0900100C0E /* CustomNavigationBar.swift in Sources */,
 				335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */,
 				335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */,
 				335666D82C4F965700100C0E /* TabBar.swift in Sources */,
-				33A14FE02C68A681001B6FA1 /* LogSearchResultsViewController.swift in Sources */,
 				3356677C2C60A42100100C0E /* Back.swift in Sources */,
 				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,
 				335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */,

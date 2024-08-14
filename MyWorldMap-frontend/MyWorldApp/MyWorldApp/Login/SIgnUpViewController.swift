@@ -12,6 +12,22 @@ import AuthenticationServices
 import KakaoSDKUser
 import SnapKit
 
+extension UIColor {
+    convenience init(hex: String, alpha: CGFloat = 1.0) {
+        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+        Scanner(string: hexSanitized).scanHexInt64(&rgb)
+
+        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgb & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
+    }
+}
+
 class SignUpViewController: UIViewController {
     
     var userInfo: [String: Any] = [:]
@@ -85,21 +101,21 @@ class SignUpViewController: UIViewController {
         }
         
         emailLoginButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(superViewHeight * 0.78)
+            make.top.equalToSuperview().offset(superViewHeight * 0.795)
             make.leading.equalToSuperview().offset(leading)
             make.trailing.equalToSuperview().offset(-leading)
             make.height.equalTo(emailLoginButton.snp.width).multipliedBy(0.15)
         }
         
         kakaoLoginButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(superViewHeight * 0.85)
+            make.top.equalToSuperview().offset(superViewHeight * 0.87)
             make.leading.equalToSuperview().offset(leading)
             make.trailing.equalToSuperview().offset(-leading)
             make.height.equalTo(kakaoLoginButton.snp.width).multipliedBy(0.15)
         }
         
         loginButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(superViewHeight * 0.92)
+            make.top.equalToSuperview().offset(superViewHeight * 0.94)
             make.leading.equalToSuperview().offset(leading)
             make.trailing.equalToSuperview().offset(-leading)
         }

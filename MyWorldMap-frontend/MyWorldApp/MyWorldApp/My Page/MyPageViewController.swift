@@ -7,10 +7,15 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    var selectedImageData: Data?
+    func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
+    }
+    
+    var userInfo: [String: Any] = [:]
     
     var backgroundImageView: UIImageView!
     
@@ -74,23 +79,24 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     let mapPublicLabel: UILabel = {
         let label = UILabel()
         label.text = "내 지도 공개 여부"
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
     
     let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("로그아웃", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(hex: "FD2D69")
+        button.setTitleColor(UIColor(hex: "FD2D69"), for: .normal)
+        button.backgroundColor = UIColor(hex: "FD2D69", alpha: 0.1)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.layer.cornerRadius = 10
-        button.addTarget(MyPageViewController.self, action: #selector(logoutTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fetchUserProfile()
         view.backgroundColor = .white
         setupViews()
         
@@ -151,11 +157,11 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
         }
-        
-        // Map public switch and label
+        let superViewWidth = view.frame.width
+
         let mapStackView = UIStackView(arrangedSubviews: [mapPublicLabel, mapPublicSwitch])
         mapStackView.axis = .horizontal
-        mapStackView.spacing = 10
+        mapStackView.spacing = superViewWidth * 0.40
         view.addSubview(mapStackView)
         
         mapStackView.snp.makeConstraints { make in
@@ -181,13 +187,105 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     @objc func profileEdit() {
-        let editViewController = MyPageEditViewController()
-        editViewController.modalPresentationStyle = .fullScreen // Present the edit view controller full screen
-        present(editViewController, animated: true, completion: nil)
+        let editVC = MyPageEditViewController()
+        editVC.modalPresentationStyle = .fullScreen // Present the edit view controller full screen
+        editVC.userInfo = userInfo
+        print(userInfo)
+        present(editVC, animated: true, completion: nil)
     }
     
     @objc func logoutTapped() {
-        // Logout action
-        print("Logout tapped")
+        // 로그아웃 URL
+        guard let url = URL(string: "http://3.34.123.244:8080/user/logout") else {
+            print("Invalid URL")
+            return
+        }
+        
+        // 요청 구성
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // 요청 헤더 설정
+        request.setValue("*/*", forHTTPHeaderField: "accept")
+        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
+        
+        // 비동기 네트워크 요청
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            // 에러 처리
+            if let error = error {
+                print("Error during logout: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Unexpected response: \(String(describing: response))")
+                return
+            }
+            
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                print("Response data: \(responseString)")
+                DispatchQueue.main.async {
+                    self.proceedIfLogOutSuccessful()
+                    }
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func proceedIfLogOutSuccessful() {
+        UserDefaults.standard.removeObject(forKey: "refreshToken")
+        let SignUpVC = SignUpViewController()
+        SignUpVC.modalPresentationStyle = .fullScreen
+        present(SignUpVC, animated: true, completion: nil)
+    }
+    
+    func fetchUserProfile() {
+        guard let url = URL(string: "http://3.34.123.244:8080/user/myprofile") else { return }
+        var request = URLRequest(url: url)
+                request.httpMethod = "GET"
+                request.setValue("*/*", forHTTPHeaderField: "accept")
+        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                        return
+                    }
+
+                    guard let data = data else {
+                        print("No data received.")
+                        return
+                    }
+
+                    if let responseString = String(data: data, encoding: .utf8) {
+                        print("Response: \(responseString)")
+                        do {
+                                        // JSON 응답을 디코딩합니다.
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                                        
+                            if let isSuccess = json?["isSuccess"] as? Bool, isSuccess,
+                            let result = json?["result"] as? [String: Any],
+                            let nickname = result["nickname"] as? String,
+                               let gender = result["gender"] as? String,
+                               let country = result["country"] as? String,
+                               let birth = result["birth"] as? String,
+                            let profileImgString = result["profileImg"] as? String,
+                            let profileImgURL = URL(string: profileImgString) {
+                            DispatchQueue.main.async {
+                                self.nameLabel.text = "\(nickname)님"
+                                self.profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample"))
+                                self.userInfo["profileImg"] = profileImgURL
+                                self.userInfo["nickname"] = nickname
+                                self.userInfo["gender"] = gender
+                                self.userInfo["country"] = country
+                                self.userInfo["birth"] = birth
+                                        }
+                                        }
+                                    } catch {
+                                        print("Error decoding JSON: \(error.localizedDescription)")
+                                    }
+                    }
+                }
+                task.resume()
     }
 }

@@ -7,10 +7,16 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
+    }
+    
     var userInfo: [String: Any]?
+    
     var selectedImageData: Data?
     var status = false
     class PaddedTextField: UITextField {
@@ -66,7 +72,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
     
     // UI 요소 선언
     let profileLabel = UILabel()
-    let profileImageView = UIImageView()
+    var profileImageView = UIImageView()
     let nicknameTextField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
     let genderLabel = UILabel()
     let genderSegmentedControl = UISegmentedControl(items: ["남성", "여성"])
@@ -75,7 +81,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
     let birthdatePicker = UIDatePicker()
     let countryLabel = UILabel()
     let countryTextField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-    let startButton = UIButton(type: .system)
+    let updateButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,24 +103,69 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         profileLabel.textColor = UIColor(hex: "#5833FF")
         
         // 프로필 이미지 설정
-        profileImageView.image = UIImage(named: "profileExample")
+//        if let userInfo = userInfo as? [String: Any],
+//           let profileImgURL = userInfo["profileImg"] as? URL {
+//            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample")) { image, error, cacheType, url in
+//                if let error = error {
+//                    print("Image loading failed with error: \(error.localizedDescription)")
+//                }
+//            }
+//        } else if let urlString = userInfo?["profileImg"] as? String,
+//                  let profileImgURL = URL(string: urlString) {
+//            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample")) { image, error, cacheType, url in
+//                if let error = error {
+//                    print("Image loading failed with error: \(error.localizedDescription)")
+//                }
+//            }
+//
+//        } else {
+//            profileImageView.image = UIImage(named: "profileExample")
+//        }
+        
+        if let profileImgUrl = userInfo?["profileImg"] as? String {
+            downloadImageData(from: profileImgUrl) { [weak self] imageData in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    if let imageDataLoad = imageData, let image = UIImage(data: imageDataLoad) {
+                        print("Image data downloaded and converted successfully.")
+                        self.profileImageView.image = image
+                    } else {
+                        print("Failed to load image data, using placeholder image.")
+                        self.profileImageView.image = UIImage(named: "profileExample")
+                    }
+                }
+            }
+        } else {
+            // userInfo에 profileImg 키가 없는 경우 기본 이미지를 설정합니다.
+            print("No profile image URL found in userInfo, using placeholder image.")
+            profileImageView.image = UIImage(named: "profileExample")
+        }
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.clipsToBounds = true
         profileImageView.isUserInteractionEnabled = true
         
         // 나머지 UI 요소 설정
+        var nickname = userInfo?["nickname"] as? String
         nicknameTextField.setPlaceholder("사용할 닉네임을 입력해주세요")
+        nicknameTextField.text = nickname
         nicknameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         genderLabel.text = "성별"
         
-        genderSegmentedControl.selectedSegmentIndex = 1
+        var gender = userInfo?["gender"] as? String
+        if gender == "MALE" {
+            genderSegmentedControl.selectedSegmentIndex = 0
+        } else {
+            genderSegmentedControl.selectedSegmentIndex = 1
+        }
         genderSegmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
         
         birthdateLabel.text = "생년월일"
         
+        var birth = userInfo?["birth"] as? String
         birthdateTextField.setPlaceholder( "YYYY/MM/DD")
+        birthdateTextField.text = birth
         birthdateTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         countryLabel.text = "국적"
@@ -122,15 +173,10 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         countryTextField.setPlaceholder("🇰🇷 대한민국", color: .black)
         countryTextField.isUserInteractionEnabled = false
         
-        
-        
-        startButton.setTitle("시작하기", for: .normal)
-        startButton.setTitleColor(.white, for: .normal)
-        startButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        startButton.isEnabled = false
-        startButton.backgroundColor = UIColor(hex: "#D3D3D3")
-        startButton.layer.cornerRadius = 8
-        startButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        updateButton.setTitle("완료", for: .normal)
+        updateButton.setTitleColor(UIColor(hex: "7E7E7E"), for: .normal)
+        updateButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        updateButton.addTarget(self, action: #selector(updateButtonTapped), for: .touchUpInside)
         
         // 뷰에 추가
         view.addSubview(profileLabel)
@@ -142,7 +188,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         view.addSubview(birthdateTextField)
         view.addSubview(countryLabel)
         view.addSubview(countryTextField)
-        view.addSubview(startButton)
+        view.addSubview(updateButton)
     }
     
     func setupConstraints() {
@@ -197,11 +243,9 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
             make.leading.trailing.equalTo(nicknameTextField)
             make.height.equalTo(50)
         }
-        
-        startButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-40)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(50)
+        updateButton.snp.makeConstraints { make in
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right).offset(-20)
+            make.centerY.equalTo(profileLabel.snp.centerY)
         }
     }
     
@@ -216,9 +260,36 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
                 return nil
             }
         }
+
+    func downloadImageData(from urlString: String, completion: @escaping (Data?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL string.")
+            completion(nil)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error downloading image data: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received.")
+                completion(nil)
+                return
+            }
+            
+            // 성공적으로 데이터를 다운로드한 경우
+            completion(data)
+        }
+        
+        task.resume()
+    }
     
-    @objc func signUpButtonTapped() {
-        sendSignupRequest()
+    @objc func updateButtonTapped() {
+        sendUpdateRequest()
     }
     
     func configureTapGestureForProfileImage() {
@@ -258,12 +329,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
             
             // 선택된 이미지를 jpegData로 변환하여 저장
             selectedImageData = selectedImage.jpegData(compressionQuality: 0.2)
-            
-            if selectedImageData != nil {
-                print("이미지 데이터 저장 완료")
-            } else {
-                print("이미지 데이터 변환 실패")
-            }
+            print("이미지 저장 완료")
         } else {
             print("이미지 선택 실패")
         }
@@ -285,6 +351,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
             userInfo?["gender"] = "MALE"
         } else if selectedValue == "여성" {
             userInfo?["gender"] = "FEMALE"
+            print(userInfo)
         }
         checkFormValidity()
     }
@@ -306,45 +373,144 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         
         userInfo?["nickname"] = nicknameTextField.text
         userInfo?["country"] = "South Korea"
-        
-        startButton.isEnabled = isFormValid
-        startButton.backgroundColor = isFormValid ? UIColor(hex: "#6744FF") : UIColor(hex: "#D3D3D3")
     }
     
-    func sendSignupRequest() {
-        guard let url = URL(string: "http://3.34.123.244:8080/user/signup") else { return }
+//    func sendUpdateRequest() {
+//        guard let url = URL(string: "http://3.34.123.244:8080/user/update") else { return }
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//
+//        let boundary = "Boundary-\(UUID().uuidString)"
+//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
+//
+//        // 멀티파트 데이터 생성
+//        var body = Data()
+//
+//        // 이미지 파일 추가
+//        var modifiedUserInfo = userInfo
+//        if let imageData = selectedImageData {
+//            modifiedUserInfo?.removeValue(forKey: "profileImg")
+//            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//            body.append("Content-Disposition: form-data; name=\"profileImg\"\r\n".data(using: .utf8)!)
+//            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+//            body.append(imageData)
+//            body.append("\r\n".data(using: .utf8)!)
+//            print("이미지 변경")
+//            print(body)
+//            print(modifiedUserInfo)
+//        } else {
+//            if let existingImageUrl = modifiedUserInfo?["profileImg"] as? String {
+//                    body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//                    body.append("Content-Disposition: form-data; name=\"profileImg\"\r\n".data(using: .utf8)!)
+//                    body.append("Content-Type: text/plain\r\n\r\n".data(using: .utf8)!)
+//                    body.append(existingImageUrl.data(using: .utf8)!)
+//                    body.append("\r\n".data(using: .utf8)!)
+//                modifiedUserInfo?.removeValue(forKey: "profileImg")
+//                print("이미지 변경 x")
+//                print(body)
+//                print(modifiedUserInfo)
+//                }
+//
+//        }
+//
+//        // JSON 데이터를 문자열로 변환
+//        let jsonData = try! JSONSerialization.data(withJSONObject: modifiedUserInfo, options: [])
+//        let jsonString = String(data: jsonData, encoding: .utf8)!
+//
+//        // 'info' 필드 추가
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
+//        body.append("\(jsonString)\r\n".data(using: .utf8)!)
+//
+//        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+//
+//        request.httpBody = body
+//
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            if let error = error {
+//                print("Error making POST request: \(error)")
+//                return
+//            }
+//
+//            guard let httpResponse = response as? HTTPURLResponse else {
+//                print("Unexpected response: \(String(describing: response))")
+//                return
+//            }
+//
+//            if !(200...299).contains(httpResponse.statusCode) {
+//                print("Unexpected response: \(String(describing: response))")
+//                if let data = data, let errorMessage = String(data: data, encoding: .utf8) {
+//                    print("Error message: \(errorMessage)")
+//                }
+//                return
+//            }
+//
+//            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+//                print("Response data: \(responseString)")
+//                DispatchQueue.main.async {
+//                                // 응답이 성공적일 경우 status를 true로 변경
+//                    self.status = true
+//                                self.proceedIfSignupSuccessful()
+//                            }
+//            }
+//        }
+//        task.resume()
+//    }
+
+    func sendUpdateRequest() {
+        guard let url = URL(string: "http://3.34.123.244:8080/user/update") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        if let refreshToken = getRefreshToken() {
+            request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
+        }
         
-
-        // JSON 데이터를 문자열로 변환
-        let jsonData = try! JSONSerialization.data(withJSONObject: userInfo, options: [])
-        let jsonString = String(data: jsonData, encoding: .utf8)!
-        
-        // 멀티파트 데이터 생성
         var body = Data()
         
-        // 'info' 필드 추가
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(jsonString)\r\n".data(using: .utf8)!)
-        
-        // 이미지 파일 추가
-        
-        if let imageData = selectedImageData {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"profileImg\"; filename=\"Group 2085663362.png\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
-            body.append(imageData)
-            body.append("\r\n".data(using: .utf8)!)
+        // userInfo에서 NSURL을 문자열로 변환
+        if var modifiedUserInfo = userInfo {
+            if let urlValue = modifiedUserInfo["profileImg"] as? URL {
+                modifiedUserInfo["profileImg"] = urlValue.absoluteString
+            }
+            
+            if let imageData = selectedImageData {
+                modifiedUserInfo.removeValue(forKey: "profileImg")
+                
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"profileImg\"; filename=\"profile.png\"\r\n".data(using: .utf8)!)
+                body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+                body.append(imageData)
+                body.append("\r\n".data(using: .utf8)!)
+            } else if let existingImageUrl = modifiedUserInfo["profileImg"] as? String {
+                modifiedUserInfo.removeValue(forKey: "profileImg")
+                
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"profileImg\"\r\n".data(using: .utf8)!)
+                body.append("Content-Type: text/plain\r\n\r\n".data(using: .utf8)!)
+                body.append(existingImageUrl.data(using: .utf8)!)
+                body.append("\r\n".data(using: .utf8)!)
+            }
+            
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: modifiedUserInfo, options: [])
+                let jsonString = String(data: jsonData, encoding: .utf8)!
+                
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
+                body.append("\(jsonString)\r\n".data(using: .utf8)!)
+            } catch {
+                print("Error serializing JSON: \(error)")
+                return
+            }
         }
         
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
         request.httpBody = body
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -369,20 +535,19 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
             if let data = data, let responseString = String(data: data, encoding: .utf8) {
                 print("Response data: \(responseString)")
                 DispatchQueue.main.async {
-                                // 응답이 성공적일 경우 status를 true로 변경
                     self.status = true
-                                self.proceedIfSignupSuccessful()
-                            }
+                    self.proceedIfSignupSuccessful()
+                }
             }
         }
         task.resume()
     }
-
+    
     func proceedIfSignupSuccessful() {
         if status {
-            let tabBarController = TabBar()
-            tabBarController.modalPresentationStyle = .fullScreen
-            present(tabBarController, animated: true, completion: nil)
+            let myPageVC = MyPageViewController()
+            myPageVC.modalPresentationStyle = .fullScreen
+            present(myPageVC, animated: true, completion: nil)
         }
     }
 }

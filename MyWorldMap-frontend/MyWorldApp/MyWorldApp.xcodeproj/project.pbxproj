@@ -18,7 +18,7 @@
 		335666D82C4F965700100C0E /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666D72C4F965700100C0E /* TabBar.swift */; };
 		335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666D92C4F96B600100C0E /* WorldViewController.swift */; };
 		335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DB2C4F96F200100C0E /* MyLogViewController.swift */; };
-		335666DE2C4F970200100C0E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DD2C4F970200100C0E /* SearchViewController.swift */; };
+		335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DD2C4F970200100C0E /* ExploreViewController.swift */; };
 		335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DF2C4F971500100C0E /* MyPageViewController.swift */; };
 		335666E32C4F973400100C0E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666E22C4F973400100C0E /* LoginViewController.swift */; };
 		335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666E42C5254C300100C0E /* PuzzleViewCell.swift */; };
@@ -112,7 +112,7 @@
 		335666D72C4F965700100C0E /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		335666D92C4F96B600100C0E /* WorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldViewController.swift; sourceTree = "<group>"; };
 		335666DB2C4F96F200100C0E /* MyLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLogViewController.swift; sourceTree = "<group>"; };
-		335666DD2C4F970200100C0E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		335666DD2C4F970200100C0E /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		335666DF2C4F971500100C0E /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		335666E22C4F973400100C0E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		335666E42C5254C300100C0E /* PuzzleViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewCell.swift; sourceTree = "<group>"; };
@@ -201,21 +201,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		334A48C32C69F8C70090B44F /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				334A48C42C69F8D80090B44F /* Network */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		334A48C42C69F8D80090B44F /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
 		335666922C4F92E800100C0E = {
 			isa = PBXGroup;
 			children = (
@@ -240,7 +225,6 @@
 		3356669D2C4F92E800100C0E /* MyWorldApp */ = {
 			isa = PBXGroup;
 			children = (
-				334A48C32C69F8C70090B44F /* Source */,
 				335667842C66146B00100C0E /* Alamofire */,
 				3356677D2C60A42C00100C0E /* Function */,
 				335666D62C4F953800100C0E /* Button */,
@@ -309,7 +293,7 @@
 		335666D42C4F951F00100C0E /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				335666DD2C4F970200100C0E /* SearchViewController.swift */,
+				335666DD2C4F970200100C0E /* ExploreViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -553,7 +537,7 @@
 			files = (
 				335666E32C4F973400100C0E /* LoginViewController.swift in Sources */,
 				A90C354E2C67D02600FCE186 /* ProfileViewController.swift in Sources */,
-				335666DE2C4F970200100C0E /* SearchViewController.swift in Sources */,
+				335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */,
 				A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */,
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
 				A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */,
@@ -753,7 +737,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6XVTBTTTFN;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWorldApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -781,7 +765,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6XVTBTTTFN;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWorldApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

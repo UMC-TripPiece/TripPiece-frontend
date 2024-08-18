@@ -113,13 +113,13 @@ class MyLogViewController: UIViewController {
     }()
     private lazy var addRecordPageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.numberOfPages = 4
+        pageControl.numberOfPages = 3
         pageControl.pageIndicatorTintColor = .lightGray
         pageControl.currentPageIndicatorTintColor = UIColor(named: "Main")
         return pageControl
     }()
         
-    private let addRecordImages: [String] = ["example1", "example2", "example3", "example4"]
+    private let addRecordImages: [String] = ["mission1", "mission2", "mission3"]
         
     ///버튼
     private lazy var button1: UIButton = {

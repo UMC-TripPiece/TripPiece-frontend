@@ -9,7 +9,14 @@ import UIKit
 import Alamofire
 
 class StartLogViewController: UIViewController {
+//    var travelInfo = TravelInfo(cityName: "도쿄", countryName: "일본", title: "잘 나오나 확인", startDate: nil, endDate: nil, thumbnail: UIImage(named: "dummy1"))
     
+    var travelInfo = TravelInfo(cityName: nil,
+                                countryName: nil,
+                                title: nil,
+                                startDate: nil,
+                                endDate: nil,
+                                thumbnail: nil)
     //MARK: - UI
     private lazy var startNavBar: LogStartNavigationBar = {
         let nav = LogStartNavigationBar()
@@ -105,6 +112,7 @@ class StartLogViewController: UIViewController {
         textView.textColor = .lightGray
         textView.text = "| 여행 제목을 입력해주세요 (15자 이내)"
         textView.delegate = self
+        textView.isScrollEnabled = false
         return textView
     }()
     
@@ -141,8 +149,9 @@ class StartLogViewController: UIViewController {
         button.setTitle("여행 기록 시작하기", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(named: "Not selected")
+        button.backgroundColor = UIColor(named: "Cancel")
         button.layer.cornerRadius = 5
+        button.isEnabled = false
         button.addTarget(self, action: #selector(startLog), for: .touchUpInside)
         return button
     }()
@@ -165,6 +174,17 @@ class StartLogViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
     }()
+    
+    ///사진 추가 버튼
+    private lazy var addPhotoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "plus photo"), for: .normal)
+        button.contentMode = .scaleAspectFit
+        button.isHidden = true // 초기에는 숨겨진 상태
+        button.alpha = 0.0 // 초기 알파값을 0으로 설정
+        button.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
+        return button
+    }()
 
     //MARK: - Init
     override func viewDidLoad() {
@@ -182,6 +202,9 @@ class StartLogViewController: UIViewController {
 
         view.addSubview(startNavBar)
         view.addSubview(addCountryButton)
+        
+        view.addSubview(addPhotoButton)
+        
         view.addSubview(titleLabel)
         view.addSubview(grayBackgroundView)
         view.addSubview(searchTableView)
@@ -203,6 +226,7 @@ class StartLogViewController: UIViewController {
         contentStackView.addArrangedSubview(travelTextView)
         contentStackView.addArrangedSubview(createSpacer(height: 273))
         contentStackView.addArrangedSubview(startLogButton)
+    
         
         setConstraints()
     }
@@ -250,6 +274,10 @@ class StartLogViewController: UIViewController {
             make.top.equalTo(grayBackgroundView.snp.top).offset(20)
             make.bottom.equalToSuperview().offset(-20)
         }
+        addPhotoButton.snp.makeConstraints { make in
+            make.top.equalTo(startNavBar.snp.bottom).offset(20)
+            make.centerX.equalToSuperview().offset(15)
+        }
     }
     
     //MARK: - Function
@@ -281,18 +309,80 @@ class StartLogViewController: UIViewController {
     @objc private func dateChanged(_ sender: UIDatePicker) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
+        let selectedDate = sender.date
         let dateString = dateFormatter.string(from: sender.date)
         
         if sender == startDatePicker {
             startDateButton.setTitle(dateString, for: .normal)
+            travelInfo.updateInfo(startDate: selectedDate)
+            updateStartLogButtonState()
         } else if sender == endDatePicker {
             endDateButton.setTitle(dateString, for: .normal)
+            travelInfo.updateInfo(endDate: selectedDate)
+            updateStartLogButtonState()
         }
     }
     
+    ///사진 추가 버튼
+    @objc private func addPhoto() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.allowsEditing = true
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    private func makeCircularImage(image: UIImage, size: CGSize) -> UIImage {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        UIBezierPath(ovalIn: rect).addClip()
+        image.draw(in: rect)
+        let circularImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return circularImage!
+    }
+
+    ///여행 시작 POST
     @objc private func startLog() {
-        // 여행 기록 시작하기 버튼 액션
-        print("여행 기록 시작하기 버튼 클릭됨")
+        print("Travel Info: \(travelInfo)")
+        
+        NetworkManager.shared.postTravelData(
+            cityName: travelInfo.cityName!,
+            countryName: travelInfo.countryName!,
+            title: travelInfo.title!,
+            startDate: travelInfo.startDate!,
+            endDate: travelInfo.endDate!,
+            thumbnail: travelInfo.thumbnail!
+        ) { result in
+            switch result {
+            case .success(let value):
+                print("성공적으로 여행 데이터를 전송했습니다: \(value)")
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) {
+                        // 현재 활성화된 scene의 window 접근
+                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = scene.windows.first,
+                           let tabBarController = window.rootViewController as? TabBar {
+                            
+                            // MyLogViewController를 직접 인스턴스화해서 TabBar의 두 번째 탭으로 설정
+                            let myLogVC = MyLogViewController()
+                            let navigationController = UINavigationController(rootViewController: myLogVC)
+                            navigationController.tabBarItem = UITabBarItem(title: "나의 기록", image: UIImage(named: "My log"), tag: 2)
+                            navigationController.tabBarItem.badgeValue = "여행중"
+                            tabBarController.viewControllers?[1] = navigationController
+                            
+                            // 'My Log' 탭으로 이동
+                            tabBarController.selectedIndex = 1
+                        } else {
+                            print("Error: TabBarController not found.")
+                        }
+                    }
+                }
+            case .failure(let error):
+                print("여행 데이터 전송 실패: \(error.localizedDescription)")
+                print("Travel Info: \(self.travelInfo)")
+            }
+        }
+        
     }
     
     ///키보드 내리기
@@ -305,7 +395,36 @@ class StartLogViewController: UIViewController {
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
-    
+    //MARK: - 유효성 검사
+    private func validateTravelInfo() -> Bool {
+        // 모든 필드가 유효한 경우 true를 반환, 그렇지 않으면 false를 반환
+        guard let cityName = travelInfo.cityName,
+              let countryName = travelInfo.countryName,
+              let title = travelInfo.title,
+              let startDate = travelInfo.startDate,
+              let endDate = travelInfo.endDate,
+              let thumbnail = travelInfo.thumbnail else {
+            return false
+        }
+
+        return !cityName.isEmpty &&
+               !countryName.isEmpty &&
+               !title.isEmpty &&
+               startDate <= endDate && // Optional: Ensure start date is before or equal to end date
+               thumbnail.size.width > 0 &&
+               thumbnail.size.height > 0
+    }
+    private func updateStartLogButtonState() {
+        // 여행 정보가 모두 채워져 있는지에 따라 버튼 활성화 여부를 결정
+        if validateTravelInfo() {
+            startLogButton.isEnabled = true
+            startLogButton.backgroundColor = UIColor(named: "Main")
+        } else {
+            startLogButton.isEnabled = false
+            startLogButton.backgroundColor = UIColor(named: "Cancel")
+        }
+    }
+
     //MARK: - Alamofire
     private func searchCities(keyword: String) {
         let url = "http://3.34.123.244:8080/search/cities"
@@ -335,6 +454,28 @@ class StartLogViewController: UIViewController {
             }
         }
     }
+    
+    @objc private func showAddphotoBtnController() {
+        // 애니메이션 추가
+        UIView.animate(withDuration: 0.3, animations: {
+            // 크기를 60에서 38로 축소
+            self.addCountryButton.transform = CGAffineTransform(scaleX: 0.63, y: 0.63) // 38/60 ≈ 0.63 비율로 축소
+            
+            // X축 위치를 오른쪽으로 52만큼 이동 (스냅킷 제약 조건을 업데이트)
+            self.addCountryButton.snp.updateConstraints { make in
+                make.centerX.equalToSuperview().offset(112)
+            }
+
+            self.view.layoutIfNeeded() // 레이아웃 변경 사항을 즉시 적용
+        }, completion: { _ in
+            // 추가적인 애니메이션 필요 시 여기에 추가
+            self.addPhotoButton.isHidden = false
+            UIView.animate(withDuration: 0.3) {
+                self.addPhotoButton.alpha = 1.0
+            }
+        })
+    }
+
 }
 
 //MARK: - UITextViewDelegate
@@ -344,6 +485,7 @@ extension StartLogViewController: UITextViewDelegate {
             textView.text = nil
             textView.textColor = .darkText
         }
+        centerTextVertically(textView)
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -351,18 +493,32 @@ extension StartLogViewController: UITextViewDelegate {
             textView.text = "| 여행 제목을 입력해주세요 (15자 이내)"
             textView.textColor = .lightGray
         }
+        centerTextVertically(textView)
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         // 현재 텍스트를 가져옴
         let currentText = textView.text ?? ""
+        travelInfo.updateInfo(title: currentText)
+        updateStartLogButtonState()
         
         // 범위를 기반으로 새 텍스트 생성
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-        
+        centerTextVertically(textView)
+
         // 15자 제한
         return updatedText.count <= 15
+    }
+    func textViewDidChange(_ textView: UITextView) {
+        centerTextVertically(textView)
+    }
+    private func centerTextVertically(_ textView: UITextView) {
+        // 텍스트 높이와 텍스트뷰 높이를 비교하여 패딩 조정
+        let size = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude))
+        let topOffset = (textView.bounds.size.height - size.height * textView.zoomScale) / 2
+        let positiveTopOffset = max(1, topOffset)
+        textView.contentOffset = CGPoint(x: 0, y: -positiveTopOffset)
     }
 }
 
@@ -396,6 +552,38 @@ extension StartLogViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cityData = searchResults[indexPath.row]
         print("선택된 도시: \(cityData)")
-        // 선택된 도시에 대한 추가 작업
+        let cityName = cityData["cityName"] ?? ""
+        let countryName = cityData["countryName"] ?? ""
+        let countryImage = cityData["countryImage"] ?? ""
+        
+        titleLabel.text = "\(countryImage) \(cityName), \(countryName)"
+        travelInfo.updateInfo(cityName: "\(cityName)", countryName: "\(countryName)")
+        updateStartLogButtonState()
+
+        searchController.isActive = false
+        searchTableView.isHidden = true
+        showAddphotoBtnController()
+    }
+}
+//MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
+extension StartLogViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        guard let selectedImage = info[.editedImage] as? UIImage else {
+            return
+        }
+        
+        // 이미지를 원형으로 만들기
+        let circularImage = makeCircularImage(image: selectedImage, size: CGSize(width: 60, height: 60))
+        travelInfo.updateInfo(thumbnail: selectedImage)
+        updateStartLogButtonState()
+        addPhotoButton.setImage(circularImage, for: .normal)
+        addPhotoButton.layer.cornerRadius = 30
+        addPhotoButton.clipsToBounds = true
+//        addPhotoButton.snp.updateConstraints { make in
+//            make.centerX.equalTo(addCountryButton.snp.centerX)
+//        }
+//        view.layoutIfNeeded()
     }
 }

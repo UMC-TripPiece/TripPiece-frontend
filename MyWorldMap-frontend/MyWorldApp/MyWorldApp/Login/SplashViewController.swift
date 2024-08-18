@@ -44,8 +44,12 @@ class SplashViewController: UIViewController {
 
     func navigateToMainScreen() {
         let tabBarController = TabBar()
-        tabBarController.modalPresentationStyle = .fullScreen
-        present(tabBarController, animated: true, completion: nil)
+        // UIWindow의 rootViewController를 TabBarController로 설정
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            let window = scene.windows.first {
+            window.rootViewController = tabBarController
+            window.makeKeyAndVisible()
+        }
     }
     
     // 로그인 화면 (SignUpViewController)으로 이동하는 함수

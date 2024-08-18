@@ -6,6 +6,7 @@
 //
 import UIKit
 import KakaoSDKCommon
+import GoogleMaps
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
            // 카카오 SDK 초기화
            KakaoSDK.initSDK(appKey: "b30c067a8e1ee82121d9dad510240fbe")
+        GMSServices.provideAPIKey("GOOGLE_MAP_KEY")
            return true
        }
-
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

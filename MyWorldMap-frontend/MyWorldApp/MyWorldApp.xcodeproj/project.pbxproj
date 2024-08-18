@@ -33,6 +33,8 @@
 		3356677C2C60A42100100C0E /* Back.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356677B2C60A42100100C0E /* Back.swift */; };
 		3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356677E2C60A4E000100C0E /* StartLogViewController.swift */; };
 		335667882C66152200100C0E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667872C66152200100C0E /* NetworkManager.swift */; };
+		3363FFDB2C7206CB009FFF93 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 3363FFDA2C7206CB009FFF93 /* GoogleMaps */; };
+		3363FFDF2C7207B8009FFF93 /* TravelInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */; };
 		33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */; };
 		A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35452C67D02500FCE186 /* SignUpView.swift */; };
 		A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */; };
@@ -127,6 +129,7 @@
 		3356677E2C60A4E000100C0E /* StartLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartLogViewController.swift; sourceTree = "<group>"; };
 		335667872C66152200100C0E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		335667892C6617C200100C0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelInfo.swift; sourceTree = "<group>"; };
 		33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientNavigationBar.swift; sourceTree = "<group>"; };
 		A90C35452C67D02500FCE186 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIgnUpViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9596B7D2C67CD3900950E12 /* SwiftyJSON in Frameworks */,
+				3363FFDB2C7206CB009FFF93 /* GoogleMaps in Frameworks */,
 				A9596B562C67CD2600950E12 /* FirebaseAppDistribution-Beta in Frameworks */,
 				A9596B942C67CD5B00950E12 /* KakaoSDKTemplate in Frameworks */,
 				A9596B862C67CD5B00950E12 /* KakaoSDKCertCore in Frameworks */,
@@ -225,6 +229,7 @@
 		3356669D2C4F92E800100C0E /* MyWorldApp */ = {
 			isa = PBXGroup;
 			children = (
+				3363FFDD2C7207A7009FFF93 /* Source */,
 				335667842C66146B00100C0E /* Alamofire */,
 				3356677D2C60A42C00100C0E /* Function */,
 				335666D62C4F953800100C0E /* Button */,
@@ -355,6 +360,22 @@
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
+		3363FFDC2C72078B009FFF93 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		3363FFDD2C7207A7009FFF93 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				3363FFDC2C72078B009FFF93 /* Network */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -412,6 +433,7 @@
 				A9596B952C67CD5B00950E12 /* KakaoSDKUser */,
 				A95303562C6B62A900D0A8AA /* SDWebImage */,
 				A95303582C6B62A900D0A8AA /* SDWebImageMapKit */,
+				3363FFDA2C7206CB009FFF93 /* GoogleMaps */,
 			);
 			productName = MyWorldApp;
 			productReference = 3356669B2C4F92E800100C0E /* MyWorldApp.app */;
@@ -492,6 +514,7 @@
 				A9596B7B2C67CD3900950E12 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				A9596B7E2C67CD5B00950E12 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				A95303552C6B62A800D0A8AA /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				3363FFD92C7206CB009FFF93 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 			);
 			productRefGroup = 3356669C2C4F92E800100C0E /* Products */;
 			projectDirPath = "";
@@ -540,6 +563,7 @@
 				335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */,
 				A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */,
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
+				3363FFDF2C7207B8009FFF93 /* TravelInfo.swift in Sources */,
 				A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */,
 				335667772C609D9800100C0E /* LogViewController.swift in Sources */,
 				3356669F2C4F92E800100C0E /* AppDelegate.swift in Sources */,
@@ -919,6 +943,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		3363FFD92C7206CB009FFF93 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		A95303552C6B62A800D0A8AA /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
@@ -963,6 +995,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 335667782C60A1E900100C0E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		3363FFDA2C7206CB009FFF93 /* GoogleMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3363FFD92C7206CB009FFF93 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
+			productName = GoogleMaps;
 		};
 		A95303562C6B62A900D0A8AA /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

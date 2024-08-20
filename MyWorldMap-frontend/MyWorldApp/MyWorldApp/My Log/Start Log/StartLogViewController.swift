@@ -9,7 +9,6 @@ import UIKit
 import Alamofire
 
 class StartLogViewController: UIViewController {
-//    var travelInfo = TravelInfo(cityName: "도쿄", countryName: "일본", title: "잘 나오나 확인", startDate: nil, endDate: nil, thumbnail: UIImage(named: "dummy1"))
     
     var travelInfo = TravelInfo(cityName: nil,
                                 countryName: nil,

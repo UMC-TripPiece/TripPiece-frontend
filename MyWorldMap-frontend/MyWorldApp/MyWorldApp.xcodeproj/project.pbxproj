@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		334A1B0F2C749BF30031C26C /* MemoCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334A1B0E2C749BF30031C26C /* MemoCompleteViewController.swift */; };
 		3356669F2C4F92E800100C0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3356669E2C4F92E800100C0E /* AppDelegate.swift */; };
 		335666A12C4F92E800100C0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666A02C4F92E800100C0E /* SceneDelegate.swift */; };
 		335666A82C4F92EA00100C0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 335666A72C4F92EA00100C0E /* Assets.xcassets */; };
@@ -100,6 +101,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		334A1B0E2C749BF30031C26C /* MemoCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCompleteViewController.swift; sourceTree = "<group>"; };
 		3356669B2C4F92E800100C0E /* MyWorldApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWorldApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3356669E2C4F92E800100C0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		335666A02C4F92E800100C0E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 				335667672C5CBE5700100C0E /* PhotoLogViewController.swift */,
 				335667692C5CBE6900100C0E /* VideoLogViewController.swift */,
 				3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */,
+				334A1B0E2C749BF30031C26C /* MemoCompleteViewController.swift */,
 			);
 			path = "Write Log";
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */,
 				3356676C2C5CBE8100100C0E /* MemoLogViewController.swift in Sources */,
 				335667882C66152200100C0E /* NetworkManager.swift in Sources */,
+				334A1B0F2C749BF30031C26C /* MemoCompleteViewController.swift in Sources */,
 				3356676A2C5CBE6900100C0E /* VideoLogViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -132,84 +132,147 @@ class SignUpViewController: UIViewController {
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true, completion: nil)
     }
-  
-//    private func signupWithKakao() {
-//        if UserApi.isKakaoTalkLoginAvailable() {
-//            loginWithKakaoApp()
-//        } else {
-//            loginWithWeb()
-//        }
-//    }
+
+//    @objc func kakaoButtonTapped(_ sender: UIButton) {
+//        Task {
+//            if await kakaoAuthVM.KakaoLogin() {
+//                DispatchQueue.main.async {
+//                    UserApi.shared.me() { [weak self] (user, error) in
+//                        guard let self = self else { return }
+//                        if let error = error {
+//                            print(error)
+//                            return
+//                        }
 //
-//    private func loginWithKakaoApp() {
-//        UserApi.shared.loginWithKakaoTalk { _, error in
-//            if let error = error {
-//                print(error)
-//            } else {
-//                print("loginWithKakaoApp() success.")
+//                        var userInfo: [String: Any] = [:]
+//                        
+//                        // Safely unwrap user information
+//                        let userID = user?.id ?? nil
+//                        let userEmail = user?.kakaoAccount?.email ?? ""
 //
-//                self.getUserID()
-//            }
-//        }
-//    }
+//                        userInfo["providerId"] = userID
+//                        userInfo["email"] = userEmail
+//                        print(userInfo)
+//                        // Initialize ProfileViewController
+//                        let profileVC = KakaoProfileViewController()
+//                        profileVC.userInfo = userInfo
+//                        profileVC.loginPath = "/kakao"
 //
-//    private func loginWithWeb() {
-//
-//        UserApi.shared.loginWithKakaoAccount { _, error in
-//            if let error = error {
-//                print(error)
-//            } else {
-//                print("loginWithKakaoAccount() success.")
-//
-//                self.getUserID()
-//            }
-//        }
-//    }
-//
-//    private func getUserID() {
-//        UserApi.shared.me {(user, error) in
-//            if let error = error {
-//                print(error)
-//            } else {
-//                if let userID = user?.id {
-//                    UserDefaults.standard.set(String(userID), forKey: Const.UserDefaultsKey.userID)
-//
-//                    self.loginWithAPI(userID: String("Kakao@\(userID)"))
+//                        // Present ProfileViewController modally
+//                        profileVC.modalPresentationStyle = .fullScreen
+//                        self.present(profileVC, animated: true, completion: nil)
+//                    }
 //                }
+//            } else {
+//                print("Login failed.")
 //            }
 //        }
 //    }
     
-    // kakaoButton 클릭 이벤트
     @objc func kakaoButtonTapped(_ sender: UIButton) {
-        Task { [weak self] in
+        Task {
             if await kakaoAuthVM.KakaoLogin() {
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.async {
                     UserApi.shared.me() { [weak self] (user, error) in
+                        guard let self = self else { return }
                         if let error = error {
                             print(error)
+                            return
                         }
+                        
+                        // Safely unwrap user information
+                        let userID = user?.id ?? nil
+                        let userEmail = user?.kakaoAccount?.email ?? ""
 
-                        // 유저 정보 저장을 위해 Kakao로부터 받아올 수 있는 정보를 변수에 저장
-                        let userID = user?.kakaoAccount?.ci
-                        let userName = user?.kakaoAccount?.profile?.nickname
-                        let userEmail = user?.kakaoAccount?.email
-
-                        let VC = ProfileViewController()
-                        VC.userInfo?["providerId"] = userID ?? ""
-                        VC.userInfo?["name"] = userName ?? ""
-                        VC.userInfo?["email"] = userEmail ?? ""
-
-                        VC.loginPath = "/kakao"
-                        self?.navigationController?.pushViewController(VC, animated: true)
+                        userInfo["providerId"] = userID
+                        userInfo["email"] = userEmail
+                        print(userInfo)
+                        // Initialize ProfileViewController
+                        sendLoginRequest()
                     }
                 }
             } else {
                 print("Login failed.")
             }
         }
+    }
+    
+    func sendLoginRequest() {
+        guard let url = URL(string: "http://3.34.123.244:8080/user/kakao/login") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("*/*", forHTTPHeaderField: "accept")
 
+        print(userInfo)
+        // JSON 데이터를 문자열로 변환
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: userInfo, options: [])
+                request.httpBody = jsonData
+            } catch {
+                print("Failed to serialize JSON: \(error)")
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error making POST request: \(error)")
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Unexpected response: \(String(describing: response))")
+                    return
+                }
+                
+                if !(200...299).contains(httpResponse.statusCode) {
+                    print("Unexpected response: \(String(describing: response))")
+                    if let data = data, let errorMessage = String(data: data, encoding: .utf8) {
+                        print("Error message: \(errorMessage)")
+                        DispatchQueue.main.async {
+                            let profileVC = KakaoProfileViewController()
+                            profileVC.userInfo = self.userInfo
+                            profileVC.loginPath = "/kakao"
 
+                            // Present ProfileViewController modally
+                            profileVC.modalPresentationStyle = .fullScreen
+                            self.present(profileVC, animated: true, completion: nil)
+                                        }
+                    }
+                    return
+                }
+                
+                if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                    print("Response data: \(responseString)")
+                    DispatchQueue.main.async {
+                            // JSON 파싱을 통해 refreshToken을 추출
+                            if let jsonData = responseString.data(using: .utf8) {
+                                do {
+                                    if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
+                                       let result = json["result"] as? [String: Any],
+                                       let refreshToken = result["refreshToken"] as? String {
+                                        
+                                        // refreshToken을 UserDefaults에 저장
+                                        UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
+                                        
+                                        self.proceedIfLoginSuccessful()
+                                    }
+                                } catch {
+                                    print("JSON 파싱 에러: \(error.localizedDescription)")
+                                }
+                            }
+                        }
+                }
+            }
+            task.resume()
+    }
+    
+    func proceedIfLoginSuccessful() {
+            let tabBarController = TabBar()
+            tabBarController.modalPresentationStyle = .fullScreen
+            present(tabBarController, animated: true, completion: nil)
     }
 }
 

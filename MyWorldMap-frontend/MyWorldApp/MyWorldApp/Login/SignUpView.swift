@@ -460,4 +460,5 @@ class SignUpView: UIView {
         let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
         return passwordTest.evaluate(with: password)
     }
+    
 }

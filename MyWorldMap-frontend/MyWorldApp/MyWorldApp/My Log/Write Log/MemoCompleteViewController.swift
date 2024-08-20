@@ -44,10 +44,16 @@ class RecordCompleteViewController: UIViewController {
     
     private lazy var previewTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.textAlignment = .center
         textView.isEditable = false
         textView.layer.borderWidth = 1
         textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.layer.cornerRadius = 5
+        textView.isScrollEnabled = false
+        textView.textContainer.maximumNumberOfLines = 2
+        textView.textContainer.lineBreakMode = .byTruncatingTail
+        textView.textContainerInset = UIEdgeInsets(top: 20, left: 31, bottom: 20, right: 31)
         return textView
     }()
     
@@ -118,10 +124,18 @@ class RecordCompleteViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        // 루트 뷰로 이동
-        if let tabBarController = presentingViewController as? TabBar {
-            tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+        // 모든 모달을 닫고 루트 뷰인 탭바로 이동
+        var targetViewController = presentingViewController
+        
+        // MemoLogViewController와 RecordCompleteViewController를 모두 dismiss
+        while let presentingVC = targetViewController?.presentingViewController {
+            targetViewController = presentingVC
         }
-        dismiss(animated: true, completion: nil)
+        
+        targetViewController?.dismiss(animated: true) {
+            if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? TabBar {
+                tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+            }
+        }
     }
 }

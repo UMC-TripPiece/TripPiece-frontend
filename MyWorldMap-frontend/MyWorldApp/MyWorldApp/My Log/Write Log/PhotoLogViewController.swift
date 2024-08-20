@@ -10,6 +10,17 @@ import SnapKit
 
 class PhotoLogViewController: UIViewController {
     
+    var travelId: Int
+        
+    init(travelId: Int) {
+        self.travelId = travelId
+        super.init(nibName: nil, bundle: nil)
+    }
+        
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - UI
     private lazy var customNavBar: CustomNavigationBar = {
         let nav = CustomNavigationBar()

@@ -178,6 +178,8 @@ class MyLogViewController: UIViewController {
         return button
     }()
         
+    var travelId: Int?
+    
     //MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -186,6 +188,8 @@ class MyLogViewController: UIViewController {
         self.view.backgroundColor = .white
         setupUI()
         setupAddRecordViews()
+        fetchOngoingTravelId()
+
     }
     
     //MARK: - Stack
@@ -361,19 +365,31 @@ class MyLogViewController: UIViewController {
     }
     
     @objc private func photoLogView() {
-        let viewController = PhotoLogViewController()
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
+        let viewController = PhotoLogViewController(travelId: travelId)
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
         
     @objc private func videoLogView() {
-        let viewController = VideoLogViewController()
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
+        let viewController = VideoLogViewController(travelId: travelId)
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
         
     @objc private func memoLogView() {
-        let viewController = MemoLogViewController()
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
+        let viewController = MemoLogViewController(travelId: travelId)
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
@@ -403,17 +419,29 @@ class MyLogViewController: UIViewController {
     ///여기에 이동경로 추가
     //MARK: - 이동경로 추가
     private func navigateToMission1Page() {
-        let mission1VC = PhotoLogViewController()
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
+        let mission1VC = PhotoLogViewController(travelId: travelId)
         self.navigationController?.pushViewController(mission1VC, animated: true)
     }
         
     private func navigateToMission2Page() {
-        let mission2VC = PhotoLogViewController()
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
+        let mission2VC = PhotoLogViewController(travelId: travelId)
         self.navigationController?.pushViewController(mission2VC, animated: true)
     }
         
     private func navigateToMission3Page() {
-        let mission3VC = PhotoLogViewController()
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
+        let mission3VC = PhotoLogViewController(travelId: travelId)
         self.navigationController?.pushViewController(mission3VC, animated: true)
     }
     
@@ -474,6 +502,44 @@ class MyLogViewController: UIViewController {
                 } catch {
                     print("Error decoding JSON: \(error.localizedDescription)")
                 }
+            }
+        }
+        task.resume()
+    }
+    
+    //MARK: - TravelId 반환
+    private func fetchOngoingTravelId() {
+        guard let url = URL(string: "http://3.34.123.244:8080/travels") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("*/*", forHTTPHeaderField: "accept")
+        if let refreshToken = getRefreshToken() {
+            request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching travelId: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received.")
+                return
+            }
+            
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let resultArray = json["result"] as? [[String: Any]] {
+                    // 진행 중인 여행을 찾아 travelId를 설정
+                    if let ongoingTravel = resultArray.first(where: { $0["status"] as? String == "ONGOING" }),
+                       let travelId = ongoingTravel["id"] as? Int {
+                        self.travelId = travelId
+                        print("TravelId found: \(travelId)")
+                    }
+                }
+            } catch {
+                print("Error decoding travel data: \(error.localizedDescription)")
             }
         }
         task.resume()

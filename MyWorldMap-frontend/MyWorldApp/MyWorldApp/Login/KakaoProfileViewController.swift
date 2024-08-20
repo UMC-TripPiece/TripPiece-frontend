@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class KakaoProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var userInfo: [String: Any]?
     var selectedImageData: Data?
@@ -220,6 +220,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     
     @objc func signUpButtonTapped() {
+        print(userInfo)
         sendSignupRequest()
     }
     
@@ -314,7 +315,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func sendSignupRequest() {
-        guard let url = URL(string: "http://3.34.123.244:8080/user/signup") else { return }
+        guard let url = URL(string: "http://3.34.123.244:8080/user/kakao/signup") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -385,6 +386,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let VC = SignUpViewController()
             VC.modalPresentationStyle = .fullScreen
             present(VC, animated: true, completion: nil)
-        }
+        }   
     }
 }

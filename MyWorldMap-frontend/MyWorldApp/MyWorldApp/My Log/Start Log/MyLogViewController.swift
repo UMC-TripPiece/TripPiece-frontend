@@ -423,8 +423,9 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission1VC = PhotoLogViewController(travelId: travelId)
-        self.navigationController?.pushViewController(mission1VC, animated: true)
+        let mission1VC = SelfieLogViewController(travelId: travelId)
+        mission1VC.modalPresentationStyle = .fullScreen
+        self.present(mission1VC, animated: true, completion: nil)
     }
         
     private func navigateToMission2Page() {
@@ -432,8 +433,9 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission2VC = PhotoLogViewController(travelId: travelId)
-        self.navigationController?.pushViewController(mission2VC, animated: true)
+        let mission2VC = LiveVideoLogViewController(travelId: travelId)
+        mission2VC.modalPresentationStyle = .fullScreen
+        self.present(mission2VC, animated: true, completion: nil)
     }
         
     private func navigateToMission3Page() {
@@ -441,8 +443,9 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission3VC = PhotoLogViewController(travelId: travelId)
-        self.navigationController?.pushViewController(mission3VC, animated: true)
+        let mission3VC = SelfieLogViewController(travelId: travelId)
+        mission3VC.modalPresentationStyle = .fullScreen
+        self.present(mission3VC, animated: true, completion: nil)
     }
     
     //MARK: - GET으로 UI 업데이트

@@ -64,7 +64,7 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     let travelLogsLabel: UILabel = {
         let label = UILabel()
-        label.text = "1\n여행기"
+        label.text = "0\n여행기"
         label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         label.numberOfLines = 2
@@ -266,14 +266,18 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
                             if let isSuccess = json?["isSuccess"] as? Bool, isSuccess,
                             let result = json?["result"] as? [String: Any],
                             let nickname = result["nickname"] as? String,
+                               let travelNum = result["travelNum"] as? Int,
                                let gender = result["gender"] as? String,
                                let country = result["country"] as? String,
                                let birth = result["birth"] as? String,
+                               let isPublic = result["isPublic"] as? Bool,
                             let profileImgString = result["profileImg"] as? String,
                             let profileImgURL = URL(string: profileImgString) {
                             DispatchQueue.main.async {
                                 self.nameLabel.text = "\(nickname)님"
+                                self.travelLogsLabel.text = "\(travelNum)\n여행기"
                                 self.profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample"))
+                                self.mapPublicSwitch.isOn = isPublic
                                 self.userInfo["profileImg"] = profileImgURL
                                 self.userInfo["nickname"] = nickname
                                 self.userInfo["gender"] = gender

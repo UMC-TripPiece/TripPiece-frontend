@@ -73,6 +73,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
     // UI 요소 선언
     let profileLabel = UILabel()
     var profileImageView = UIImageView()
+    var profileEditIconView = UIImageView()
     let nicknameTextField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
     let genderLabel = UILabel()
     let genderSegmentedControl = UISegmentedControl(items: ["남성", "여성"])
@@ -103,47 +104,30 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         profileLabel.textColor = UIColor(hex: "#5833FF")
         
         // 프로필 이미지 설정
-//        if let userInfo = userInfo as? [String: Any],
-//           let profileImgURL = userInfo["profileImg"] as? URL {
-//            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample")) { image, error, cacheType, url in
-//                if let error = error {
-//                    print("Image loading failed with error: \(error.localizedDescription)")
-//                }
-//            }
-//        } else if let urlString = userInfo?["profileImg"] as? String,
-//                  let profileImgURL = URL(string: urlString) {
-//            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample")) { image, error, cacheType, url in
-//                if let error = error {
-//                    print("Image loading failed with error: \(error.localizedDescription)")
-//                }
-//            }
-//
-//        } else {
-//            profileImageView.image = UIImage(named: "profileExample")
-//        }
-        
-        if let profileImgUrl = userInfo?["profileImg"] as? String {
-            downloadImageData(from: profileImgUrl) { [weak self] imageData in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    if let imageDataLoad = imageData, let image = UIImage(data: imageDataLoad) {
-                        print("Image data downloaded and converted successfully.")
-                        self.profileImageView.image = image
-                    } else {
-                        print("Failed to load image data, using placeholder image.")
-                        self.profileImageView.image = UIImage(named: "profileExample")
-                    }
+        if let userInfo = userInfo as? [String: Any],
+           let profileImgURL = userInfo["profileImg"] as? URL {
+            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample")) { image, error, cacheType, url in
+                if let error = error {
+                    print("Image loading failed with error: \(error.localizedDescription)")
                 }
             }
+        } else if let urlString = userInfo?["profileImg"] as? String,
+                  let profileImgURL = URL(string: urlString) {
+            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "profileExample")) { image, error, cacheType, url in
+                if let error = error {
+                    print("Image loading failed with error: \(error.localizedDescription)")
+                }
+            }
+
         } else {
-            // userInfo에 profileImg 키가 없는 경우 기본 이미지를 설정합니다.
-            print("No profile image URL found in userInfo, using placeholder image.")
             profileImageView.image = UIImage(named: "profileExample")
         }
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.clipsToBounds = true
-        profileImageView.isUserInteractionEnabled = true
+        
+        profileEditIconView = UIImageView(image: UIImage(named: "photoEditIcon"))
+        profileEditIconView.isUserInteractionEnabled = true
         
         // 나머지 UI 요소 설정
         var nickname = userInfo?["nickname"] as? String
@@ -181,6 +165,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         // 뷰에 추가
         view.addSubview(profileLabel)
         view.addSubview(profileImageView)
+        view.addSubview(profileEditIconView)
         view.addSubview(nicknameTextField)
         view.addSubview(genderLabel)
         view.addSubview(genderSegmentedControl)
@@ -201,6 +186,11 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
             make.top.equalTo(profileLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(100)
+        }
+        profileEditIconView.snp.makeConstraints { make in
+            make.width.height.equalTo(50)
+            make.centerX.equalTo(profileImageView.snp.trailing).offset(-17)
+            make.centerY.equalTo(profileImageView.snp.bottom).offset(-17)
         }
         
         nicknameTextField.snp.makeConstraints { make in
@@ -294,7 +284,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
     
     func configureTapGestureForProfileImage() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectProfileImage))
-        profileImageView.addGestureRecognizer(tapGesture)
+        profileEditIconView.addGestureRecognizer(tapGesture)
     }
 
     func configureTapGestureForDismissingPicker() {
@@ -545,9 +535,10 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
     
     func proceedIfSignupSuccessful() {
         if status {
-            let myPageVC = MyPageViewController()
-            myPageVC.modalPresentationStyle = .fullScreen
-            present(myPageVC, animated: true, completion: nil)
+            let tabBarController = TabBar()
+            tabBarController.selectedIndex = 3
+            tabBarController.modalPresentationStyle = .fullScreen
+            present(tabBarController, animated: true, completion: nil)
         }
     }
 }

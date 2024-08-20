@@ -81,6 +81,10 @@
 		A9596B922C67CD5B00950E12 /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B912C67CD5B00950E12 /* KakaoSDKTalk */; };
 		A9596B942C67CD5B00950E12 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B932C67CD5B00950E12 /* KakaoSDKTemplate */; };
 		A9596B962C67CD5B00950E12 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B952C67CD5B00950E12 /* KakaoSDKUser */; };
+		A9EECA852C74F59F005AB0EC /* SelfieLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */; };
+		A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */; };
+		A9EECA892C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */; };
+		A9EECA8B2C750B81005AB0EC /* KakaoProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA8A2C750B81005AB0EC /* KakaoProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +143,10 @@
 		A90C35492C67D02500FCE186 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A926CB5A2C6A59DC00DDADE0 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditViewController.swift; sourceTree = "<group>"; };
+		A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieLogViewController.swift; sourceTree = "<group>"; };
+		A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoLogViewController.swift; sourceTree = "<group>"; };
+		A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieLogCompleteViewController.swift; sourceTree = "<group>"; };
+		A9EECA8A2C750B81005AB0EC /* KakaoProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +283,7 @@
 				A90C35492C67D02500FCE186 /* ProfileViewController.swift */,
 				335666E22C4F973400100C0E /* LoginViewController.swift */,
 				A926CB5A2C6A59DC00DDADE0 /* SplashViewController.swift */,
+				A9EECA8A2C750B81005AB0EC /* KakaoProfileViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -349,8 +358,11 @@
 			children = (
 				335667672C5CBE5700100C0E /* PhotoLogViewController.swift */,
 				335667692C5CBE6900100C0E /* VideoLogViewController.swift */,
+				A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */,
+				A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */,
 				3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */,
 				334A1B0E2C749BF30031C26C /* MemoCompleteViewController.swift */,
+				A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */,
 			);
 			path = "Write Log";
 			sourceTree = "<group>";
@@ -561,9 +573,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9EECA892C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift in Sources */,
 				335666E32C4F973400100C0E /* LoginViewController.swift in Sources */,
 				A90C354E2C67D02600FCE186 /* ProfileViewController.swift in Sources */,
 				335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */,
+				A9EECA8B2C750B81005AB0EC /* KakaoProfileViewController.swift in Sources */,
 				A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */,
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
 				3363FFDF2C7207B8009FFF93 /* TravelInfo.swift in Sources */,
@@ -575,11 +589,13 @@
 				3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */,
 				335667752C609AE400100C0E /* LogStartNavigationBar.swift in Sources */,
 				A926CB5D2C6A855900DDADE0 /* MyPageEditViewController.swift in Sources */,
+				A9EECA852C74F59F005AB0EC /* SelfieLogViewController.swift in Sources */,
 				335666A12C4F92E800100C0E /* SceneDelegate.swift in Sources */,
 				3356676E2C5CCE0900100C0E /* CustomNavigationBar.swift in Sources */,
 				33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */,
 				335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */,
 				335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */,
+				A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */,
 				335666D82C4F965700100C0E /* TabBar.swift in Sources */,
 				3356677C2C60A42100100C0E /* Back.swift in Sources */,
 				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,

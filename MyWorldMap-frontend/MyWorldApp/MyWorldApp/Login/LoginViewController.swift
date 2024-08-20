@@ -75,6 +75,7 @@ class LoginViewController: UIViewController {
             // Simplified TextField setup
             setupTextField(emailField, placeholder: emailPlaceholder)
             setupTextField(passwordField, placeholder: passwordPlaceholder)
+            self.passwordField.isSecureTextEntry = true
 
             // ValidationLabel setup
             validationLabel.text = validationText
@@ -177,9 +178,10 @@ class LoginViewController: UIViewController {
         
         setupViews()
         setupActions()
-        // Layout using SnapKit
+        setupNavigationBar()
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(50)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.centerX.equalToSuperview()
         }
         
@@ -312,5 +314,26 @@ class LoginViewController: UIViewController {
             present(tabBarController, animated: true, completion: nil)
         }
     }
+    
+    private func setupNavigationBar() {
+        let backButton = UIButton(type: .system)
+        backButton.setImage(UIImage(named: "back"), for: .normal)
+        backButton.tintColor = UIColor(hex: "A7A7A7")
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
+        // Add the button to the view
+        view.addSubview(backButton)
+        
+        // Set up constraints using SnapKit
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+            make.leading.equalToSuperview().offset(20)
+        }
+    }
+
+    @objc private func backButtonTapped() {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 

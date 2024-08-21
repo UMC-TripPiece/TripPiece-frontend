@@ -85,6 +85,7 @@
 		A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */; };
 		A9EECA892C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */; };
 		A9EECA8B2C750B81005AB0EC /* KakaoProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA8A2C750B81005AB0EC /* KakaoProfileViewController.swift */; };
+		A9EECA8D2C7514BB005AB0EC /* LogViewControllerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA8C2C7514BB005AB0EC /* LogViewControllerDemo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +148,7 @@
 		A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoLogViewController.swift; sourceTree = "<group>"; };
 		A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieLogCompleteViewController.swift; sourceTree = "<group>"; };
 		A9EECA8A2C750B81005AB0EC /* KakaoProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoProfileViewController.swift; sourceTree = "<group>"; };
+		A9EECA8C2C7514BB005AB0EC /* LogViewControllerDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewControllerDemo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +304,7 @@
 				335667762C609D9800100C0E /* LogViewController.swift */,
 				335667812C60AEE500100C0E /* Write Log */,
 				335667802C60AEB300100C0E /* Start Log */,
+				A9EECA8C2C7514BB005AB0EC /* LogViewControllerDemo.swift */,
 			);
 			path = "My Log";
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 				A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */,
 				335666D82C4F965700100C0E /* TabBar.swift in Sources */,
 				3356677C2C60A42100100C0E /* Back.swift in Sources */,
+				A9EECA8D2C7514BB005AB0EC /* LogViewControllerDemo.swift in Sources */,
 				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,
 				335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */,
 				A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */,
@@ -781,7 +785,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6XVTBTTTFN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWorldApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -809,7 +813,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6XVTBTTTFN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWorldApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

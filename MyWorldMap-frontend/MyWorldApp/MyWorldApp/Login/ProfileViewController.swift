@@ -28,35 +28,30 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             fatalError("init(coder:) has not been implemented")
         }
         
-        // Adjusts the text position within the field
         override func textRect(forBounds bounds: CGRect) -> CGRect {
             return bounds.inset(by: padding)
         }
         
-        // Adjusts the text position during editing
         override func editingRect(forBounds bounds: CGRect) -> CGRect {
             return bounds.inset(by: padding)
         }
         
-        // Adjusts the placeholder text position
         override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
             return bounds.inset(by: padding)
         }
         
-        // Method to setup the default style for the text field
         private func setupDefaultStyle() {
             self.borderStyle = .none
             self.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
             self.layer.borderWidth = 1.0
             self.layer.cornerRadius = 5.0
             self.layer.shadowColor = UIColor.black.cgColor
-            self.layer.shadowOpacity = 0.1 // Shadow opacity (0.0 ~ 1.0)
-            self.layer.shadowOffset = CGSize(width: 3, height: 3) // Shadow offset position
+            self.layer.shadowOpacity = 0.1
+            self.layer.shadowOffset = CGSize(width: 3, height: 3)
             self.layer.shadowRadius = 5.0
             self.backgroundColor = UIColor(hex: "#FFFFFF")
         }
         
-        // Optional: Method to easily update the placeholder text
         func setPlaceholder(_ placeholder: String, color: UIColor = .lightGray) {
                 self.attributedPlaceholder = NSAttributedString(
                     string: placeholder,
@@ -65,9 +60,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
     }
     
-    // UI 요소 선언
     let profileLabel = UILabel()
     let profileImageView = UIImageView()
+    let profileImageIconView = UIImageView()
     let nicknameTextField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
     let genderLabel = UILabel()
     let genderSegmentedControl = UISegmentedControl(items: ["남성", "여성"])
@@ -85,7 +80,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupViews()
         setupConstraints()
         
-        // 기타 설정
         configureTapGestureForProfileImage()
         configureTapGestureForDismissingPicker()
         configureDatePicker()
@@ -98,12 +92,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileLabel.textColor = UIColor(hex: "#5833FF")
         
         // 프로필 이미지 설정
-        profileImageView.image = UIImage(named: "profileCircle")
+        profileImageView.image = UIImage(named: "profileExample")
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.clipsToBounds = true
-        profileImageView.isUserInteractionEnabled = true
         
+        profileImageIconView.image = UIImage(named: "photoEditIcon")
+        profileImageIconView.isUserInteractionEnabled = true
         // 나머지 UI 요소 설정
         nicknameTextField.setPlaceholder("사용할 닉네임을 입력해주세요")
         nicknameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -137,6 +132,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         // 뷰에 추가
         view.addSubview(profileLabel)
         view.addSubview(profileImageView)
+        view.addSubview(profileImageIconView)
         view.addSubview(nicknameTextField)
         view.addSubview(genderLabel)
         view.addSubview(genderSegmentedControl)
@@ -157,6 +153,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             make.top.equalTo(profileLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(100)
+        }
+        profileImageIconView.snp.makeConstraints { make in
+            make.width.height.equalTo(40)
+            make.centerX.equalTo(profileImageView.snp.trailing).offset(-15)
+            make.centerY.equalTo(profileImageView.snp.bottom).offset(-15)
         }
         
         nicknameTextField.snp.makeConstraints { make in
@@ -225,7 +226,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func configureTapGestureForProfileImage() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectProfileImage))
-        profileImageView.addGestureRecognizer(tapGesture)
+        profileImageIconView.addGestureRecognizer(tapGesture)
     }
 
     func configureTapGestureForDismissingPicker() {

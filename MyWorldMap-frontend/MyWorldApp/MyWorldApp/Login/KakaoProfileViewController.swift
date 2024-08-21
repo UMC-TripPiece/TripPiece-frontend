@@ -68,6 +68,7 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
     // UI 요소 선언
     let profileLabel = UILabel()
     let profileImageView = UIImageView()
+    let profileImageIconView = UIImageView()
     let nicknameTextField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
     let genderLabel = UILabel()
     let genderSegmentedControl = UISegmentedControl(items: ["남성", "여성"])
@@ -98,12 +99,13 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
         profileLabel.textColor = UIColor(hex: "#5833FF")
         
         // 프로필 이미지 설정
-        profileImageView.image = UIImage(named: "profileCircle")
+        profileImageView.image = UIImage(named: "profileExample")
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.clipsToBounds = true
-        profileImageView.isUserInteractionEnabled = true
         
+        profileImageIconView.image = UIImage(named: "photoEditIcon")
+        profileImageIconView.isUserInteractionEnabled = true
         // 나머지 UI 요소 설정
         nicknameTextField.setPlaceholder("사용할 닉네임을 입력해주세요")
         nicknameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -137,6 +139,7 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
         // 뷰에 추가
         view.addSubview(profileLabel)
         view.addSubview(profileImageView)
+        view.addSubview(profileImageIconView)
         view.addSubview(nicknameTextField)
         view.addSubview(genderLabel)
         view.addSubview(genderSegmentedControl)
@@ -157,6 +160,11 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
             make.top.equalTo(profileLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(100)
+        }
+        profileImageIconView.snp.makeConstraints { make in
+            make.width.height.equalTo(40)
+            make.centerX.equalTo(profileImageView.snp.trailing).offset(-15)
+            make.centerY.equalTo(profileImageView.snp.bottom).offset(-15)
         }
         
         nicknameTextField.snp.makeConstraints { make in
@@ -226,7 +234,7 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
     
     func configureTapGestureForProfileImage() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectProfileImage))
-        profileImageView.addGestureRecognizer(tapGesture)
+        profileImageIconView.addGestureRecognizer(tapGesture)
     }
 
     func configureTapGestureForDismissingPicker() {

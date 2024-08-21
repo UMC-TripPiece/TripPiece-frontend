@@ -37,6 +37,20 @@
 		3363FFDB2C7206CB009FFF93 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 3363FFDA2C7206CB009FFF93 /* GoogleMaps */; };
 		3363FFDF2C7207B8009FFF93 /* TravelInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */; };
 		33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */; };
+		674A11D52C7645250026938A /* InteractiveMap in Frameworks */ = {isa = PBXBuildFile; productRef = 674A11D42C7645250026938A /* InteractiveMap */; };
+		674A11D72C76463A0026938A /* world-low.svg in Resources */ = {isa = PBXBuildFile; fileRef = 674A11D62C76463A0026938A /* world-low.svg */; };
+		674A11D92C7646A70026938A /* FloatingBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11D82C7646A70026938A /* FloatingBadgeView.swift */; };
+		674A11DB2C7646C20026938A /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11DA2C7646C20026938A /* MapView.swift */; };
+		674A11DD2C7646D90026938A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11DC2C7646D90026938A /* ViewModel.swift */; };
+		674A11DF2C7646FA0026938A /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11DE2C7646FA0026938A /* ZoomableContainer.swift */; };
+		674A11E12C7647120026938A /* SelectedCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11E02C7647120026938A /* SelectedCityViewController.swift */; };
+		674A11E32C7647350026938A /* ColorCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11E22C7647350026938A /* ColorCityViewController.swift */; };
+		674A11E52C7647670026938A /* VisitRecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11E42C7647670026938A /* VisitRecordsViewController.swift */; };
+		674A11E72C7647780026938A /* VisitRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11E62C7647780026938A /* VisitRecordCell.swift */; };
+		674A11E92C76479A0026938A /* CountryCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11E82C76479A0026938A /* CountryCodes.swift */; };
+		674A11EC2C7647FB0026938A /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11EB2C7647FB0026938A /* SearchResultCell.swift */; };
+		674A11EE2C7648440026938A /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11ED2C7648440026938A /* CustomSearchBar.swift */; };
+		674A11F02C764F7A0026938A /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11EF2C764F7A0026938A /* PuzzleViewController.swift */; };
 		A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35452C67D02500FCE186 /* SignUpView.swift */; };
 		A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */; };
 		A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */; };
@@ -138,6 +152,19 @@
 		335667892C6617C200100C0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelInfo.swift; sourceTree = "<group>"; };
 		33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientNavigationBar.swift; sourceTree = "<group>"; };
+		674A11D62C76463A0026938A /* world-low.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-low.svg"; sourceTree = "<group>"; };
+		674A11D82C7646A70026938A /* FloatingBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBadgeView.swift; sourceTree = "<group>"; };
+		674A11DA2C7646C20026938A /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		674A11DC2C7646D90026938A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		674A11DE2C7646FA0026938A /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
+		674A11E02C7647120026938A /* SelectedCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCityViewController.swift; sourceTree = "<group>"; };
+		674A11E22C7647350026938A /* ColorCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCityViewController.swift; sourceTree = "<group>"; };
+		674A11E42C7647670026938A /* VisitRecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitRecordsViewController.swift; sourceTree = "<group>"; };
+		674A11E62C7647780026938A /* VisitRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitRecordCell.swift; sourceTree = "<group>"; };
+		674A11E82C76479A0026938A /* CountryCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodes.swift; sourceTree = "<group>"; };
+		674A11EB2C7647FB0026938A /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		674A11ED2C7648440026938A /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		674A11EF2C764F7A0026938A /* PuzzleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
 		A90C35452C67D02500FCE186 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIgnUpViewController.swift; sourceTree = "<group>"; };
 		A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kakaoAuthVM.swift; sourceTree = "<group>"; };
@@ -188,6 +215,7 @@
 				A9596B842C67CD5B00950E12 /* KakaoSDKCert in Frameworks */,
 				A9596B6E2C67CD2600950E12 /* FirebaseMLModelDownloader in Frameworks */,
 				A9596B8E2C67CD5B00950E12 /* KakaoSDKNavi in Frameworks */,
+				674A11D52C7645250026938A /* InteractiveMap in Frameworks */,
 				A9596B722C67CD2600950E12 /* FirebasePerformance in Frameworks */,
 				A9596B5E2C67CD2600950E12 /* FirebaseDatabase in Frameworks */,
 				A9596B502C67CD2600950E12 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
@@ -248,6 +276,7 @@
 				335666D52C4F952800100C0E /* My Page */,
 				335666D42C4F951F00100C0E /* Search */,
 				335666D32C4F94EA00100C0E /* My Log */,
+				674A11EA2C7647CC0026938A /* Search Bar */,
 				335666D22C4F943200100C0E /* World */,
 				335666D12C4F941500100C0E /* Login */,
 				3356669E2C4F92E800100C0E /* AppDelegate.swift */,
@@ -293,7 +322,17 @@
 		335666D22C4F943200100C0E /* World */ = {
 			isa = PBXGroup;
 			children = (
+				674A11D62C76463A0026938A /* world-low.svg */,
 				335666D92C4F96B600100C0E /* WorldViewController.swift */,
+				674A11D82C7646A70026938A /* FloatingBadgeView.swift */,
+				674A11DC2C7646D90026938A /* ViewModel.swift */,
+				674A11DA2C7646C20026938A /* MapView.swift */,
+				674A11DE2C7646FA0026938A /* ZoomableContainer.swift */,
+				674A11E02C7647120026938A /* SelectedCityViewController.swift */,
+				674A11E22C7647350026938A /* ColorCityViewController.swift */,
+				674A11E42C7647670026938A /* VisitRecordsViewController.swift */,
+				674A11E62C7647780026938A /* VisitRecordCell.swift */,
+				674A11E82C76479A0026938A /* CountryCodes.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -352,6 +391,7 @@
 				335666DB2C4F96F200100C0E /* MyLogViewController.swift */,
 				335666E42C5254C300100C0E /* PuzzleViewCell.swift */,
 				335667632C5765BF00100C0E /* PuzzleItem.swift */,
+				674A11EF2C764F7A0026938A /* PuzzleViewController.swift */,
 			);
 			path = "Start Log";
 			sourceTree = "<group>";
@@ -392,6 +432,15 @@
 				3363FFDC2C72078B009FFF93 /* Network */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		674A11EA2C7647CC0026938A /* Search Bar */ = {
+			isa = PBXGroup;
+			children = (
+				674A11EB2C7647FB0026938A /* SearchResultCell.swift */,
+				674A11ED2C7648440026938A /* CustomSearchBar.swift */,
+			);
+			path = "Search Bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,6 +501,7 @@
 				A95303562C6B62A900D0A8AA /* SDWebImage */,
 				A95303582C6B62A900D0A8AA /* SDWebImageMapKit */,
 				3363FFDA2C7206CB009FFF93 /* GoogleMaps */,
+				674A11D42C7645250026938A /* InteractiveMap */,
 			);
 			productName = MyWorldApp;
 			productReference = 3356669B2C4F92E800100C0E /* MyWorldApp.app */;
@@ -533,6 +583,7 @@
 				A9596B7E2C67CD5B00950E12 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				A95303552C6B62A800D0A8AA /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				3363FFD92C7206CB009FFF93 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
+				674A11D32C7645250026938A /* XCRemoteSwiftPackageReference "InteractiveMap" */,
 			);
 			productRefGroup = 3356669C2C4F92E800100C0E /* Products */;
 			projectDirPath = "";
@@ -552,6 +603,7 @@
 			files = (
 				335666AB2C4F92EA00100C0E /* LaunchScreen.storyboard in Resources */,
 				335666A82C4F92EA00100C0E /* Assets.xcassets in Resources */,
+				674A11D72C76463A0026938A /* world-low.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,30 +637,42 @@
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
 				3363FFDF2C7207B8009FFF93 /* TravelInfo.swift in Sources */,
 				A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */,
+				674A11DB2C7646C20026938A /* MapView.swift in Sources */,
 				335667772C609D9800100C0E /* LogViewController.swift in Sources */,
 				3356669F2C4F92E800100C0E /* AppDelegate.swift in Sources */,
 				A926CB5B2C6A59DD00DDADE0 /* SplashViewController.swift in Sources */,
+				674A11E52C7647670026938A /* VisitRecordsViewController.swift in Sources */,
 				335667682C5CBE5700100C0E /* PhotoLogViewController.swift in Sources */,
 				3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */,
 				335667752C609AE400100C0E /* LogStartNavigationBar.swift in Sources */,
 				A926CB5D2C6A855900DDADE0 /* MyPageEditViewController.swift in Sources */,
+				674A11E72C7647780026938A /* VisitRecordCell.swift in Sources */,
 				A9EECA852C74F59F005AB0EC /* SelfieLogViewController.swift in Sources */,
+				674A11DF2C7646FA0026938A /* ZoomableContainer.swift in Sources */,
 				335666A12C4F92E800100C0E /* SceneDelegate.swift in Sources */,
 				3356676E2C5CCE0900100C0E /* CustomNavigationBar.swift in Sources */,
+				674A11DD2C7646D90026938A /* ViewModel.swift in Sources */,
 				33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */,
 				335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */,
 				335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */,
 				A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */,
+				674A11EC2C7647FB0026938A /* SearchResultCell.swift in Sources */,
 				335666D82C4F965700100C0E /* TabBar.swift in Sources */,
+				674A11D92C7646A70026938A /* FloatingBadgeView.swift in Sources */,
 				3356677C2C60A42100100C0E /* Back.swift in Sources */,
 				A9EECA8D2C7514BB005AB0EC /* LogViewControllerDemo.swift in Sources */,
 				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,
 				335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */,
 				A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */,
+				674A11EE2C7648440026938A /* CustomSearchBar.swift in Sources */,
 				3356676C2C5CBE8100100C0E /* MemoLogViewController.swift in Sources */,
 				335667882C66152200100C0E /* NetworkManager.swift in Sources */,
+				674A11F02C764F7A0026938A /* PuzzleViewController.swift in Sources */,
+				674A11E12C7647120026938A /* SelectedCityViewController.swift in Sources */,
 				334A1B0F2C749BF30031C26C /* MemoCompleteViewController.swift in Sources */,
 				3356676A2C5CBE6900100C0E /* VideoLogViewController.swift in Sources */,
+				674A11E32C7647350026938A /* ColorCityViewController.swift in Sources */,
+				674A11E92C76479A0026938A /* CountryCodes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +1039,14 @@
 				minimumVersion = 9.1.0;
 			};
 		};
+		674A11D32C7645250026938A /* XCRemoteSwiftPackageReference "InteractiveMap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grandsir/InteractiveMap";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		A95303552C6B62A800D0A8AA /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
@@ -1024,6 +1096,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3363FFD92C7206CB009FFF93 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
 			productName = GoogleMaps;
+		};
+		674A11D42C7645250026938A /* InteractiveMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 674A11D32C7645250026938A /* XCRemoteSwiftPackageReference "InteractiveMap" */;
+			productName = InteractiveMap;
 		};
 		A95303562C6B62A900D0A8AA /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

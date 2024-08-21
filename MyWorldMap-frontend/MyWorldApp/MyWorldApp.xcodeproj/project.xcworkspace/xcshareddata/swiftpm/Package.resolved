@@ -1,4 +1,5 @@
 {
+  "originHash" : "f26a6892ec6c5ca9daecadc7f53cf182cbd421d41154ef97ddb2da746c9fcb07",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -79,6 +80,15 @@
       "state" : {
         "revision" : "a2ab612cb980066ee56d90d60d8462992c07f24b",
         "version" : "3.5.0"
+      }
+    },
+    {
+      "identity" : "interactivemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/grandsir/InteractiveMap",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4fc6f5f736c9cbf2352938a6b27712937a5d6465"
       }
     },
     {
@@ -172,5 +182,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

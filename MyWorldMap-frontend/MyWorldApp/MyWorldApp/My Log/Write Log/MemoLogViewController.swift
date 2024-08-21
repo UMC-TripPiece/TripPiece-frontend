@@ -188,10 +188,7 @@ class MemoLogViewController: UIViewController {
     }
     
     @objc private func addRecord() {
-        let recordCompleteVC = RecordCompleteViewController()
-        recordCompleteVC.setPreviewText(memoTextView.text) // 입력한 메모를 미리보기로 설정
-        recordCompleteVC.modalPresentationStyle = .fullScreen
-        present(recordCompleteVC, animated: true, completion: nil)
+        postMemo(for: travelId, description: memoTextView.text)
     }
     
     ///키보드 내리기
@@ -203,6 +200,56 @@ class MemoLogViewController: UIViewController {
         
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    //MARK: - POST
+    func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
+    }
+    private func postMemo(for travelId: Int, description: String) {
+        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/memo") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let refreshToken = getRefreshToken() {
+            request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
+        }
+        
+        let parameters: [String: Any] = ["description": description]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        } catch {
+            print("Failed to encode parameters: \(error.localizedDescription)")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Failed to post memo: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received.")
+                return
+            }
+            
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("Response: \(responseString)")
+                // POST 요청이 성공하면 기록 완료 화면으로 이동
+                DispatchQueue.main.async {
+                    self.navigateToMemoCompleteViewController()
+                }
+            }
+        }
+        task.resume()
+    }
+    private func navigateToMemoCompleteViewController() {
+        let recordCompleteVC = MemoCompleteViewController()
+        recordCompleteVC.setPreviewText(memoTextView.text) // 입력한 메모를 미리보기로 설정
+        recordCompleteVC.modalPresentationStyle = .fullScreen
+        present(recordCompleteVC, animated: true, completion: nil)
     }
 }
 

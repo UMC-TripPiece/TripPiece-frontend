@@ -499,6 +499,7 @@ class MyLogViewController: UIViewController {
                             PuzzleData.dataList[3].puzzleCount = memoNum
                             PuzzleData.dataList[0].puzzleCount = pictureNum
                             PuzzleData.dataList[1].puzzleCount = videoNum
+                            self.puzzleData = PuzzleData.dataList
                             self.puzzleCollectionView.reloadData()
                         }
                     }

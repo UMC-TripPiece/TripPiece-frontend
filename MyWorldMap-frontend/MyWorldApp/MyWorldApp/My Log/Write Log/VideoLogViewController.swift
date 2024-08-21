@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import AVFoundation
+import Alamofire
 
 class VideoLogViewController: UIViewController {
     
@@ -85,9 +86,9 @@ class VideoLogViewController: UIViewController {
     
     private lazy var memoTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.font = UIFont.systemFont(ofSize: 15)
         textView.textColor = UIColor(named: "Black3")
-        textView.text = "| 영상에 대해 설명해주세요"
+        textView.text = "| 영상에 대해 설명해주세요 (30자 이내)"
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.shadowColor = UIColor.black.cgColor
         textView.layer.shadowOpacity = 0.2
@@ -108,6 +109,11 @@ class VideoLogViewController: UIViewController {
     }()
         
     private var selectedVideo: UIImage? {
+        didSet {
+            updateAddButtonState()
+        }
+    }
+    private var selectedVideoURL: URL? {
         didSet {
             updateAddButtonState()
         }
@@ -191,6 +197,11 @@ class VideoLogViewController: UIViewController {
         addButton.snp.makeConstraints { make in
             make.height.equalTo(50)
         }
+        
+        buttonsStackView.arrangedSubviews.first?.snp.makeConstraints { make in
+            make.width.equalTo(348)
+            make.height.equalTo(162)
+        }
     }
     
     //MARK: - Function
@@ -208,9 +219,14 @@ class VideoLogViewController: UIViewController {
     }
     
     private func updateAddButtonState() {
-        addButton.isEnabled = selectedVideo != nil
-        addButton.backgroundColor = selectedVideo == nil ? UIColor(named: "Cancel") : UIColor(named: "Main2")
+        // 두 변수의 상태를 프린트하여 확인
+        print("Selected video URL: \(selectedVideoURL?.absoluteString ?? "nil")")
+        
+        let isMemoValid = !memoTextView.text.isEmpty && memoTextView.text != "| 영상에 대해 설명해주세요 (30자 이내)"
+        addButton.isEnabled = selectedVideo != nil && isMemoValid
+        addButton.backgroundColor = (selectedVideo == nil || !isMemoValid) ? UIColor(named: "Cancel") : UIColor(named: "Main2")
     }
+
     
     ///뒤로가기 버튼
     @objc private func handleBackButtonTap() {
@@ -240,8 +256,71 @@ class VideoLogViewController: UIViewController {
     }
 
     @objc private func addRecord() {
-        // 기록 추가 로직 구현
-        // selectedVideo를 사용하여 기록을 추가합니다.
+        print("Record button tapped")
+        postVideoMemo()
+    }
+
+    private func postVideoMemo() {
+        guard let videoURL = selectedVideoURL else {
+            print("Video URL is nil")
+            return
+        }
+
+        let url = "http://3.34.123.244:8080/mytravels/\(travelId)/video"
+
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(getRefreshToken() ?? "")"
+        ]
+
+        AF.upload(multipartFormData: { multipartFormData in
+            // 비디오 파일 추가
+            do {
+                let videoData = try Data(contentsOf: videoURL)
+                multipartFormData.append(videoData, withName: "video", fileName: videoURL.lastPathComponent, mimeType: "video/mp4")
+            } catch {
+                print("Failed to convert video to data")
+                return
+            }
+
+            // 메모를 JSON 형식으로 변환하여 추가
+            let memoDescription = ["description": self.memoTextView.text ?? ""]
+            if let memoData = try? JSONSerialization.data(withJSONObject: memoDescription, options: []),
+               let memoJSONString = String(data: memoData, encoding: .utf8) {
+                multipartFormData.append(memoJSONString.data(using: .utf8) ?? Data(), withName: "memo")
+            }
+        }, to: url, headers: headers)
+        .validate()
+        .responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                print("Successfully uploaded video: \(value)")
+                self.navigateToVideoCompleteViewController()
+            case .failure(let error):
+                print("Failed to upload video: \(error.localizedDescription)")
+            }
+        }
+    }
+        
+    private func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
+    }
+    
+    ///이동
+    var videoImage: UIImage?
+    private func navigateToVideoCompleteViewController() {
+        guard let thumbnail = videoImage, let text = memoTextView.text else {
+            // 에러 처리: 텍스트나 썸네일이 없을 때
+            let alert = UIAlertController(title: "경고", message: "썸네일 또는 텍스트가 없습니다.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        let recordCompleteVC = VideoCompleteViewController()
+        recordCompleteVC.setPreviewText(memoTextView.text)
+        recordCompleteVC.setVideoComplete(with: thumbnail, text: text)
+        recordCompleteVC.modalPresentationStyle = .fullScreen
+        present(recordCompleteVC, animated: true, completion: nil)
     }
 }
 
@@ -250,9 +329,21 @@ extension VideoLogViewController: UIImagePickerControllerDelegate, UINavigationC
         if let selectedVideoURL = info[.mediaURL] as? URL {
             let videoThumbnail = getThumbnailImage(forUrl: selectedVideoURL)
             selectedVideo = videoThumbnail
-            
+            self.videoImage = videoThumbnail
+
+            self.selectedVideoURL = selectedVideoURL  // URL 설정
+            print("Selected video URL: \(selectedVideoURL.absoluteString)")
+                        
             let button = buttonsStackView.arrangedSubviews.first as! UIButton
             button.setImage(videoThumbnail, for: .normal)
+            button.imageView?.contentMode = .scaleAspectFill
+            button.imageView?.clipsToBounds = true
+                        
+            // 썸네일 크기를 지정된 크기로 설정
+            button.snp.updateConstraints { make in
+//                make.width.equalTo(348)
+                make.height.equalTo(162)
+            }
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -288,7 +379,7 @@ extension VideoLogViewController: UIImagePickerControllerDelegate, UINavigationC
 
 extension VideoLogViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "| 영상에 대해 설명해주세요" {
+        if textView.text == "| 영상에 대해 설명해주세요 (30자 이내)" {
             textView.text = ""
             textView.textColor = .black
         }
@@ -296,8 +387,17 @@ extension VideoLogViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "| 영상에 대해 설명해주세요"
+            textView.text = "| 영상에 대해 설명해주세요 (30자 이내)"
             textView.textColor = UIColor.lightGray
         }
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let currentText = textView.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        return updatedText.count <= 30 // 글자 수 제한 30자
+    }
+    func textViewDidChange(_ textView: UITextView) {
+        updateAddButtonState()
     }
 }

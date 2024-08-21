@@ -25,7 +25,14 @@ class ExploreViewController: UIViewController {
         // 뷰 설정 및 초기화
         setupViews()
         setupConstraints()
-    }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            view.addGestureRecognizer(tapGesture)
+        }
+
+        @objc func dismissKeyboard() {
+            view.endEditing(true)
+        }
     
     func setupViews() {
         view.backgroundColor = UIColor(hex: "F7F7F7")
@@ -271,7 +278,7 @@ class ExploreViewController: UIViewController {
             profileImageView.snp.makeConstraints { make in
                 make.width.height.equalTo(20)
                 make.left.equalToSuperview().offset(8)
-                make.bottom.equalToSuperview().offset(-8)
+                make.centerY.equalTo(bottomBar.snp.centerY)
             }
             let titleLabel = UILabel()
             titleLabel.text = title

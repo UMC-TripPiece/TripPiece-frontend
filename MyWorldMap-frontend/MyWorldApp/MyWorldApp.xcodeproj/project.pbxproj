@@ -95,6 +95,8 @@
 		A9596B922C67CD5B00950E12 /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B912C67CD5B00950E12 /* KakaoSDKTalk */; };
 		A9596B942C67CD5B00950E12 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B932C67CD5B00950E12 /* KakaoSDKTemplate */; };
 		A9596B962C67CD5B00950E12 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B952C67CD5B00950E12 /* KakaoSDKUser */; };
+		A979B17F2C764D40001D9535 /* EmojiLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A979B17E2C764D40001D9535 /* EmojiLogViewController.swift */; };
+		A979B1832C764D9B001D9535 /* EmojiCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A979B1822C764D9B001D9535 /* EmojiCompleteViewController.swift */; };
 		A9EECA852C74F59F005AB0EC /* SelfieLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */; };
 		A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */; };
 		A9EECA892C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */; };
@@ -171,6 +173,8 @@
 		A90C35492C67D02500FCE186 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A926CB5A2C6A59DC00DDADE0 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditViewController.swift; sourceTree = "<group>"; };
+		A979B17E2C764D40001D9535 /* EmojiLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiLogViewController.swift; sourceTree = "<group>"; };
+		A979B1822C764D9B001D9535 /* EmojiCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCompleteViewController.swift; sourceTree = "<group>"; };
 		A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieLogViewController.swift; sourceTree = "<group>"; };
 		A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoLogViewController.swift; sourceTree = "<group>"; };
 		A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieLogCompleteViewController.swift; sourceTree = "<group>"; };
@@ -406,6 +410,8 @@
 				3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */,
 				334A1B0E2C749BF30031C26C /* MemoCompleteViewController.swift */,
 				A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */,
+				A979B17E2C764D40001D9535 /* EmojiLogViewController.swift */,
+				A979B1822C764D9B001D9535 /* EmojiCompleteViewController.swift */,
 			);
 			path = "Write Log";
 			sourceTree = "<group>";
@@ -628,6 +634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A979B1832C764D9B001D9535 /* EmojiCompleteViewController.swift in Sources */,
 				A9EECA892C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift in Sources */,
 				335666E32C4F973400100C0E /* LoginViewController.swift in Sources */,
 				A90C354E2C67D02600FCE186 /* ProfileViewController.swift in Sources */,
@@ -661,6 +668,7 @@
 				674A11D92C7646A70026938A /* FloatingBadgeView.swift in Sources */,
 				3356677C2C60A42100100C0E /* Back.swift in Sources */,
 				A9EECA8D2C7514BB005AB0EC /* LogViewControllerDemo.swift in Sources */,
+				A979B17F2C764D40001D9535 /* EmojiLogViewController.swift in Sources */,
 				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,
 				335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */,
 				A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */,

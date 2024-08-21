@@ -352,10 +352,6 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
    
     func proceedIfLogUpdateSuccessful() {
         if status {
-//            let tabBarController = TabBar()
-//            tabBarController.selectedIndex = 1
-//            tabBarController.modalPresentationStyle = .fullScreen
-//            present(tabBarController, animated: true, completion: nil)
             let recordCompleteVC = SelfieRecordCompleteViewController()
             recordCompleteVC.modalPresentationStyle = .fullScreen
             present(recordCompleteVC, animated: true, completion: nil)

@@ -423,8 +423,12 @@ class MyLogViewController: UIViewController {
     }
     
     @objc private func endTrip() {
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
         // 이동할 뷰 컨트롤러 생성
-        let endTripAlertViewController = EndTripAlertViewController()
+        let endTripAlertViewController = EndTripAlertViewController(travelId: travelId)
         // 모달로 표시할 때 기존 뷰 컨트롤러를 배경에 반투명하게 보이도록 설정
         endTripAlertViewController.modalPresentationStyle = .overCurrentContext
         endTripAlertViewController.modalTransitionStyle = .crossDissolve // 부드러운 전환을 위해

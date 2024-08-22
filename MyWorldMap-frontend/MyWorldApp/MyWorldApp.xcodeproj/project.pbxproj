@@ -57,6 +57,7 @@
 		674A11EE2C7648440026938A /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11ED2C7648440026938A /* CustomSearchBar.swift */; };
 		674A11F02C764F7A0026938A /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11EF2C764F7A0026938A /* PuzzleViewController.swift */; };
 		67A1CE242C76CF8A007FBC72 /* EndTripAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */; };
+		67A1CE282C77EA6D007FBC72 /* PuzzleLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */; };
 		A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35452C67D02500FCE186 /* SignUpView.swift */; };
 		A90C354B2C67D02600FCE186 /* SIgnUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */; };
 		A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */; };
@@ -179,6 +180,7 @@
 		674A11ED2C7648440026938A /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		674A11EF2C764F7A0026938A /* PuzzleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
 		67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTripAlertViewController.swift; sourceTree = "<group>"; };
+		67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleLogViewController.swift; sourceTree = "<group>"; };
 		A90C35452C67D02500FCE186 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A90C35462C67D02500FCE186 /* SIgnUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIgnUpViewController.swift; sourceTree = "<group>"; };
 		A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kakaoAuthVM.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				674A11EF2C764F7A0026938A /* PuzzleViewController.swift */,
 				67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */,
 				337D7F592C77D63800C9BAA4 /* PuzzleLastViewController.swift */,
+				67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */,
 			);
 			path = "Start Log";
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				3356676A2C5CBE6900100C0E /* VideoLogViewController.swift in Sources */,
 				674A11E32C7647350026938A /* ColorCityViewController.swift in Sources */,
 				674A11E92C76479A0026938A /* CountryCodes.swift in Sources */,
+				67A1CE282C77EA6D007FBC72 /* PuzzleLogViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

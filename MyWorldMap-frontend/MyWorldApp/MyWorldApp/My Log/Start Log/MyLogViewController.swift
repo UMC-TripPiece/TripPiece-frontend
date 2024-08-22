@@ -136,7 +136,9 @@ class MyLogViewController: UIViewController {
     private lazy var addRecordScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
-        scrollView.isScrollEnabled = false
+        scrollView.isScrollEnabled = true
+        scrollView.showsVerticalScrollIndicator = false  // 수직 스크롤 인디케이터 숨기기
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate = self
         return scrollView
     }()
@@ -229,7 +231,6 @@ class MyLogViewController: UIViewController {
         view.addSubview(calendarLabel)
         view.addSubview(closeButton)
         
-        ///스크롤로 변경
         contentView.addSubview(recordLabel)
         contentView.addSubview(puzzleCollectionView)
         contentView.addSubview(addRecordLabel)
@@ -243,32 +244,60 @@ class MyLogViewController: UIViewController {
         contentView.addSubview(endTripButton)
         
         topImageView.addSubview(titleLabel)
-               
+        
         setupConstraints()
     }
     
     private func setupAddRecordViews() {
+        addRecordScrollView.delegate = self  // 델리게이트 설정
+        
+        var lastContainerView: UIView?
+
         for (index, imageName) in addRecordImages.enumerated() {
+            let containerView = UIView()
+            containerView.backgroundColor = .clear
+            addRecordScrollView.addSubview(containerView)
+
             let imageView = UIImageView()
             imageView.image = UIImage(named: imageName)
             imageView.contentMode = .scaleAspectFit
             imageView.layer.shadowColor = UIColor.black.cgColor
             imageView.layer.shadowOpacity = 0.1
             imageView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            addRecordScrollView.addSubview(imageView)
-            
-            ///이미지 탭할경우 이동
+            imageView.layer.cornerRadius = 10
+            imageView.clipsToBounds = false
+            containerView.addSubview(imageView)
+
             imageView.isUserInteractionEnabled = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
             imageView.addGestureRecognizer(tapGesture)
             imageView.tag = index
-            
+
+            containerView.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()  // 컨테이너 뷰를 스크롤 뷰에 맞춤
+                make.height.equalTo(addRecordScrollView) // 스크롤 뷰 높이에 맞춤
+                make.width.equalTo(addRecordScrollView.snp.width).offset(-20)  // 좌우 간격 추가
+                if let lastContainerView = lastContainerView {
+                    make.leading.equalTo(lastContainerView.snp.trailing).offset(20)
+                } else {
+                    make.leading.equalToSuperview().offset(10)
+                }
+            }
+
             imageView.snp.makeConstraints { make in
-                make.width.equalTo(UIScreen.main.bounds.width)
-                make.leading.equalToSuperview().offset(CGFloat(index) * UIScreen.main.bounds.width)
+                make.top.equalToSuperview().offset(10)  // 이미지뷰 상단 패딩
+                make.bottom.equalToSuperview().offset(-10)  // 이미지뷰 하단 패딩
+                make.leading.trailing.equalToSuperview()  // 좌우는 컨테이너 뷰에 맞춤
+            }
+
+            lastContainerView = containerView
+        }
+
+        if let lastContainerView = lastContainerView {
+            lastContainerView.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().offset(-10)
             }
         }
-        addRecordScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * CGFloat(addRecordImages.count), height: 150)
     }
     
     //MARK: - Snapkit

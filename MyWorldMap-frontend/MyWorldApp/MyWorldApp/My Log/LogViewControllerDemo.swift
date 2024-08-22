@@ -598,10 +598,13 @@ class TravelRecordViewController: UIViewController {
         }
     }
     
+    //MARK: - MyLog 이동
     @objc private func OngoingTravelTapped() {
         let MyLogVC = MyLogViewController()
-        MyLogVC.modalPresentationStyle = .fullScreen
-        present(MyLogVC, animated: true, completion: nil)
+        MyLogVC.hidesBottomBarWhenPushed = false
+        navigationController?.pushViewController(MyLogVC, animated: true)
+//        MyLogVC.modalPresentationStyle = .fullScreen
+//        present(MyLogVC, animated: true, completion: nil)
     }
     
     @objc func filterButtonTapped(_ sender: UIButton) {

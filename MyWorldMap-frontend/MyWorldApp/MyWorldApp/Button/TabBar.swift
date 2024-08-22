@@ -14,7 +14,7 @@ func setTabBar() {
         vc1.tabBarItem = UITabBarItem(title: "월드", image: UIImage(named: "World"), tag: 1)
 //        let vc2 = UINavigationController(rootViewController: MyLogViewController())
 //        let vc2 = UINavigationController(rootViewController: LogViewController())
-    let vc2 = UINavigationController(rootViewController: TravelRecordViewController())    
+        let vc2 = UINavigationController(rootViewController: TravelRecordViewController())
         vc2.tabBarItem = UITabBarItem(title: "나의 기록", image: UIImage(named: "My log"), tag: 2)
         let vc3 = UINavigationController(rootViewController: ExploreViewController())
         vc3.tabBarItem = UITabBarItem(title: "탐색", image: UIImage(named: "Search"), tag: 3)
@@ -22,7 +22,7 @@ func setTabBar() {
         vc4.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(named: "My page"), tag: 4)
         self.viewControllers = [vc1, vc2, vc3, vc4]
     }
-    private func appearance() {
+func appearance() {
         let barAppearance = UITabBarAppearance()
         barAppearance.configureWithOpaqueBackground()
 

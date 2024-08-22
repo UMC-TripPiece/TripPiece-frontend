@@ -9,8 +9,24 @@ import UIKit
 import SnapKit
 
 class MyLogViewController: UIViewController {
+    
     //MARK: - UI
     ///상단뷰
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        // xmark 아이콘 설정
+        let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)
+        let image = UIImage(systemName: "xmark", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        // 버튼의 아이콘 색상을 흰색으로 설정
+        button.tintColor = .white
+        // 버튼의 액션 설정
+        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        // 버튼에 제약 조건 설정
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -211,6 +227,7 @@ class MyLogViewController: UIViewController {
         view.addSubview(mainTitleLabel)
         view.addSubview(calendarImageView)
         view.addSubview(calendarLabel)
+        view.addSubview(closeButton)
         
         ///스크롤로 변경
         contentView.addSubview(recordLabel)
@@ -256,6 +273,11 @@ class MyLogViewController: UIViewController {
     
     //MARK: - Snapkit
     private func setupConstraints() {
+        closeButton.snp.makeConstraints{ make in
+            make.top.equalToSuperview().inset(56)
+            make.trailing.equalToSuperview().inset(25)
+        }
+        
         topImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(235)
@@ -358,6 +380,12 @@ class MyLogViewController: UIViewController {
     }
     
     //MARK: - Function
+    
+    @objc private func closeButtonTapped() {
+        // 네비게이션 스택에서 이전 화면으로 돌아가기
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc private func pageControlDidChange(_ sender: UIPageControl) {
         let currentPage = sender.currentPage
         let offset = CGFloat(currentPage) * UIScreen.main.bounds.width

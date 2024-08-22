@@ -8,6 +8,12 @@
 import UIKit
 import SnapKit
 
+extension UIViewController {
+    func postPuzzleCompletion(index: Int) {
+        NotificationCenter.default.post(name: .puzzlePieceCompleted, object: index)
+    }
+}
+
 class MyLogViewController: UIViewController {
     
     //MARK: - UI
@@ -202,6 +208,8 @@ class MyLogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePuzzlePieceCompletion), name: .puzzlePieceCompleted, object: nil)
 
         self.view.backgroundColor = .white
         setupUI()
@@ -647,5 +655,12 @@ extension MyLogViewController: UICollectionViewDelegate, UICollectionViewDataSou
         let availableWidth = collectionView.frame.width - totalInset - totalSpacing
         let itemWidth = availableWidth / CGFloat(puzzleData.count)
         return CGSize(width: itemWidth, height: 58)
+    }
+    
+    @objc private func handlePuzzlePieceCompletion(notification: Notification) {
+        if let index = notification.object as? Int {
+            puzzleData[index].puzzleCount += 1
+            puzzleCollectionView.reloadData()
+        }
     }
 }

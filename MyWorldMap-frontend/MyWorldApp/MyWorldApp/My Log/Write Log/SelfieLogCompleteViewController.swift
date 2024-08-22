@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
 
+
 class SelfieRecordCompleteViewController: UIViewController {
     
     // 기록 추가 완료를 나타내는 이미지뷰
@@ -162,21 +163,21 @@ class SelfieRecordCompleteViewController: UIViewController {
     func setVideoComplete(with image: UIImage) {
         thumbnailImageView.image = image
     }
-    
-    // 완료 버튼 클릭 시 호출되는 메서드
     @objc private func doneButtonTapped() {
-        // 모든 모달을 닫고 루트 뷰인 탭바로 이동
+        let puzzleIndex = 0
+        postPuzzleCompletion(index: puzzleIndex)
         var targetViewController = presentingViewController
-        
-        // MemoLogViewController와 RecordCompleteViewController를 모두 dismiss
+         
         while let presentingVC = targetViewController?.presentingViewController {
             targetViewController = presentingVC
         }
-        
+         
         targetViewController?.dismiss(animated: true) {
-            if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? TabBar {
-                tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let tabBarController = windowScene.windows.first?.rootViewController as? TabBar {
+                    tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+                }
             }
-        }
     }
+
 }

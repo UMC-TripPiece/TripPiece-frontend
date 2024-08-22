@@ -525,55 +525,6 @@ class TravelRecordViewController: UIViewController {
         }
     }
     
-    func getPieceRecord() {
-        guard let url = URL(string: "http://3.34.123.244:8080/mytrippieces/all/earliest") else {
-            print("Invalid URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("*/*", forHTTPHeaderField: "accept")
-        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                return
-            }
-            
-            if let response = response as? HTTPURLResponse {
-                print("Status code: \(response.statusCode)")
-            }
-            
-            if let data = data {
-                if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-                    print("Response JSON: \(json)")
-                    self.parsePieceData(from: data)
-                } else {
-                    print("Invalid JSON data")
-                }
-            }
-        }
-
-        task.resume()
-    }
-    
-    func parsePieceData(from jsonData: Data) {
-        do {
-            let decoder = JSONDecoder()
-            let responseData = try decoder.decode(PieceResponseData.self, from: jsonData)
-            
-            DispatchQueue.main.async {
-                self.allItems = responseData.result
-                self.filteredItems = self.allItems.reversed() // 배열을 역순으로 정렬
-                self.addItemsToStackView(items: Array(self.filteredItems))
-            }
-        } catch {
-            print("JSON parsing error: \(error)")
-        }
-    }
-    
     @objc func filterButtonTapped(_ sender: UIButton) {
         let selectedType: TravelItemType
         

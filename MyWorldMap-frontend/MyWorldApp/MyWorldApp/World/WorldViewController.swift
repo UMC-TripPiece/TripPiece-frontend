@@ -348,10 +348,11 @@ class WorldViewController: UIViewController {
         getColoredCountries { [weak self] in
             DispatchQueue.main.async {
                 self?.userCountryColorsModel.user123CountryColors = self?.user123CountryColors ?? [:]
+                self?.getCountryCityCounts()
             }
         }
         
-        getCountryCityCounts()
+        
     }
     
     

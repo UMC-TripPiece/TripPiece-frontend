@@ -270,7 +270,7 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
         let isImageSelected = selectedImageData != nil
         addButton.isEnabled = isDescriptionValid && isImageSelected
         addButton.backgroundColor = addButton.isEnabled ? UIColor(hex: "6644FF") : UIColor(hex: "D3D3D3")
-    }≈
+    }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         validateInput()  // Call validation when the text changes

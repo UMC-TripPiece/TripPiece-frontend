@@ -411,28 +411,27 @@ class ColorCityViewController: UIViewController {
     }
     
     
-    func dismissToWorldViewController(from viewController: UIViewController?, completion: @escaping () -> Void) {
+    func dismissTwice(from viewController: UIViewController?, completion: @escaping () -> Void) {
         guard let viewController = viewController else {
             completion()
             return
         }
 
-        // 현재 뷰 컨트롤러가 WorldViewController라면 dismiss 중지하고 completion 호출
-        if viewController is WorldViewController {
-            completion()
-            return
-        }
-
-        if let presentingViewController = viewController.presentingViewController {
+        if let firstPresentingViewController = viewController.presentingViewController {
             viewController.dismiss(animated: true) {
-                self.dismissToWorldViewController(from: presentingViewController, completion: completion)
+                if let secondPresentingViewController = firstPresentingViewController.presentingViewController {
+                    firstPresentingViewController.dismiss(animated: true) {
+                        completion()
+                    }
+                } else {
+                    completion()
+                }
             }
         } else {
             completion()
         }
     }
-    
-    
+
     
     @objc private func saveButtonTapped(_ sender: UIButton) {        // 서버에 해당 유저의 기록을 올릴 것,
         guard let cityData = cityData else { return }
@@ -447,7 +446,7 @@ class ColorCityViewController: UIViewController {
                             print("업로드 성공: \(value)")
                             DispatchQueue.main.async {
                                 // 이 코드를 사용하여 모든 모달 뷰 컨트롤러를 닫습니다.
-                                self.dismissToWorldViewController(from: self) {
+                                self.dismissTwice(from: self) {
                                     // 모든 모달이 닫힌 후 알림을 보냅니다.
                                     NotificationCenter.default.post(name: .didPostMapData, object: nil)
                                 }

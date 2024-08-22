@@ -438,7 +438,7 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission2VC = LiveVideoLogViewController(travelId: travelId)
+        let mission2VC = SelfieLogViewController(travelId: travelId)
         mission2VC.modalPresentationStyle = .fullScreen
         self.present(mission2VC, animated: true, completion: nil)
     }
@@ -448,7 +448,7 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission3VC = SelfieLogViewController(travelId: travelId)
+        let mission3VC = EmojiLogViewController(travelId: travelId)
         mission3VC.modalPresentationStyle = .fullScreen
         self.present(mission3VC, animated: true, completion: nil)
     }

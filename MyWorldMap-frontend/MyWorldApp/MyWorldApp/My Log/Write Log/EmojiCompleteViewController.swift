@@ -12,7 +12,7 @@ class EmojiCompleteViewController: UIViewController {
     // 체크 이미지 (기록 완료 이미지)
     private lazy var emojiImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "thinkingEmoji") // 이모지 이미지를 여기에 설정
+        imageView.image = UIImage(named: "puzzleCheck4") // 이모지 이미지를 여기에 설정
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -127,6 +127,18 @@ class EmojiCompleteViewController: UIViewController {
     
     // 완료 버튼을 눌렀을 때 동작
     @objc private func doneButtonTapped() {
-        self.navigationController?.popToRootViewController(animated: true)
+        // 모든 모달을 닫고 루트 뷰인 탭바로 이동
+        var targetViewController = presentingViewController
+        
+        // MemoLogViewController와 RecordCompleteViewController를 모두 dismiss
+        while let presentingVC = targetViewController?.presentingViewController {
+            targetViewController = presentingVC
+        }
+        
+        targetViewController?.dismiss(animated: true) {
+            if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? TabBar {
+                tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+            }
+        }
     }
 }

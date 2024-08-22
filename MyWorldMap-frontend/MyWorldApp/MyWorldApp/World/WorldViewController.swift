@@ -209,7 +209,7 @@ class WorldViewController: UIViewController {
                 
         // 배지 뷰의 제약 조건을 설정합니다.
         NSLayoutConstraint.activate([
-            floatingBadgeView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            floatingBadgeView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -42),
             floatingBadgeView.widthAnchor.constraint(equalToConstant: 348),
             floatingBadgeView.heightAnchor.constraint(equalToConstant: 111),
             floatingBadgeView.centerXAnchor.constraint(equalTo: view.centerXAnchor)

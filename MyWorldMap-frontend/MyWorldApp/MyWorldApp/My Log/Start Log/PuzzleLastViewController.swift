@@ -9,6 +9,18 @@ import UIKit
 import SnapKit
 
 class FinishPuzzleViewController: UIViewController {
+    
+    var travelId: Int
+
+    init(travelId: Int) {
+        self.travelId = travelId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - UI
     private lazy var customNavBar: FinishNavigationBar = {
         let nav = FinishNavigationBar()
@@ -181,7 +193,7 @@ class FinishPuzzleViewController: UIViewController {
             label.textColor = .black
             
             // AttributedString 설정
-            let fullText = "1개"
+            let fullText = "0개"
             let attributedString = NSMutableAttributedString(string: fullText)
             label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
 
@@ -525,6 +537,7 @@ class FinishPuzzleViewController: UIViewController {
         view.backgroundColor = .white
         self.view.addSubview(customNavBar)
         setupUI()
+        fetchTravelData(travelId: travelId)
         // Do any additional setup after loading the view.
     }
     private func setupUI() {
@@ -669,7 +682,7 @@ class FinishPuzzleViewController: UIViewController {
         return imageView
     }
     //MARK: - GET
-    func fetchTravelData(travelId: String) {
+    func fetchTravelData(travelId: Int) {
         guard let url = URL(string: "http://3.34.123.244:8080/travels/\(travelId)") else { return }
 
         // URLRequest 객체를 만듭니다.

@@ -9,7 +9,7 @@ import UIKit
 
 class EndTripAlertViewController: UIViewController {
     
-    var travelId: Int
+    var travelId: Int?
 
     init(travelId: Int) {
         self.travelId = travelId
@@ -221,7 +221,11 @@ class EndTripAlertViewController: UIViewController {
                 // POST 요청이 성공하면 기록 완료 화면으로 이동
                 DispatchQueue.main.async {
                     //                    self.present(puzzleViewController, animated: true, completion: nil)
-                    let endVC = FinishPuzzleViewController()
+                    guard let travelId = self.travelId else {
+                        print("Travel ID가 없습니다.")
+                        return
+                    }
+                    let endVC = FinishPuzzleViewController(travelId: travelId)
                     endVC.modalPresentationStyle = .fullScreen
                     self.present(endVC, animated: true, completion: nil)
                 }

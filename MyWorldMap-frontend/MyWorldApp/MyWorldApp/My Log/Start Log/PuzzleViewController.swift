@@ -584,11 +584,6 @@ class PuzzleViewController: UIViewController {
             puzzleBackgroundView.widthAnchor.constraint(equalToConstant: 348),
             puzzleBackgroundView.heightAnchor.constraint(equalToConstant: 348),
             
-            /*puzzleImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            puzzleImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            puzzleImage.heightAnchor.constraint(equalToConstant: 300),*/
-            //puzzleImage.widthAnchor.constraint(equalToConstant: 139.57),
-            
                         
             continueButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60),
             continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),

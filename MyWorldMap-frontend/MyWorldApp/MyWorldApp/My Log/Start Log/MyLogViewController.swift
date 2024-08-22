@@ -395,7 +395,12 @@ class MyLogViewController: UIViewController {
     }
     
     @objc private func endTrip() {
-        // Handle end trip action
+        // 이동할 뷰 컨트롤러 생성
+        let endTripAlertViewController = EndTripAlertViewController()
+        endTripAlertViewController.modalPresentationStyle = .fullScreen
+        
+        // 화면 이동
+        self.present(endTripAlertViewController, animated: true, completion: nil)
     }
     
     @objc private func imageTapped(_ sender: UITapGestureRecognizer) {

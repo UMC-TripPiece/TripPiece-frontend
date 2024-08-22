@@ -780,9 +780,18 @@ class FinishPuzzleViewController: UIViewController {
                                 
                                 for (index, pictureSummary) in pictureSummaries.prefix(puzzleImages.count).enumerated() {
                                     if let mediaUrls = pictureSummary["mediaUrls"] as? [String], let firstMediaUrl = mediaUrls.first, let url = URL(string: firstMediaUrl) {
-                                        DispatchQueue.main.async {
-                                            puzzleImages[index].sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder"))
-                                        }
+                                        // Download image using SDWebImage
+                                        puzzleImages[index].sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder"), completed: { [weak self] (image, error, cacheType, imageURL) in
+                                            guard let self = self else { return }
+                                            if let downloadedImage = image {
+                                                // Replace the main image with the downloaded image
+                                                let puzzleMaskImage = UIImage(named: "puzzlePiece\(index + 1)")!
+                                                let imageView = self.createPuzzlePiece(image: downloadedImage, mask: puzzleMaskImage)
+                                                
+                                                // Replace the existing imageView with the new one containing the downloaded image
+                                                puzzleImages[index].image = imageView.image
+                                            }
+                                        })
                                     }
                                 }
                             }

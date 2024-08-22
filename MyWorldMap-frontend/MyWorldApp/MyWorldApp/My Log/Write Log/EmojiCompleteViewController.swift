@@ -12,7 +12,7 @@ class EmojiCompleteViewController: UIViewController {
     // 체크 이미지 (기록 완료 이미지)
     private lazy var emojiImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "puzzleCheck4") // 이모지 이미지를 여기에 설정
+        imageView.image = UIImage(named: "PuzzleCheck4") // 이모지 이미지를 여기에 설정
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()

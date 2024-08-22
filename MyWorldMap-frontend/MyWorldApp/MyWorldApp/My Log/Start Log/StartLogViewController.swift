@@ -158,21 +158,35 @@ class StartLogViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
+        searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "검색할 국가를 입력하세요"
+                
         return searchController
     }()
     
+    
+    
     ///검색결과
     private var searchResults: [[String: String]] = []
+    
     private lazy var searchTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = true
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(SearchResultCell.self, forCellReuseIdentifier: SearchResultCell.identifier)
+        tableView.layer.cornerRadius = 5
+        tableView.clipsToBounds = true
+        tableView.backgroundColor = .clear
+        tableView.layer.shadowColor = UIColor.black.cgColor
+        tableView.layer.shadowOpacity = 0.1
+        tableView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        tableView.layer.shadowRadius = 15
         return tableView
     }()
+    
+    private lazy var searchTableViewHeightConstraint = searchTableView.heightAnchor.constraint(equalToConstant: 0)
     
     ///사진 추가 버튼
     private lazy var addPhotoButton: UIButton = {
@@ -191,6 +205,7 @@ class StartLogViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupUI()
+        setUpSearchBar()
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleBackButtonTap), name: .backButtonTapped, object: nil)
     }
@@ -229,6 +244,48 @@ class StartLogViewController: UIViewController {
         
         setConstraints()
     }
+    
+    
+
+    private func setUpSearchBar() {
+        // SearchBar 설정 및 커스터마이징
+            let searchBar = searchController.searchBar
+            searchBar.layer.cornerRadius = 5
+            searchBar.layer.masksToBounds = true
+            
+            // Cancel 버튼 색상 변경
+            searchBar.tintColor = UIColor(named: "Main") // 원하는 색상으로 변경
+            
+            // 기본 배경 제거 및 투명도 설정
+            searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+            searchBar.backgroundColor = .clear // searchBar 배경 투명도 설정
+            
+            if let textField = searchBar.searchTextField as? UITextField {
+                textField.backgroundColor =  UIColor(white: 1, alpha: 0.8)// 텍스트 필드 배경 투명도 설정
+                textField.layer.borderColor = UIColor(named: "Main")?.cgColor
+                textField.layer.borderWidth = 1.0
+                textField.textColor = UIColor(named: "Black1")
+                textField.tintColor = UIColor(named: "Main") // 텍스트 커서 색상
+                textField.layer.cornerRadius = 5
+                textField.layer.masksToBounds = true
+                
+                /*NSLayoutConstraint.activate([
+                    // 텍스트 필드의 높이 및 네비게이션 바 내에서의 위치 설정
+                    textField.topAnchor.constraint(equalTo: view.topAnchor),
+                    //textField.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    //textField.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                        
+                    // 텍스트 필드의 고정된 높이 설정
+                    textField.heightAnchor.constraint(equalToConstant: 48)
+                ])*/
+            }
+            
+            // 네비게이션 바에 searchBar 추가
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+
+    }
+    
     
     private func setConstraints() {
         startNavBar.snp.makeConstraints { make in
@@ -270,9 +327,11 @@ class StartLogViewController: UIViewController {
         }
         searchTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(21)
-            make.top.equalTo(grayBackgroundView.snp.top).offset(20)
-            make.bottom.equalToSuperview().offset(-20)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(60)
         }
+                
+        searchTableViewHeightConstraint.isActive = true // 높이 제약 활성화
+        
         addPhotoButton.snp.makeConstraints { make in
             make.top.equalTo(startNavBar.snp.bottom).offset(20)
             make.centerX.equalToSuperview().offset(15)
@@ -292,8 +351,40 @@ class StartLogViewController: UIViewController {
     }
     
     @objc private func showSearchController() {
-        present(searchController, animated: true, completion: nil)
+        // 배경을 어둡게 만들기
+        let dimmingView = UIView(frame: view.bounds)
+        dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        dimmingView.tag = 999  // 나중에 제거하기 위한 태그 설정
+        view.addSubview(dimmingView)
+        view.bringSubviewToFront(dimmingView)
+                
+        // SearchController를 present
+        present(searchController, animated: true) {
+            // SearchController가 present된 후에 searchTableView를 최상위로 올림
+            self.view.bringSubviewToFront(self.searchTableView)
+        }
     }
+    
+    /*@objc private func showSearchController() { // searchBar 화면 고정이 절대! 안된다
+        // SearchBar를 원하는 위치에 설정
+        let searchBar = searchController.searchBar
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchBar)
+        
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            searchBar.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // SearchController의 기능을 사용하기 위해 searchBar를 표시
+        searchBar.isHidden = false
+        searchBar.becomeFirstResponder()  // 키보드 나타나게 하기
+    }*/
+
+
+
     
     @objc private func showStartDatePicker() {
         startDatePicker.isHidden.toggle()
@@ -444,6 +535,7 @@ class StartLogViewController: UIViewController {
                             }
                             return cityDataDecoded
                         }
+                        self.updateSearchTableViewHeight()
                         self.searchTableView.isHidden = false
                         self.searchTableView.reloadData()
                     }
@@ -531,37 +623,93 @@ extension StartLogViewController: UISearchResultsUpdating {
     }
 }
 
+//MARK: - UISearchControllerDelegate
+extension StartLogViewController: UISearchControllerDelegate {
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        // 검색 컨트롤러가 사라지기 직전에 호출됩니다.
+        if let dimmingView = view.viewWithTag(999) {
+            dimmingView.removeFromSuperview()  // 어두운 배경 제거
+        }
+        searchTableView.isHidden = true
+    }
+}
+
+
 //MARK: - UITableViewDataSource, UITableViewDelegate
 extension StartLogViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return searchResults.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let cityData = searchResults[indexPath.row]
-        let cityName = cityData["cityName"] ?? ""
-        let countryName = cityData["countryName"] ?? ""
-        let countryImage = cityData["countryImage"] ?? ""
         
-        cell.textLabel?.text = "\(countryImage) \(cityName), \(countryName)"
-        return cell
+        if indexPath.row == 0 {
+            // 첫 번째 셀을 "검색 결과:"로 표시
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "HeaderCell")
+            cell.textLabel?.text = "검색 결과"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+            cell.textLabel?.textColor = .black
+            cell.backgroundColor = UIColor(white: 1, alpha: 0.8)
+            return cell
+        } else {
+            // 나머지 셀은 검색 결과를 표시
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.identifier, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
+                
+            let cityData = searchResults[indexPath.row - 1]  // -1을 하여 첫 번째 셀을 건너뜁니다.
+            let cityName = cityData["cityName"] ?? ""
+            let countryName = cityData["countryName"] ?? ""
+            let countryImage = cityData["countryImage"] ?? ""
+                
+            cell.configure(cityName: cityName, countryName: countryName, countryImage: countryImage)
+            return cell
+        }
     }
     
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 55  // 첫 번째 셀의 높이를 50으로 고정
+        } else {
+            return 48 // 나머지 셀의 높이는 커스텀 셀에 의해 결정됨
+        }
+    }
+
+
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cityData = searchResults[indexPath.row]
+        let cityData = searchResults[indexPath.row - 1]
         print("선택된 도시: \(cityData)")
         let cityName = cityData["cityName"] ?? ""
         let countryName = cityData["countryName"] ?? ""
         let countryImage = cityData["countryImage"] ?? ""
-        
+                
         titleLabel.text = "\(countryImage) \(cityName), \(countryName)"
         travelInfo.updateInfo(cityName: "\(cityName)", countryName: "\(countryName)")
         updateStartLogButtonState()
+        
 
-        searchController.isActive = false
         searchTableView.isHidden = true
+        searchController.isActive = false
+
+
         showAddphotoBtnController()
+        
+    }
+    
+    
+    
+    
+    // 검색 결과 수에 따라 테이블 뷰 높이를 업데이트
+    private func updateSearchTableViewHeight() {
+        let rowHeight: CGFloat = 48.0 // 각 행의 높이
+        let maxVisibleRows = 4 // 표시할 최대 행 수
+        let visibleRows = min(searchResults.count, maxVisibleRows)
+        let newHeight = (CGFloat(visibleRows) * rowHeight) + 55
+        searchTableViewHeightConstraint.constant = newHeight
+        UIView.animate(withDuration: 0.3) { // 애니메이션으로 높이 변경
+            self.view.layoutIfNeeded()
+        }
     }
 }
 //MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate

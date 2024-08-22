@@ -161,6 +161,7 @@ class TravelRecordViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTravelLogStarted), name: .travelLogStarted, object: nil)
         getTravelRecord()
         getPieceRecord()
         setupView()
@@ -736,17 +737,23 @@ class TravelRecordViewController: UIViewController {
     }
     
     func clearStackViews() {
-            // Clear all arranged subviews from stackView
             stackView.arrangedSubviews.forEach { view in
                 stackView.removeArrangedSubview(view)
                 view.removeFromSuperview()
             }
-            
-            // Clear all arranged subviews from TravelLogStackView
             TravelLogStackView.arrangedSubviews.forEach { view in
                 TravelLogStackView.removeArrangedSubview(view)
                 view.removeFromSuperview()
             }
         }
+    @objc private func handleTravelLogStarted() {
+        clearStackViews()
+        
+        getTravelRecord()
+        getPieceRecord()
+    }
 }
 
+extension Notification.Name {
+    static let travelLogStarted = Notification.Name("travelLogStarted")
+}

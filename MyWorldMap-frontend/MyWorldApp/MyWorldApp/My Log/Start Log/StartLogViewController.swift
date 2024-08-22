@@ -432,9 +432,52 @@ class StartLogViewController: UIViewController {
     }
 
     ///여행 시작 POST
+//    @objc private func startLog() {
+//        print("Travel Info: \(travelInfo)")
+//        
+//        NetworkManager.shared.postTravelData(
+//            cityName: travelInfo.cityName!,
+//            countryName: travelInfo.countryName!,
+//            title: travelInfo.title!,
+//            startDate: travelInfo.startDate!,
+//            endDate: travelInfo.endDate!,
+//            thumbnail: travelInfo.thumbnail!
+//        ) { result in
+//            switch result {
+//            case .success(let value):
+//                print("성공적으로 여행 데이터를 전송했습니다: \(value)")
+//                DispatchQueue.main.async {
+//                    self.dismiss(animated: true) {
+//                        // 현재 활성화된 scene의 window 접근
+//                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//                           let window = scene.windows.first,
+//                           let tabBarController = window.rootViewController as? TabBar {
+//                            
+//                            // MyLogViewController를 직접 인스턴스화해서 TabBar의 두 번째 탭으로 설정
+//                            let myLogVC = MyLogViewController()
+//                            let navigationController = UINavigationController(rootViewController: myLogVC)
+//                            navigationController.tabBarItem = UITabBarItem(title: "나의 기록", image: UIImage(named: "My log"), tag: 2)
+//                            navigationController.tabBarItem.badgeValue = "여행중"
+//                            tabBarController.viewControllers?[1] = navigationController
+//                            
+//                            // 'My Log' 탭으로 이동
+//                            tabBarController.selectedIndex = 1
+//                        } else {
+//                            print("Error: TabBarController not found.")
+//                        }
+//                    }
+//                }
+//            case .failure(let error):
+//                print("여행 데이터 전송 실패: \(error.localizedDescription)")
+//                print("Travel Info: \(self.travelInfo)")
+//            }
+//        }
+//        
+//    }
+    
     @objc private func startLog() {
         print("Travel Info: \(travelInfo)")
-        
+
         NetworkManager.shared.postTravelData(
             cityName: travelInfo.cityName!,
             countryName: travelInfo.countryName!,
@@ -445,34 +488,29 @@ class StartLogViewController: UIViewController {
         ) { result in
             switch result {
             case .success(let value):
-                print("성공적으로 여행 데이터를 전송했습니다: \(value)")
+                print("Successfully posted travel data: \(value)")
                 DispatchQueue.main.async {
-                    self.dismiss(animated: true) {
-                        // 현재 활성화된 scene의 window 접근
-                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let window = scene.windows.first,
-                           let tabBarController = window.rootViewController as? TabBar {
-                            
-                            // MyLogViewController를 직접 인스턴스화해서 TabBar의 두 번째 탭으로 설정
-                            let myLogVC = MyLogViewController()
-                            let navigationController = UINavigationController(rootViewController: myLogVC)
-                            navigationController.tabBarItem = UITabBarItem(title: "나의 기록", image: UIImage(named: "My log"), tag: 2)
-                            navigationController.tabBarItem.badgeValue = "여행중"
-                            tabBarController.viewControllers?[1] = navigationController
-                            
-                            // 'My Log' 탭으로 이동
-                            tabBarController.selectedIndex = 1
-                        } else {
-                            print("Error: TabBarController not found.")
-                        }
-                    }
+                    NotificationCenter.default.post(name: .travelLogStarted, object: nil)
+                    
+                    self.dismiss(animated: true, completion: nil)
                 }
             case .failure(let error):
-                print("여행 데이터 전송 실패: \(error.localizedDescription)")
+                print("Failed to post travel data: \(error.localizedDescription)")
                 print("Travel Info: \(self.travelInfo)")
             }
         }
+    }
+    
+    private func navigateAndRefreshTravelRecord() {
+        if let travelRecordVC = navigationController?.viewControllers.last(where: { $0 is TravelRecordViewController }) as? TravelRecordViewController {
+            
+            travelRecordVC.clearStackViews()
+            travelRecordVC.getTravelRecord()
+            travelRecordVC.getPieceRecord()
+        }
         
+        // Pop back to the previous view controller
+        navigationController?.popViewController(animated: true)
     }
     
     ///키보드 내리기
@@ -696,9 +734,6 @@ extension StartLogViewController: UITableViewDataSource, UITableViewDelegate {
         showAddphotoBtnController()
         
     }
-    
-    
-    
     
     // 검색 결과 수에 따라 테이블 뷰 높이를 업데이트
     private func updateSearchTableViewHeight() {

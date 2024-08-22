@@ -1,21 +1,21 @@
 import UIKit
 import SnapKit
-import AVKit
-import UniformTypeIdentifiers
+import AVFoundation
+import Alamofire
 
-class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class LiveVideoLogViewController: UIViewController {
     
     var travelId: Int
-            
-        init(travelId: Int) {
-            self.travelId = travelId
-            super.init(nibName: nil, bundle: nil)
-        }
-            
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    
+        
+    init(travelId: Int) {
+        self.travelId = travelId
+        super.init(nibName: nil, bundle: nil)
+    }
+        
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     //MARK: - UI
     private lazy var customNavBar: CustomNavigationBar = {
         let nav = CustomNavigationBar()
@@ -23,13 +23,7 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         nav.backgroundColor = .white
         return nav
     }()
-    
-    private lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "지금 어디에 있나요?"
@@ -53,6 +47,7 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         return imageView
     }()
     
+    ///회색 배경부분부터
     private lazy var grayBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "BgColor2")
@@ -63,21 +58,15 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.spacing = 20
         return stackView
     }()
     
-    private lazy var videoPreviewView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.layer.cornerRadius = 10
-        
-        // Add tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectVideo))
-        view.addGestureRecognizer(tapGesture)
-        view.isUserInteractionEnabled = true
-        
-        return view
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .fillEqually
+        return stackView
     }()
     
     private lazy var memoTitleLabel: UILabel = {
@@ -90,26 +79,18 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
     
     private lazy var memoTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.font = UIFont.systemFont(ofSize: 15)
+        textView.textColor = UIColor(named: "Black3")
+        textView.text = "| 영상에 대해 설명해주세요 (100자 이내)"
         textView.layer.borderColor = UIColor.lightGray.cgColor
-        textView.layer.borderWidth = 1
         textView.layer.shadowColor = UIColor.black.cgColor
         textView.layer.shadowOpacity = 0.2
         textView.layer.shadowOffset = CGSize(width: 0, height: 2)
         textView.layer.cornerRadius = 5
-        textView.isScrollEnabled = false
         textView.delegate = self
         return textView
     }()
-    
-    private lazy var placeholderLabel: UILabel = {
-        let label = UILabel()
-        label.text = " | 영상에 대해 설명해주세요 (30자 이내)"
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .lightGray
-        return label
-    }()
-    
+        
     private lazy var addButton: UIButton = {
         let button = UIButton()
         button.setTitle("기록 추가", for: .normal)
@@ -119,7 +100,18 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         button.addTarget(self, action: #selector(addRecord), for: .touchUpInside)
         return button
     }()
-    
+        
+    private var selectedVideo: UIImage? {
+        didSet {
+            updateAddButtonState()
+        }
+    }
+    private var selectedVideoURL: URL? {
+        didSet {
+            updateAddButtonState()
+        }
+    }
+
     //MARK: - Init
     override func viewDidLoad() {
         setupDismissKeyboardGesture()
@@ -127,31 +119,41 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         self.view.backgroundColor = .white
         self.view.addSubview(customNavBar)
         setupUI()
-        
+
         // NotificationCenter 관찰자 추가
         NotificationCenter.default.addObserver(self, selector: #selector(handleBackButtonTap), name: .backButtonTapped, object: nil)
     }
-    
+
     //MARK: - Setup UI
     private func setupUI() {
         view.addSubview(titleLabel)
         view.addSubview(subtitleLabel)
         view.addSubview(titleImageView)
-        
+        view.addSubview(buttonsStackView)
         view.addSubview(addButton)
+        
         view.addSubview(grayBackgroundView)
-        
-        grayBackgroundView.addSubview(videoPreviewView)
         grayBackgroundView.addSubview(contentStackView)
+        contentStackView.addArrangedSubview(buttonsStackView)
+        contentStackView.addArrangedSubview(createSpacer(height: 20))
         contentStackView.addArrangedSubview(memoTitleLabel)
+        contentStackView.addArrangedSubview(createSpacer(height: 10))
         contentStackView.addArrangedSubview(memoTextView)
-        memoTextView.addSubview(placeholderLabel)
+        contentStackView.addArrangedSubview(createSpacer(height: 132))
         contentStackView.addArrangedSubview(addButton)
-        
+
         setConstraints()
+        setupButtonsStackView()
     }
     
-    private func setConstraints() {
+    private func createSpacer(height: CGFloat) -> UIView {
+        let spacer = UIView()
+        spacer.translatesAutoresizingMaskIntoConstraints = false
+        spacer.heightAnchor.constraint(equalToConstant: height).isActive = true
+        return spacer
+    }
+    
+    func setConstraints() {
         customNavBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -170,72 +172,63 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
             make.top.equalToSuperview().offset(129)
             make.trailing.equalToSuperview().inset(21.18)
         }
-        
         grayBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(subtitleLabel.snp.bottom).offset(30)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
+                
         contentStackView.snp.makeConstraints { make in
             make.top.equalTo(grayBackgroundView.snp.top).offset(30)
             make.leading.trailing.equalToSuperview().inset(21)
-        }
-        videoPreviewView.snp.makeConstraints { make in
-            make.height.equalTo(200)
-        }
-        memoTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(videoPreviewView.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(21)
         }
         
         memoTextView.snp.makeConstraints { make in
             make.height.equalTo(69)
         }
         
-        placeholderLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(7)
-            make.leading.equalToSuperview().offset(5)
+        addButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
         }
         
-        addButton.snp.makeConstraints { make in
-            make.top.equalTo(memoTextView.snp.bottom).offset(20)
-            make.height.equalTo(50)
+        buttonsStackView.arrangedSubviews.first?.snp.makeConstraints { make in
+            make.width.equalTo(348)
+            make.height.equalTo(162)
         }
     }
     
     //MARK: - Function
+    private func setupButtonsStackView() {
+        let button = UIButton()
+        button.setImage(UIImage(named: "add video"), for: .normal)
+        button.tintColor = .gray
+        button.contentMode = .scaleAspectFit
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.2
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.isUserInteractionEnabled = true
+        button.addTarget(self, action: #selector(selectVideo), for: .touchUpInside)
+        buttonsStackView.addArrangedSubview(button)
+    }
     
+    private func updateAddButtonState() {
+        // 두 변수의 상태를 프린트하여 확인
+        print("Selected video URL: \(selectedVideoURL?.absoluteString ?? "nil")")
+        
+        let isMemoValid = !memoTextView.text.isEmpty && memoTextView.text != "| 영상에 대해 설명해주세요 (100자 이내)"
+        addButton.isEnabled = selectedVideo != nil && isMemoValid
+        addButton.backgroundColor = (selectedVideo == nil || !isMemoValid) ? UIColor(named: "Cancel") : UIColor(named: "Main2")
+    }
+
+    
+    ///뒤로가기 버튼
     @objc private func handleBackButtonTap() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    private func setupDismissKeyboardGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    @objc private func addRecord() {
-        // 기록 추가 기능 구현
-    }
-    
-//    @objc private func selectVideo() {
-//        let alert = UIAlertController(title: "동영상 추가", message: "", preferredStyle: .actionSheet)
-//        
-//        alert.addAction(UIAlertAction(title: "카메라로 촬영", style: .default, handler: { _ in
-//            self.presentVideoPicker()
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-//        
-//        self.present(alert, animated: true, completion: nil)
-//    }
-    
+    ///비디오 추가 버튼 클릭
     @objc private func selectVideo() {
-        let alert = UIAlertController(title: "동영상 추가", message: "", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "동영상 추가", message: " ", preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "라이브러리에서 동영상 선택", style: .default, handler: { _ in
             self.openPhotoLibrary()
@@ -245,7 +238,7 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     ///앨범 열기
     private func openPhotoLibrary() {
         let imagePickerController = UIImagePickerController()
@@ -254,82 +247,149 @@ class LiveVideoLogViewController: UIViewController, UIImagePickerControllerDeleg
         imagePickerController.mediaTypes = ["public.movie"]
         self.present(imagePickerController, animated: true, completion: nil)
     }
-    
-    
-    @objc private func presentVideoPicker() {
-        let videoPicker = UIImagePickerController()
-        videoPicker.delegate = self
-        videoPicker.sourceType = .camera
-        videoPicker.mediaTypes = [UTType.movie.identifier]
-        videoPicker.allowsEditing = true
-        present(videoPicker, animated: true, completion: nil)
+
+    @objc private func addRecord() {
+        print("Record button tapped")
+        postVideoMemo()
+    }
+
+    private func postVideoMemo() {
+        guard let videoURL = selectedVideoURL else {
+            print("Video URL is nil")
+            return
+        }
+
+        let url = "http://3.34.123.244:8080/mytravels/\(travelId)/where"
+
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(getRefreshToken() ?? "")"
+        ]
+
+        AF.upload(multipartFormData: { multipartFormData in
+            // 비디오 파일 추가
+            do {
+                let videoData = try Data(contentsOf: videoURL)
+                multipartFormData.append(videoData, withName: "video", fileName: videoURL.lastPathComponent, mimeType: "video/mp4")
+            } catch {
+                print("Failed to convert video to data")
+                return
+            }
+
+            // 메모를 JSON 형식으로 변환하여 추가
+            let memoDescription = ["description": self.memoTextView.text ?? ""]
+            if let memoData = try? JSONSerialization.data(withJSONObject: memoDescription, options: []),
+               let memoJSONString = String(data: memoData, encoding: .utf8) {
+                multipartFormData.append(memoJSONString.data(using: .utf8) ?? Data(), withName: "memo")
+            }
+        }, to: url, headers: headers)
+        .validate()
+        .responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                print("Successfully uploaded video: \(value)")
+                self.navigateToVideoCompleteViewController()
+            case .failure(let error):
+                print("Failed to upload video: \(error.localizedDescription)")
+            }
+        }
+    }
+        
+    private func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
     }
     
-    // MARK: - UIImagePickerControllerDelegate
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let videoURL = info[.mediaURL] as? URL {
-            // 비디오 URL 로그로 출력
-            print("Selected video URL: \(videoURL.absoluteString)")
-
-            // 파일 존재 여부 확인
-            if FileManager.default.fileExists(atPath: videoURL.path) {
-                print("Video file exists at path: \(videoURL.path)")
-                playVideoPreview(videoURL)
-            } else {
-                print("Video file does not exist at path: \(videoURL.path)")
-            }
-        } else {
-            print("Failed to retrieve video URL.")
+    ///이동
+    var videoImage: UIImage?
+    private func navigateToVideoCompleteViewController() {
+        guard let thumbnail = videoImage, let text = memoTextView.text else {
+            // 에러 처리: 텍스트나 썸네일이 없을 때
+            let alert = UIAlertController(title: "경고", message: "썸네일 또는 텍스트가 없습니다.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+            return
         }
+        
+        let recordCompleteVC = LiveVideoCompleteViewController()
+        recordCompleteVC.setVideoComplete(with: thumbnail)
+        recordCompleteVC.modalPresentationStyle = .fullScreen
+        present(recordCompleteVC, animated: true, completion: nil)
+    }
+}
+
+extension LiveVideoLogViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedVideoURL = info[.mediaURL] as? URL {
+            let videoThumbnail = getThumbnailImage(forUrl: selectedVideoURL)
+            selectedVideo = videoThumbnail
+            self.videoImage = videoThumbnail
+
+            self.selectedVideoURL = selectedVideoURL  // URL 설정
+            print("Selected video URL: \(selectedVideoURL.absoluteString)")
+                        
+            let button = buttonsStackView.arrangedSubviews.first as! UIButton
+            button.setImage(videoThumbnail, for: .normal)
+            button.imageView?.contentMode = .scaleAspectFill
+            button.imageView?.clipsToBounds = true
+                        
+            // 썸네일 크기를 지정된 크기로 설정
+            button.snp.updateConstraints { make in
+//                make.width.equalTo(348)
+                make.height.equalTo(162)
+            }
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    ///비디오 썸네일 생성
+    private func getThumbnailImage(forUrl url: URL) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let assetImageGenerator = AVAssetImageGenerator(asset: asset)
+        do {
+            let thumbnailImage = try assetImageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+            return UIImage(cgImage: thumbnailImage)
+        } catch let error {
+            print(error)
+        }
+        return nil
     }
     
-    private func playVideoPreview(_ url: URL) {
-        let player = AVPlayer(url: url)
-        let playerLayer = AVPlayerLayer(player: player)
-        
-        // 비디오 미리보기를 videoPreviewView에 맞게 표시, 비율 유지
-        playerLayer.frame = videoPreviewView.bounds
-        playerLayer.videoGravity = .resizeAspect // Aspect Fit으로 변경
-        
-        // 기존 레이어 제거 후 새로운 레이어 추가
-        videoPreviewView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-        videoPreviewView.layer.addSublayer(playerLayer)
-        
-        // 비디오 프리뷰 뷰를 최상위로 이동
-        videoPreviewView.bringSubviewToFront(videoPreviewView)
-        
-        player.play()
-        
-        // "기록 추가" 버튼 활성화
-        addButton.isEnabled = true
-        addButton.backgroundColor = UIColor(hex: "6644FF")
+    ///키보드 내리기
+    private func setupDismissKeyboardGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
     }
-    
-//    private func playVideoPreview(_ url: URL) {
-//        let player = AVPlayer(url: url)
-//        let playerLayer = AVPlayerLayer(player: player)
-//        playerLayer.frame = videoPreviewView.bounds
-//        playerLayer.videoGravity = .resizeAspectFill
-//        videoPreviewView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-//        videoPreviewView.layer.addSublayer(playerLayer)
-//        player.play()
-//        
-//        // "기록 추가" 버튼 활성화
-//        addButton.isEnabled = true
-//        addButton.backgroundColor = UIColor(hex: "6644FF")
-//        
-//        buttonsStackView.isHidden = true
-//    }
+        
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 extension LiveVideoLogViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "| 영상에 대해 설명해주세요 (100자 이내)" {
+            textView.text = ""
+            textView.textColor = .black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "| 영상에 대해 설명해주세요 (100자 이내)"
+            textView.textColor = UIColor.lightGray
+        }
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let currentText = textView.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        return updatedText.count <= 100 // 글자 수 제한 100자
+    }
     func textViewDidChange(_ textView: UITextView) {
-        // 텍스트뷰에 텍스트가 있으면 placeholder 숨김, 없으면 표시
-        placeholderLabel.isHidden = !textView.text.isEmpty
+        updateAddButtonState()
     }
 }
-

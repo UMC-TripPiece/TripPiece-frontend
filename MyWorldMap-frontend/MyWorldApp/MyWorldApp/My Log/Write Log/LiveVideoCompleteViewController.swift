@@ -1,12 +1,19 @@
+//
+//  File.swift
+//  MyWorldApp
+//
+//  Created by 김나연 on 8/22/24.
+//
+
 import UIKit
 import SnapKit
 
-class SelfieRecordCompleteViewController: UIViewController {
+class LiveVideoCompleteViewController: UIViewController {
     
     // 기록 추가 완료를 나타내는 이미지뷰
     private lazy var checkImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "PuzzleCheck1") // 완료 이미지 설정
+        imageView.image = UIImage(named: "PuzzleCheck2") // 완료 이미지 설정
         return imageView
     }()
     
@@ -50,13 +57,13 @@ class SelfieRecordCompleteViewController: UIViewController {
     
     private lazy var previewImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "dum1")
+        imageView.image = UIImage(named: "dum2")
         return imageView
     }()
     
     private lazy var previewSubLabel: UILabel = {
         let label = UILabel()
-        label.text = "제 셀카에요~!"
+        label.text = "여행의 순간을 영상으로!"
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = .black
         label.textAlignment = .left
@@ -84,7 +91,7 @@ class SelfieRecordCompleteViewController: UIViewController {
     private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.setTitle("완료", for: .normal)
-        button.backgroundColor = UIColor(named: "Main")
+        button.backgroundColor = UIColor(named: "Main2")
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
@@ -180,3 +187,4 @@ class SelfieRecordCompleteViewController: UIViewController {
         }
     }
 }
+

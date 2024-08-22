@@ -438,7 +438,7 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission2VC = SelfieLogViewController(travelId: travelId)
+        let mission2VC = LiveVideoLogViewController(travelId: travelId)
         mission2VC.modalPresentationStyle = .fullScreen
         self.present(mission2VC, animated: true, completion: nil)
     }

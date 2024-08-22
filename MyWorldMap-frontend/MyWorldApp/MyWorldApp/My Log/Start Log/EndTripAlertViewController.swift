@@ -220,7 +220,10 @@ class EndTripAlertViewController: UIViewController {
                 print("Response: \(responseString)")
                 // POST 요청이 성공하면 기록 완료 화면으로 이동
                 DispatchQueue.main.async {
-                    self.present(puzzleViewController, animated: true, completion: nil)
+                    //                    self.present(puzzleViewController, animated: true, completion: nil)
+                    let endVC = FinishPuzzleViewController()
+                    endVC.modalPresentationStyle = .fullScreen
+                    self.present(endVC, animated: true, completion: nil)
                 }
             }
         }

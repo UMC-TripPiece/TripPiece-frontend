@@ -188,6 +188,10 @@ class EndTripAlertViewController: UIViewController {
     
     // 여행 종료 버튼 눌렸을 때
     @objc func endTripButtonTapped(_ sender: UIButton) {
+        guard let travelId = self.travelId else {
+                print("Travel ID가 없습니다.")
+                return
+            }
         let puzzleViewController = PuzzleViewController()
         puzzleViewController.modalPresentationStyle = .overCurrentContext
         puzzleViewController.modalTransitionStyle = .crossDissolve
@@ -204,39 +208,36 @@ class EndTripAlertViewController: UIViewController {
             print("Failed to encode parameters: \(error.localizedDescription)")
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Failed to post end request: \(error.localizedDescription)")
+                print("Error making POST request: \(error)")
                 return
             }
             
-            guard let data = data else {
-                print("No data received.")
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Unexpected response: \(String(describing: response))")
                 return
             }
             
-            if let responseString = String(data: data, encoding: .utf8) {
-                print("Response: \(responseString)")
-                // POST 요청이 성공하면 기록 완료 화면으로 이동
+            if !(200...299).contains(httpResponse.statusCode) {
+                print("Unexpected response: \(String(describing: response))")
+                if let data = data, let errorMessage = String(data: data, encoding: .utf8) {
+                    print("Error message: \(errorMessage)")
+                }
+                return
+            }
+            
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                print("Response data: \(responseString)")
                 DispatchQueue.main.async {
-                    //                    self.present(puzzleViewController, animated: true, completion: nil)
-                    guard let travelId = self.travelId else {
-                        print("Travel ID가 없습니다.")
-                        return
-                    }
                     let endVC = FinishPuzzleViewController(travelId: travelId)
                     endVC.modalPresentationStyle = .fullScreen
                     self.present(endVC, animated: true, completion: nil)
-                }
+                            }
             }
         }
         task.resume()
-        
     }
-
-    
-    
-    
 }
 

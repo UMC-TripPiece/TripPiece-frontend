@@ -70,12 +70,72 @@ class FinishNavigationBar: UINavigationBar {
     }
 
     @objc func back() {
+        print("Back button pressed - Posting notification")
         NotificationCenter.default.post(name: .backButtonTapped, object: nil)
     }
 
+//    @objc func close() {
+//            if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
+//                rootViewController.dismiss(animated: true, completion: nil)
+//            }
+//        }
+//    @objc func close() {
+//        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//           let window = windowScene.windows.first,
+//           let navigationController = window.rootViewController as? UINavigationController {
+//            
+//            if navigationController.viewControllers.count >= 4 {
+//                let targetViewController = navigationController.viewControllers[navigationController.viewControllers.count - 4]
+//                navigationController.popToViewController(targetViewController, animated: true)
+//            } else {
+//                navigationController.popToRootViewController(animated: true)
+//            }
+//
+//            // Switch to the desired tab (index 1 in this example)
+//            if let tabBarController = navigationController.tabBarController {
+//                tabBarController.selectedIndex = 1
+//            }
+//        } else {
+//            // Handle if view controllers are presented modally
+//            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//               let window = windowScene.windows.first {
+//                window.rootViewController?.dismiss(animated: true, completion: {
+//                    // Switch to the desired tab (index 1 in this example)
+//                    if let tabBarController = window.rootViewController as? UITabBarController {
+//                        tabBarController.selectedIndex = 1
+//                    }
+//                })
+//            }
+//        }
+//    }
     @objc func close() {
-        if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
-            rootViewController.dismiss(animated: true, completion: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let navigationController = window.rootViewController as? UINavigationController {
+            
+            // Pop to the view controller that is 3 steps behind, if it exists
+            if navigationController.viewControllers.count > 3 {
+                let targetViewController = navigationController.viewControllers[navigationController.viewControllers.count - 4]
+                navigationController.popToViewController(targetViewController, animated: true)
+            } else {
+                navigationController.popToRootViewController(animated: true)
+            }
+
+            // After popping, switch to the desired tab (index 1 in this example)
+            if let tabBarController = navigationController.tabBarController {
+                tabBarController.selectedIndex = 1
+            }
+        } else {
+            // Handle modal dismissal
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                window.rootViewController?.dismiss(animated: true, completion: {
+                    // Switch to the desired tab after dismissing all modals
+                    if let tabBarController = window.rootViewController as? UITabBarController {
+                        tabBarController.selectedIndex = 1
+                    }
+                })
+            }
         }
     }
 }

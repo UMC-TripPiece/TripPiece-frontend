@@ -752,6 +752,10 @@ class TravelRecordViewController: UIViewController {
         getTravelRecord()
         getPieceRecord()
     }
+    deinit {
+        // Remove observer
+        NotificationCenter.default.removeObserver(self, name: .travelLogStarted, object: nil)
+    }
 }
 
 extension Notification.Name {

@@ -538,8 +538,15 @@ class FinishPuzzleViewController: UIViewController {
         self.view.addSubview(customNavBar)
         setupUI()
         fetchTravelData(travelId: travelId)
-        // Do any additional setup after loading the view.
+
     }
+
+    
+    @objc private func handleTravelLogStarted() {
+        // Dismiss the current view controller, navigating back
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     private func setupUI() {
         view.addSubview(titleStackView)
         view.addSubview(explainView)

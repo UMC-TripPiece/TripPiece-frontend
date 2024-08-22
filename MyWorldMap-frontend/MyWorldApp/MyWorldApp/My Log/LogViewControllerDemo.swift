@@ -472,8 +472,6 @@ class TravelRecordViewController: UIViewController {
         let MyLogVC = MyLogViewController()
         MyLogVC.hidesBottomBarWhenPushed = false
         navigationController?.pushViewController(MyLogVC, animated: true)
-//        MyLogVC.modalPresentationStyle = .fullScreen
-//        present(MyLogVC, animated: true, completion: nil)
     }
     
     func getPieceRecord() {
@@ -736,5 +734,19 @@ class TravelRecordViewController: UIViewController {
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
+    
+    func clearStackViews() {
+            // Clear all arranged subviews from stackView
+            stackView.arrangedSubviews.forEach { view in
+                stackView.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+            
+            // Clear all arranged subviews from TravelLogStackView
+            TravelLogStackView.arrangedSubviews.forEach { view in
+                TravelLogStackView.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+        }
 }
 

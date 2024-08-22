@@ -419,7 +419,11 @@ class MyLogViewController: UIViewController {
     //MARK: - Function
     
     @objc private func closeButtonTapped() {
-        // 네비게이션 스택에서 이전 화면으로 돌아가기
+        if let travelRecordVC = navigationController?.viewControllers.first(where: { $0 is TravelRecordViewController }) as? TravelRecordViewController {
+            travelRecordVC.clearStackViews()
+                travelRecordVC.getTravelRecord()
+                travelRecordVC.getPieceRecord()
+            }
         navigationController?.popViewController(animated: true)
     }
     
@@ -623,6 +627,13 @@ class MyLogViewController: UIViewController {
         }
         task.resume()
     }
+    
+    @objc private func handlePuzzlePieceCompletion(notification: Notification) {
+        if let index = notification.object as? Int {
+            puzzleData[index].puzzleCount += 1
+            puzzleCollectionView.reloadData()
+        }
+    }
 }
 //MARK: - Extension
 extension MyLogViewController: UIScrollViewDelegate {
@@ -655,12 +666,5 @@ extension MyLogViewController: UICollectionViewDelegate, UICollectionViewDataSou
         let availableWidth = collectionView.frame.width - totalInset - totalSpacing
         let itemWidth = availableWidth / CGFloat(puzzleData.count)
         return CGSize(width: itemWidth, height: 58)
-    }
-    
-    @objc private func handlePuzzlePieceCompletion(notification: Notification) {
-        if let index = notification.object as? Int {
-            puzzleData[index].puzzleCount += 1
-            puzzleCollectionView.reloadData()
-        }
     }
 }

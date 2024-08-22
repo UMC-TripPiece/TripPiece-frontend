@@ -50,7 +50,7 @@ struct MapView: View {
     
     // MapView 내부에 정의된 함수
     func getCountryColor(for id: String) -> Color {
-        if let colorString = countryColorViewModel.user123CountryColors[id] {
+        if let colorString = countryColorViewModel.userSavedCountryColors[id] {
             switch colorString {
             case "BLUE":
                 return Color(red: 103/255, green: 68/255, blue: 255/255)
@@ -69,7 +69,7 @@ struct MapView: View {
     }
     
     func shouldTriggerNavigation(for id: String) -> Bool {
-        return countryColorViewModel.user123CountryColors[id] != nil
+        return countryColorViewModel.userSavedCountryColors[id] != nil
     }
 
     

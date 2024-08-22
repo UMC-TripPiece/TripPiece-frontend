@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FloatingBadgeView: UIView {
     
@@ -13,15 +14,19 @@ class FloatingBadgeView: UIView {
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "userProfileImage")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 이미지를 원형으로 자르기 위한 설정
+        imageView.layer.cornerRadius = 10 // 이미지 뷰의 너비/높이의 절반으로 설정
+        imageView.clipsToBounds = true // 이미지를 레이어의 경계에 맞춰 자르기
+        
         return imageView
     }()
     
     let userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "여행자님"
+        //label.text = "여행자님"
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -109,6 +114,26 @@ class FloatingBadgeView: UIView {
             globeImageView.widthAnchor.constraint(equalToConstant: 85),
             globeImageView.heightAnchor.constraint(equalToConstant: 85)
         ])
+    }
+    
+    func updateProfile(userName: String) {
+        userNameLabel.text = "\(userName) 님"
+    }
+    
+    // 프로필 이미지를 업데이트하는 메서드 추가
+    func updateProfileImage(with urlString: String) {
+        if let profileImgURL = URL(string: urlString) {
+            profileImageView.sd_setImage(with: profileImgURL, placeholderImage: UIImage(named: "userProfileImage")) { [weak self] image, error, cacheType, url in
+                if let error = error {
+                    print("Image loading failed with error: \(error.localizedDescription)")
+                } else {
+                    // 이미지 로드가 성공하면 필요한 작업을 추가로 수행할 수 있습니다.
+                    print("Image successfully loaded")
+                }
+            }
+        } else {
+            print("Invalid URL string.")
+        }
     }
     
     

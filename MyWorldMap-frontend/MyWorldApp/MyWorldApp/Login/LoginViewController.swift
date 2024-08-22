@@ -288,10 +288,12 @@ class LoginViewController: UIViewController {
                                 do {
                                     if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
                                        let result = json["result"] as? [String: Any],
-                                       let refreshToken = result["refreshToken"] as? String {
+                                       let refreshToken = result["refreshToken"] as? String,
+                                       let id = result["id"] as? Int {
                                         
                                         // refreshToken을 UserDefaults에 저장
                                         UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
+                                        UserDefaults.standard.set(id, forKey: "id")
                                         
                                         // 응답이 성공적일 경우 status를 true로 변경
                                         self.status = true

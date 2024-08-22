@@ -13,7 +13,9 @@ class WorldViewController: UIViewController {
 
     // MARK: - Properties
     
-    private var user123CountryColors: [String: String] = [:]
+    private var userName: String = ""
+    private var profileImage: String = ""
+    private var userSavedCountryColors: [String: String] = [:]
     private var colorVisitRecord: [Visit] = []
     private var cityVisitRecord: CountryCityData?
     private var visitedCountryNum: Int = 0 // 바꾸기
@@ -131,7 +133,7 @@ class WorldViewController: UIViewController {
         
         getColoredCountries { [weak self] in
             DispatchQueue.main.async {
-                self?.userCountryColorsModel.user123CountryColors = self?.user123CountryColors ?? [:]
+                self?.userCountryColorsModel.userSavedCountryColors = self?.userSavedCountryColors ?? [:]
             }
         }
         
@@ -203,6 +205,8 @@ class WorldViewController: UIViewController {
     private func setUpBadgeView() {
         // 기존의 지도 및 UI 요소가 추가된 후 아래에 배지 뷰를 추가합니다.
         let floatingBadgeView = FloatingBadgeView()
+        floatingBadgeView.updateProfile(userName: userName)
+        floatingBadgeView.updateProfileImage(with: profileImage)
         floatingBadgeView.updateSubtitleLabel(countryNum: visitedCountryNum, cityNum: visitedCityNum)
         floatingBadgeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(floatingBadgeView)
@@ -305,10 +309,18 @@ class WorldViewController: UIViewController {
     // MARK: - Networking
     
     
+    func getUserId() -> Int? {
+        return UserDefaults.standard.integer(forKey: "id")
+    }
+
+    
+    
     
     //userid 개별적으로 받기 수정 후 ver.
     private func getColoredCountries(completion: @escaping () -> Void) {
-        let url = "http://3.34.123.244:8080/api/maps/123"
+        guard let userId = getUserId() else { return }
+        
+        let url = "http://3.34.123.244:8080/api/maps/\(userId)"
         
         AF.request(url, method: .get).responseData { response in
             switch response.result {
@@ -326,7 +338,7 @@ class WorldViewController: UIViewController {
                         //print("Map ID: \(visit.mapId), City ID: \(visit.cityId), City Name: \(visit.cityName), Country Code: \(visit.countryCode), Color: \(visit.color)")
                         //print("userid: \(visit.userId), countryCode: \(visit.countryCode), color: \(visit.color)")
                         DispatchQueue.main.async {
-                            self.user123CountryColors[visit.countryCode] = visit.color
+                            self.userSavedCountryColors[visit.countryCode] = visit.color
                         }
                             
                     }
@@ -347,7 +359,7 @@ class WorldViewController: UIViewController {
     @objc private func handleDidPostMapDataNotification(_ notification: Notification) {
         getColoredCountries { [weak self] in
             DispatchQueue.main.async {
-                self?.userCountryColorsModel.user123CountryColors = self?.user123CountryColors ?? [:]
+                self?.userCountryColorsModel.userSavedCountryColors = self?.userSavedCountryColors ?? [:]
                 self?.getCountryCityCounts()
             }
         }
@@ -358,7 +370,9 @@ class WorldViewController: UIViewController {
     
     
     private func getCountryCityCounts() {
-        let url = "http://3.34.123.244:8080/api/maps/stats/123"
+        guard let userId = getUserId() else { return }
+
+        let url = "http://3.34.123.244:8080/api/maps/stats/\(userId)"
         
         AF.request(url, method: .get).responseData { response in
             switch response.result {
@@ -374,6 +388,8 @@ class WorldViewController: UIViewController {
                     // data 배열의 각 방문 기록 출력
                     print("CountryCount: \(apiResponse.data.countryCount), CityCount: \(apiResponse.data.cityCount), countryCodes: \(apiResponse.data.countryCodes), cityIds: \(apiResponse.data.cityIds)")
                     DispatchQueue.main.async {
+                        self.userName = apiResponse.data.nickname
+                        self.profileImage = apiResponse.data.profileImg
                         self.visitedCountryNum = apiResponse.data.countryCount
                         self.visitedCityNum = apiResponse.data.cityCount
                         self.setUpBadgeView()
@@ -567,7 +583,9 @@ struct CountryCityData: Codable {
     let countryCount: Int
     let cityCount: Int
     let countryCodes: [String]
-    let cityIds: [Int]?
+    let cityIds: [Int]
+    let profileImg: String
+    let nickname: String
 }
 
 // 전체 응답을 나타내는 구조체 정의

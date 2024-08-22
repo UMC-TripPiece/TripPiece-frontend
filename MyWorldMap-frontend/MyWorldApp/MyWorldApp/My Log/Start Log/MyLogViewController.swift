@@ -397,8 +397,9 @@ class MyLogViewController: UIViewController {
     @objc private func endTrip() {
         // 이동할 뷰 컨트롤러 생성
         let endTripAlertViewController = EndTripAlertViewController()
-        endTripAlertViewController.modalPresentationStyle = .fullScreen
-        
+        // 모달로 표시할 때 기존 뷰 컨트롤러를 배경에 반투명하게 보이도록 설정
+        endTripAlertViewController.modalPresentationStyle = .overCurrentContext
+        endTripAlertViewController.modalTransitionStyle = .crossDissolve // 부드러운 전환을 위해
         // 화면 이동
         self.present(endTripAlertViewController, animated: true, completion: nil)
     }

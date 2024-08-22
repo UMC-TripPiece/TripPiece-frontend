@@ -434,13 +434,15 @@ class ColorCityViewController: UIViewController {
 
     
     @objc private func saveButtonTapped(_ sender: UIButton) {        // 서버에 해당 유저의 기록을 올릴 것,
+        guard let userId = getUserId() else { return }
+        
         guard let cityData = cityData else { return }
         if let countryName = cityData["countryName"], let cityName =  cityData["cityName"], let selectedColor = selectedButton?.accessibilityIdentifier {
             guard let countryCode = countryCodes[countryName] else { return }
             //print(countryCode)
             //print(selectedColor)
             
-            postMapData(userId: 123, cityName: cityName ,countryCode: countryCode, color: selectedColor) { result in
+            postMapData(userId: userId, cityName: cityName ,countryCode: countryCode, color: selectedColor) { result in
                     switch result {
                         case .success(let value):
                             print("업로드 성공: \(value)")
@@ -464,6 +466,10 @@ class ColorCityViewController: UIViewController {
         //self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
+    
+    func getUserId() -> Int? {
+        return UserDefaults.standard.integer(forKey: "id")
+    }
     
     
     

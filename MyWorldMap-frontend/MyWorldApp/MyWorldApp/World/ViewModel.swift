@@ -26,5 +26,5 @@ class MapViewModel: ObservableObject {
 
 
 class UserCountryColorsModel: ObservableObject {
-    @Published var user123CountryColors: [String: String] = [:]
+    @Published var userSavedCountryColors: [String: String] = [:]
 }

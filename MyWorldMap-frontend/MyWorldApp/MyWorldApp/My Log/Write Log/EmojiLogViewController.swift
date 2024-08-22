@@ -104,7 +104,7 @@ class EmojiLogViewController: UIViewController, UITextViewDelegate, UITextFieldD
         textView.layer.borderWidth = 1
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.text = "| 감정을 글로 표현해보세요 (30자 이내)"
+        textView.text = "| 감정을 글로 표현해보세요 (100자 이내)"
         textView.textColor = .lightGray
         textView.delegate = self
         return textView
@@ -287,14 +287,14 @@ class EmojiLogViewController: UIViewController, UITextViewDelegate, UITextFieldD
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "| 감정을 글로 표현해보세요 (30자 이내)"
+            textView.text = "| 감정을 글로 표현해보세요 (100자 이내)"
             textView.textColor = .lightGray
         }
         validateInput() // 메모 입력 상태 검증
     }
     
     private func validateInput() {
-        let isMemoValid = !(memoTextView.text.isEmpty || memoTextView.text == "| 감정을 글로 표현해보세요 (30자 이내)")
+        let isMemoValid = !(memoTextView.text.isEmpty || memoTextView.text == "| 감정을 글로 표현해보세요 (100자 이내)")
         let isEmojiSelected = !selectedEmojis.contains(nil)
         
         addButton.isEnabled = isMemoValid && isEmojiSelected
@@ -304,7 +304,7 @@ class EmojiLogViewController: UIViewController, UITextViewDelegate, UITextFieldD
     // MARK: - 기록 추가
 
     @objc private func addRecord() {
-        guard let memoText = memoTextView.text, memoText != "| 감정을 글로 표현해보세요 (30자 이내)", !memoText.isEmpty else {
+        guard let memoText = memoTextView.text, memoText != "| 감정을 글로 표현해보세요 (100자 이내)", !memoText.isEmpty else {
             print("메모를 입력하세요.")
             return
         }

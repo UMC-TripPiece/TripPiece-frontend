@@ -1,14 +1,14 @@
 //
-//  VideoCompleteViewController.swift
+//  File.swift
 //  MyWorldApp
 //
-//  Created by 김나연 on 8/21/24.
+//  Created by 김나연 on 8/22/24.
 //
 
 import UIKit
 import SnapKit
 
-class VideoCompleteViewController: UIViewController {
+class LiveVideoCompleteViewController: UIViewController {
     
     // 기록 추가 완료를 나타내는 이미지뷰
     private lazy var checkImageView: UIImageView = {
@@ -55,6 +55,21 @@ class VideoCompleteViewController: UIViewController {
         return view
     }()
     
+    private lazy var previewImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "dum2")
+        return imageView
+    }()
+    
+    private lazy var previewSubLabel: UILabel = {
+        let label = UILabel()
+        label.text = "여행의 순간을 영상으로!"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
     // 썸네일 이미지를 표시할 이미지뷰
     private lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
@@ -64,18 +79,8 @@ class VideoCompleteViewController: UIViewController {
         return imageView
     }()
     
-    // 텍스트를 표시할 텍스트뷰
-    private lazy var previewTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 14)
-        textView.textAlignment = .center
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        return textView
-    }()
-    
     private lazy var previewStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [thumbnailImageView, previewTextView])
+        let stackView = UIStackView(arrangedSubviews: [previewImageView, previewSubLabel, thumbnailImageView])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.alignment = .center
@@ -136,7 +141,7 @@ class VideoCompleteViewController: UIViewController {
         thumbnailContainerView.snp.makeConstraints { make in
             make.top.equalTo(previewLabel.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(21)
-            make.height.equalTo(239)
+            make.height.equalTo(248)
         }
         
         previewStackView.snp.makeConstraints { make in
@@ -144,7 +149,7 @@ class VideoCompleteViewController: UIViewController {
         }
         
         thumbnailImageView.snp.makeConstraints { make in
-            make.height.equalTo(162)
+            make.width.height.equalTo(50)
         }
         
         doneButton.snp.makeConstraints { make in
@@ -161,18 +166,8 @@ class VideoCompleteViewController: UIViewController {
         return formatter.string(from: Date())
     }
     
-    // 썸네일 이미지와 텍스트를 설정하는 메서드
-    func configure(with image: UIImage, text: String) {
+    func setVideoComplete(with image: UIImage) {
         thumbnailImageView.image = image
-        previewTextView.text = text
-    }
-    
-    func setPreviewText(_ text: String) {
-        previewTextView.text = text
-    }
-    func setVideoComplete(with image: UIImage, text: String) {
-        thumbnailImageView.image = image
-        previewTextView.text = text
     }
     
     // 완료 버튼 클릭 시 호출되는 메서드
@@ -193,3 +188,4 @@ class VideoCompleteViewController: UIViewController {
             }
     }
 }
+

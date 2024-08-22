@@ -95,7 +95,7 @@ class PhotoLogViewController: UIViewController {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.textColor = UIColor(named: "Black3")
-        textView.text = "| 사진에 대해 설명해주세요!"
+        textView.text = "| 사진에 대해 설명해주세요! (100자 이내)"
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.shadowColor = UIColor.black.cgColor
         textView.layer.shadowOpacity = 0.2
@@ -227,7 +227,7 @@ class PhotoLogViewController: UIViewController {
     }
 
     private func updateAddButtonState() {
-        let isMemoValid = !memoTextView.text.isEmpty && memoTextView.text != "| 사진에 대해 설명해주세요!"
+        let isMemoValid = !memoTextView.text.isEmpty && memoTextView.text != "| 사진에 대해 설명해주세요! (100자 이내)"
         addButton.isEnabled = !selectedImages.isEmpty && isMemoValid
         addButton.backgroundColor = (selectedImages.isEmpty || !isMemoValid) ? UIColor(named: "Cancel") : UIColor(named: "Main")
     }
@@ -369,7 +369,7 @@ class PhotoLogViewController: UIViewController {
 //MARK: - Extension
 extension PhotoLogViewController: UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "| 사진에 대해 설명해주세요!" {
+        if textView.text == "| 사진에 대해 설명해주세요! (100자 이내)" {
             textView.text = ""
             textView.textColor = .black
         }
@@ -377,7 +377,7 @@ extension PhotoLogViewController: UITextViewDelegate, UIImagePickerControllerDel
 
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "| 사진에 대해 설명해주세요!"
+            textView.text = "| 사진에 대해 설명해주세요! (100자 이내)"
             textView.textColor = UIColor(named: "Black3")
         }
     }
@@ -386,7 +386,7 @@ extension PhotoLogViewController: UITextViewDelegate, UIImagePickerControllerDel
         let currentText = textView.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-        return updatedText.count <= 30 // 글자 수 제한 30자
+        return updatedText.count <= 100 // 글자 수 제한 100자
     }
 
     func textViewDidChange(_ textView: UITextView) {

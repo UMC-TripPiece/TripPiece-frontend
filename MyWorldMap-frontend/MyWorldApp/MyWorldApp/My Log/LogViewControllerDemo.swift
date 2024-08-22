@@ -17,17 +17,44 @@ struct TravelItem {
     let location: String
     let data: String // 이미지 이름 추가
 }
+
+struct TravelData: Decodable {
+    let cityName: String
+    let countryName: String
+    let countryImage: String
+    let endDate: String
+    let id: Int
+    let startDate: String
+    let status: String
+    let thumbnail: String
+    let title: String
+}
+
+struct PieceData: Codable {
+    let category: String
+    let cityName: String
+    let countryName: String
+    let createdAt: String
+    let mediaUrl: String?
+    let memo: String?
+}
+
+struct TravelResponseData: Decodable {
+    let result: [TravelData]
+}
+
+struct PieceResponseData: Decodable {
+    let result: [PieceData]
+}
+
 class TravelRecordViewController: UIViewController {
     
-    var allItems: [TravelItem] = [
-        TravelItem(type: .photo, title: "사진", date: "2024.06.15 13:43", location: "후쿠오카, 일본", data: "city1"),
-        TravelItem(type: .video, title: "영상", date: "2024.06.15 10.21", location: "런던, 영국", data: "city3"),
-        TravelItem(type: .photo, title: "사진", date: "2024.01.09 11:43", location: "뉴욕, 미국", data: "city4"),
-//        TravelItem(type: .music, title: "다낭, 베트남", date: "2024/08/17~2024/08/21", location: "다낭, 베트남", data: "city1"),
-        TravelItem(type: .memo, title: "메모", date: "2024.01.09 11:43", location: "서울, 대한민국", data: "롯데월드 츄러스 가게 앞에서 류정란 성대모사를 했다"),
-        TravelItem(type: .memo, title: "메모", date: "2024.01.09 11:43", location: "서울, 대한민국", data: "🥰🙀😡🥲")
-    ]
-    var filteredItems: [TravelItem] = []
+    func getRefreshToken() -> String? {
+        return UserDefaults.standard.string(forKey: "refreshToken")
+    }
+    
+    var allItems: [PieceData] = []
+    var filteredItems: [PieceData] = []
     
     class FilterButton: UIButton {
         init(title: String, tag: Int, target: Any?, action: Selector) {
@@ -89,7 +116,6 @@ class TravelRecordViewController: UIViewController {
     private lazy var mapView: GMSMapView = {
         let camera = GMSCameraPosition.camera(withLatitude: 37.5665, longitude: 126.9780, zoom: 6.0)
         let mapView = GMSMapView.map(withFrame: .zero, camera: camera)
-        mapView.layer.cornerRadius = 16
         return mapView
     }()
     
@@ -135,12 +161,11 @@ class TravelRecordViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        filteredItems = allItems
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTravelLogStarted), name: .travelLogStarted, object: nil)
+        getTravelRecord()
+        getPieceRecord()
         setupView()
-        setupDummies()
-        setupConstraints() // 제약 조건을 별도의 함수로 설정
-
-        addItemsToStackView(stackView: stackView, items: filteredItems)
+        setupConstraints()
     }
     
     func setupView() {
@@ -190,12 +215,6 @@ class TravelRecordViewController: UIViewController {
         
         updateSelectedFilterButton(selectedButton: allButton)
     }
-    func setupDummies() {
-        addTravelLogCard(imageName: "city1", title: "🇯🇵 연우와 우정 여행", date: "2024/08/22~2024/08/26", subtitle: "후쿠오카, 일본", isFirstCard: true)
-        addTravelLogCard(imageName: "city2", title: "🇭🇺 혼자서 유럽 일주", date: "2024/08/17~2024/08/21", subtitle: "로마, 이탈리아", isFirstCard: false)
-        addTravelLogCard(imageName: "city3", title: "🇺🇸 미국 교환학생", date:"2023/08/17~2023/12/21", subtitle: "뉴욕, 미국", isFirstCard: false)
-        addTravelLogCard(imageName: "city4", title: "🇰🇷 부모님과 제주도", date: "2023/06/02~2023/06/05", subtitle: "제주, 대한민국", isFirstCard: false)
-    }
     func setupConstraints() {
         navBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -209,7 +228,7 @@ class TravelRecordViewController: UIViewController {
         }
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalToSuperview()  // scrollView의 너비는 고정
+            make.width.equalToSuperview()
         }
         
         mapView.snp.makeConstraints { make in
@@ -222,7 +241,8 @@ class TravelRecordViewController: UIViewController {
         }
         TravelLogScrollView.snp.makeConstraints { make in
             make.top.equalTo(tripSectionTitle.snp.bottom)
-            make.leading.trailing.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview().inset(16)
             make.height.equalTo(240)
         }
         TravelLogStackView.snp.makeConstraints { make in
@@ -254,26 +274,96 @@ class TravelRecordViewController: UIViewController {
         }
     }
     
-    func addTravelLogCard(imageName: String, title: String, date: String, subtitle: String, isFirstCard: Bool) {
+    func getTravelRecord() {
+        guard let url = URL(string: "http://3.34.123.244:8080/travels") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("*/*", forHTTPHeaderField: "accept")
+        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
+
+        // Create a data task
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            // Handle errors
+            if let error = error {
+                print("Error: \(error)")
+                return
+            }
+            
+            // Handle response
+            if let response = response as? HTTPURLResponse {
+                print("Status code: \(response.statusCode)")
+            }
+            
+            // Handle data
+            if let data = data {
+                if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                    print("Response JSON: \(json)")
+                    self.parseOngoingData(from: data)
+                } else {
+                    print("Invalid JSON data")
+                }
+            }
+        }
+
+        // Start the task
+        task.resume()
+    }
+    
+    func parseOngoingData(from jsonData: Data) {
+        do {
+            let decoder = JSONDecoder()
+            let responseData = try decoder.decode(TravelResponseData.self, from: jsonData)
+            
+            DispatchQueue.main.async {
+                // result 배열을 역순으로 순회
+                responseData.result.reversed().forEach { data in
+                    print("City: \(data.cityName), Country: \(data.countryName), Title: \(data.title), startDate: \(data.startDate), endDate: \(data.endDate)")
+                    
+                    let isOngoing = data.status == "ONGOING"
+                    print(isOngoing)
+                    self.addTravelLogCard(
+                        imageURL: data.thumbnail,
+                        title: "\(data.countryImage) \(data.title)",
+                        date: "\(data.startDate)~\(data.endDate)",
+                        subtitle: "\(data.cityName), \(data.countryName)",
+                        isONGOING: isOngoing
+                    )
+                }
+            }
+        } catch {
+            print("JSON 파싱 중 오류 발생: \(error)")
+        }
+    }
+
+    func addTravelLogCard(imageURL: String, title: String, date: String, subtitle: String, isONGOING: Bool) {
         let shadowView = UIView()
-            shadowView.backgroundColor = .clear
-            shadowView.layer.shadowColor = UIColor.black.cgColor
-            shadowView.layer.shadowOpacity = 0.2
-            shadowView.layer.shadowOffset = CGSize(width: 0, height: 3)
-            shadowView.layer.shadowRadius = 5
-            shadowView.layer.cornerRadius = 10
+        shadowView.backgroundColor = .clear
+        shadowView.layer.shadowColor = UIColor.black.cgColor
+        shadowView.layer.shadowOpacity = 0.2
+        shadowView.layer.shadowOffset = CGSize(width: 0, height: 3)
+        shadowView.layer.shadowRadius = 5
+        shadowView.layer.cornerRadius = 10
         
         let cardView = UIView()
         cardView.backgroundColor = .black
-            cardView.layer.cornerRadius = 10
-            cardView.clipsToBounds = true
+        cardView.layer.cornerRadius = 10
+        cardView.clipsToBounds = true
         
-        let imageView = UIImageView(image: UIImage(named: imageName))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         cardView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+
+        // SDWebImage를 사용하여 이미지 URL을 로드
+        if let imageUrl = URL(string: imageURL) {
+            imageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
         }
         
         let overlayView = UIView()
@@ -299,13 +389,13 @@ class TravelRecordViewController: UIViewController {
         isTravelButton.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .bold)
         isTravelButton.setTitleColor(.white, for: .normal)
         isTravelButton.layer.cornerRadius = 8
-        isTravelButton.isHidden = true
+        isTravelButton.isHidden = !isONGOING  // 수정: isONGOING 플래그에 따라 버튼 표시 여부 결정
         overlayView.addSubview(isTravelButton)
         isTravelButton.snp.makeConstraints { make in
             make.height.equalTo(15)
             make.left.equalTo(titleLabel.snp.right).offset(12)
             make.centerY.equalTo(titleLabel.snp.centerY)
-            make.width.greaterThanOrEqualTo(40)// Adjust if profile image exists
+            make.width.greaterThanOrEqualTo(40)
         }
         
         let dividerView = UIView()
@@ -334,7 +424,7 @@ class TravelRecordViewController: UIViewController {
         overlayView.addSubview(dateLabel)
         dateLabel.snp.makeConstraints { make in
             make.left.equalTo(dateIconView.snp.right).offset(8)
-            make.centerY.equalTo(dateIconView.snp.centerY)// Adjust if profile image exists
+            make.centerY.equalTo(dateIconView.snp.centerY)
         }
         
         let locationIconView = UIImageView(image: UIImage(named: "locationIcon"))
@@ -357,30 +447,83 @@ class TravelRecordViewController: UIViewController {
         }
         
         shadowView.addSubview(cardView)
-        
         TravelLogStackView.addArrangedSubview(shadowView)
         shadowView.snp.makeConstraints { make in
-                make.width.equalTo(280)
-                make.height.equalTo(150)
-            }
+            make.width.equalTo(280)
+            make.height.equalTo(150)
+        }
         cardView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()  // cardView가 shadowView 안에서 꽉 차게 설정
-            }
+            make.edges.equalToSuperview()
+        }
         
-        if isFirstCard {
-            isTravelButton.isHidden = false
+        if isONGOING {
             shadowView.layer.borderColor = UIColor(hex: "FD2D69").cgColor
             shadowView.layer.shadowColor = UIColor(hex: "FD2D69").cgColor
-            shadowView.layer.shadowOpacity = 0.4 // 투명도 설정 (0.0 ~ 1.0)
-            shadowView.layer.shadowOffset = CGSize(width: 0, height: 0) // 섀도우의 위치 설정
-            shadowView.layer.shadowRadius = 5.0 // 섀도우의 블러 정도 설정
-            shadowView.layer.borderWidth = 1.0  // 원하는 테두리 두께로 설정
-            shadowView.snp.makeConstraints { make in
-                make.left.equalToSuperview().inset(16)
-            }
+            shadowView.layer.shadowOpacity = 0.4
+            shadowView.layer.shadowOffset = CGSize(width: 0, height: 0)
+            shadowView.layer.shadowRadius = 5.0
+            shadowView.layer.borderWidth = 1.0
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OngoingTravelTapped))
+            shadowView.addGestureRecognizer(tapGesture)
         }
     }
+    
+    //MARK: - MyLog 이동
+    @objc private func OngoingTravelTapped() {
+        let MyLogVC = MyLogViewController()
+        MyLogVC.hidesBottomBarWhenPushed = false
+        navigationController?.pushViewController(MyLogVC, animated: true)
+    }
+    
+    func getPieceRecord() {
+        guard let url = URL(string: "http://3.34.123.244:8080/mytrippieces/all/earliest") else {
+            print("Invalid URL")
+            return
+        }
 
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("*/*", forHTTPHeaderField: "accept")
+        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                return
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                print("Status code: \(response.statusCode)")
+            }
+            
+            if let data = data {
+                if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                    print("Response JSON: \(json)")
+                    self.parsePieceData(from: data)
+                } else {
+                    print("Invalid JSON data")
+                }
+            }
+        }
+
+        task.resume()
+    }
+    
+    func parsePieceData(from jsonData: Data) {
+        do {
+            let decoder = JSONDecoder()
+            let responseData = try decoder.decode(PieceResponseData.self, from: jsonData)
+            
+            DispatchQueue.main.async {
+                self.allItems = responseData.result
+                self.filteredItems = self.allItems.reversed() // 배열을 역순으로 정렬
+                self.addItemsToStackView(items: Array(self.filteredItems))
+            }
+        } catch {
+            print("JSON parsing error: \(error)")
+        }
+    }
+    
     @objc func filterButtonTapped(_ sender: UIButton) {
         let selectedType: TravelItemType
         
@@ -398,15 +541,69 @@ class TravelRecordViewController: UIViewController {
         default:
             selectedType = .all
         }
+
         if selectedType == .all {
             filteredItems = allItems
         } else {
-            filteredItems = allItems.filter { $0.type == selectedType }
+            filteredItems = allItems.filter { item in
+                switch selectedType {
+                case .photo:
+                    return item.category == "PICTURE"
+                case .video:
+                    return item.category == "VIDEO"
+                case .memo:
+                    return item.category == "MEMO"
+                case .music:
+                    return item.category == "MUSIC"
+                default:
+                    return false
+                }
+            }
         }
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }  // 기존 뷰 제거
-        addItemsToStackView(stackView: stackView, items: filteredItems)  // 새로운 뷰 추가
+        filteredItems = filteredItems.reversed()
+
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        addItemsToStackView(items: filteredItems)
         
         updateSelectedFilterButton(selectedButton: sender as! FilterButton)
+    }
+    
+    func addItemsToStackView(items: [PieceData]) {
+        
+        let inputFormatter = DateFormatter()
+           inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+
+           let outputFormatter = DateFormatter()
+           outputFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+        
+        items.forEach { item in
+            let title: String
+
+            switch item.category {
+                    case "PICTURE":
+                        title = "사진"
+                    case "VIDEO":
+                        title = "영상"
+                    case "MEMO":
+                        title = "메모"
+                    case "MUSIC":
+                        title = "음악"
+                    default:
+                        fatalError("Unknown category: \(item.category)")
+                    }
+
+            let createdAtDate = inputFormatter.date(from: item.createdAt) ?? Date()
+            let formattedCreatedAt = outputFormatter.string(from: createdAtDate)
+            
+            addPiecesToStackView(
+                type: item.category,
+                mediaURL: item.mediaUrl ?? "",
+                memo: item.memo ?? "",
+                title: title,
+                createdAt: formattedCreatedAt,
+                location: "\(item.cityName), \(item.countryName)"
+            )
+        }
     }
     
     func updateSelectedFilterButton(selectedButton: FilterButton) {
@@ -416,42 +613,40 @@ class TravelRecordViewController: UIViewController {
         }
     }
     
-    func addItemsToStackView(stackView: UIStackView, items: [TravelItem]) {
-        for item in items {
-            let itemView = UIView()
-            itemView.backgroundColor = .white
-            itemView.layer.cornerRadius = 10
-            itemView.layer.shadowColor = UIColor.black.cgColor
-            itemView.layer.shadowOpacity = 0.1
-            itemView.layer.shadowOffset = CGSize(width: 0, height: 3)
-            itemView.layer.shadowRadius = 4
-            itemView.clipsToBounds = true
+    func addPiecesToStackView(type: String, mediaURL: String, memo: String, title: String, createdAt: String, location: String) {
+            let pieceView = UIView()
+            pieceView.backgroundColor = .white
+            pieceView.layer.cornerRadius = 10
+            pieceView.layer.shadowColor = UIColor.black.cgColor
+            pieceView.layer.shadowOpacity = 0.1
+            pieceView.layer.shadowOffset = CGSize(width: 0, height: 3)
+            pieceView.layer.shadowRadius = 4
+            pieceView.clipsToBounds = true
             
             let sideBar = UIView()
             sideBar.backgroundColor = .white
-            itemView.addSubview(sideBar)
+            pieceView.addSubview(sideBar)
             sideBar.snp.makeConstraints { make in
                 make.right.top.bottom.equalToSuperview()
-                make.width.equalToSuperview().multipliedBy(0.75)
             }
             
             let titleLabel = UILabel()
-            titleLabel.text = item.title
+            titleLabel.text = title
             titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
             titleLabel.textColor = .black
             sideBar.addSubview(titleLabel)
             
-            if item.type == .memo {
+            if type == "MEMO" {
                 let memoContainerView = UIView()
                 memoContainerView.backgroundColor = .lightGray
-                itemView.addSubview(memoContainerView)
-
+                memoContainerView.clipsToBounds = true
+                pieceView.addSubview(memoContainerView)
                     memoContainerView.snp.makeConstraints { make in
-                        make.width.equalToSuperview().multipliedBy(0.4)
                         make.left.top.bottom.equalToSuperview()
+                        make.width.equalToSuperview().multipliedBy(0.4)
                     }
                 let memoLabel = UILabel()
-                memoLabel.text = item.data
+                memoLabel.text = memo
                 memoLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
                 memoLabel.textColor = .white
                 memoLabel.numberOfLines = 0
@@ -467,13 +662,14 @@ class TravelRecordViewController: UIViewController {
                 sideBar.snp.makeConstraints { make in
                     make.width.equalToSuperview().multipliedBy(0.6)
                 }
-            } else if (item.type == .photo) || (item.type == .video) {
+            } else if (type == "PICTURE") || (type == "VIDEO") {
                 let imageView = UIImageView()
-                imageView.image = UIImage(named: item.data)
                 imageView.contentMode = .scaleAspectFill
                 imageView.clipsToBounds = true
-                itemView.addSubview(imageView)
-                
+                if let imageUrl = URL(string: mediaURL) {
+                    imageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
+                }
+                pieceView.addSubview(imageView)
                 imageView.snp.makeConstraints { make in
                     make.width.equalToSuperview().multipliedBy(0.25)
                     make.left.top.bottom.equalToSuperview()
@@ -481,6 +677,9 @@ class TravelRecordViewController: UIViewController {
                 titleLabel.snp.makeConstraints { make in
                     make.top.equalToSuperview().offset(8)
                     make.leading.equalTo(imageView.snp.trailing).offset(8)
+                }
+                sideBar.snp.makeConstraints { make in
+                    make.width.equalToSuperview().multipliedBy(0.75)
                 }
             } else {
                 titleLabel.snp.makeConstraints { make in
@@ -498,7 +697,7 @@ class TravelRecordViewController: UIViewController {
             }
             
             let timeLabel = UILabel()
-            timeLabel.text = item.date
+            timeLabel.text = createdAt
             timeLabel.font = UIFont.systemFont(ofSize: 12)
             timeLabel.textColor = UIColor(hex: "636363")
             sideBar.addSubview(timeLabel)
@@ -517,7 +716,7 @@ class TravelRecordViewController: UIViewController {
             }
             
             let locationLabel = UILabel()
-            locationLabel.text = item.location
+            locationLabel.text = location
             locationLabel.font = UIFont.systemFont(ofSize: 12)
             locationLabel.textColor = UIColor(hex: "636363")
             sideBar.addSubview(locationLabel)
@@ -525,16 +724,36 @@ class TravelRecordViewController: UIViewController {
                 make.centerY.equalTo(locationIconView.snp.centerY)
                 make.left.equalTo(locationIconView.snp.right).offset(5)
             }
-            stackView.addArrangedSubview(itemView)
-            itemView.snp.makeConstraints { make in
-                make.height.equalTo(80)  // 각 itemView의 고정된 높이
-            }
+            stackView.addArrangedSubview(pieceView)
+        pieceView.snp.makeConstraints { make in
+            make.height.equalTo(80)  // 각 itemView의 고정된 높이
         }
     }
+    
     @objc private func startTravel() {
         let viewController = StartLogViewController()
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
+    
+    func clearStackViews() {
+            stackView.arrangedSubviews.forEach { view in
+                stackView.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+            TravelLogStackView.arrangedSubviews.forEach { view in
+                TravelLogStackView.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+        }
+    @objc private func handleTravelLogStarted() {
+        clearStackViews()
+        
+        getTravelRecord()
+        getPieceRecord()
+    }
 }
 
+extension Notification.Name {
+    static let travelLogStarted = Notification.Name("travelLogStarted")
+}

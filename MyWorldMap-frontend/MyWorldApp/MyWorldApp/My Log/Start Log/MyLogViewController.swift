@@ -8,9 +8,31 @@
 import UIKit
 import SnapKit
 
+extension UIViewController {
+    func postPuzzleCompletion(index: Int) {
+        NotificationCenter.default.post(name: .puzzlePieceCompleted, object: index)
+    }
+}
+
 class MyLogViewController: UIViewController {
+    
     //MARK: - UI
     ///상단뷰
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        // xmark 아이콘 설정
+        let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)
+        let image = UIImage(systemName: "xmark", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        // 버튼의 아이콘 색상을 흰색으로 설정
+        button.tintColor = .white
+        // 버튼의 액션 설정
+        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        // 버튼에 제약 조건 설정
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -120,7 +142,9 @@ class MyLogViewController: UIViewController {
     private lazy var addRecordScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
-        scrollView.isScrollEnabled = false
+        scrollView.isScrollEnabled = true
+        scrollView.showsVerticalScrollIndicator = false  // 수직 스크롤 인디케이터 숨기기
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate = self
         return scrollView
     }()
@@ -184,6 +208,8 @@ class MyLogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePuzzlePieceCompletion), name: .puzzlePieceCompleted, object: nil)
 
         self.view.backgroundColor = .white
         setupUI()
@@ -211,8 +237,8 @@ class MyLogViewController: UIViewController {
         view.addSubview(mainTitleLabel)
         view.addSubview(calendarImageView)
         view.addSubview(calendarLabel)
+        view.addSubview(closeButton)
         
-        ///스크롤로 변경
         contentView.addSubview(recordLabel)
         contentView.addSubview(puzzleCollectionView)
         contentView.addSubview(addRecordLabel)
@@ -226,36 +252,69 @@ class MyLogViewController: UIViewController {
         contentView.addSubview(endTripButton)
         
         topImageView.addSubview(titleLabel)
-               
+        
         setupConstraints()
     }
     
     private func setupAddRecordViews() {
+        addRecordScrollView.delegate = self  // 델리게이트 설정
+        
+        var lastContainerView: UIView?
+
         for (index, imageName) in addRecordImages.enumerated() {
+            let containerView = UIView()
+            containerView.backgroundColor = .clear
+            addRecordScrollView.addSubview(containerView)
+
             let imageView = UIImageView()
             imageView.image = UIImage(named: imageName)
             imageView.contentMode = .scaleAspectFit
             imageView.layer.shadowColor = UIColor.black.cgColor
             imageView.layer.shadowOpacity = 0.1
             imageView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            addRecordScrollView.addSubview(imageView)
-            
-            ///이미지 탭할경우 이동
+            imageView.layer.cornerRadius = 10
+            imageView.clipsToBounds = false
+            containerView.addSubview(imageView)
+
             imageView.isUserInteractionEnabled = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
             imageView.addGestureRecognizer(tapGesture)
             imageView.tag = index
-            
+
+            containerView.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()  // 컨테이너 뷰를 스크롤 뷰에 맞춤
+                make.height.equalTo(addRecordScrollView) // 스크롤 뷰 높이에 맞춤
+                make.width.equalTo(addRecordScrollView.snp.width).offset(-20)  // 좌우 간격 추가
+                if let lastContainerView = lastContainerView {
+                    make.leading.equalTo(lastContainerView.snp.trailing).offset(20)
+                } else {
+                    make.leading.equalToSuperview().offset(10)
+                }
+            }
+
             imageView.snp.makeConstraints { make in
-                make.width.equalTo(UIScreen.main.bounds.width)
-                make.leading.equalToSuperview().offset(CGFloat(index) * UIScreen.main.bounds.width)
+                make.top.equalToSuperview().offset(10)  // 이미지뷰 상단 패딩
+                make.bottom.equalToSuperview().offset(-10)  // 이미지뷰 하단 패딩
+                make.leading.trailing.equalToSuperview()  // 좌우는 컨테이너 뷰에 맞춤
+            }
+
+            lastContainerView = containerView
+        }
+
+        if let lastContainerView = lastContainerView {
+            lastContainerView.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().offset(-10)
             }
         }
-        addRecordScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * CGFloat(addRecordImages.count), height: 150)
     }
     
     //MARK: - Snapkit
     private func setupConstraints() {
+        closeButton.snp.makeConstraints{ make in
+            make.top.equalToSuperview().inset(56)
+            make.trailing.equalToSuperview().inset(25)
+        }
+        
         topImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(235)
@@ -358,6 +417,16 @@ class MyLogViewController: UIViewController {
     }
     
     //MARK: - Function
+    
+    @objc private func closeButtonTapped() {
+        if let travelRecordVC = navigationController?.viewControllers.first(where: { $0 is TravelRecordViewController }) as? TravelRecordViewController {
+            travelRecordVC.clearStackViews()
+                travelRecordVC.getTravelRecord()
+                travelRecordVC.getPieceRecord()
+            }
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc private func pageControlDidChange(_ sender: UIPageControl) {
         let currentPage = sender.currentPage
         let offset = CGFloat(currentPage) * UIScreen.main.bounds.width
@@ -395,8 +464,12 @@ class MyLogViewController: UIViewController {
     }
     
     @objc private func endTrip() {
+        guard let travelId = travelId else {
+            print("Travel ID가 없습니다.")
+            return
+        }
         // 이동할 뷰 컨트롤러 생성
-        let endTripAlertViewController = EndTripAlertViewController()
+        let endTripAlertViewController = EndTripAlertViewController(travelId: travelId)
         // 모달로 표시할 때 기존 뷰 컨트롤러를 배경에 반투명하게 보이도록 설정
         endTripAlertViewController.modalPresentationStyle = .overCurrentContext
         endTripAlertViewController.modalTransitionStyle = .crossDissolve // 부드러운 전환을 위해
@@ -439,7 +512,7 @@ class MyLogViewController: UIViewController {
             print("Travel ID가 없습니다.")
             return
         }
-        let mission2VC = SelfieLogViewController(travelId: travelId)
+        let mission2VC = LiveVideoLogViewController(travelId: travelId)
         mission2VC.modalPresentationStyle = .fullScreen
         self.present(mission2VC, animated: true, completion: nil)
     }
@@ -553,6 +626,13 @@ class MyLogViewController: UIViewController {
             }
         }
         task.resume()
+    }
+    
+    @objc private func handlePuzzlePieceCompletion(notification: Notification) {
+        if let index = notification.object as? Int {
+            puzzleData[index].puzzleCount += 1
+            puzzleCollectionView.reloadData()
+        }
     }
 }
 //MARK: - Extension

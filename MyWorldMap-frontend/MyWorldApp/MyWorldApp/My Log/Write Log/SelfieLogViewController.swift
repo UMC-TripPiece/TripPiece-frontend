@@ -25,6 +25,7 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
         return UserDefaults.standard.string(forKey: "refreshToken")
     }
     var selectedImageData: Data?
+    var mySelfie: UIImage?
     var status = false
     
     //MARK: - UI
@@ -254,6 +255,7 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             photoImageView.image = selectedImage
+            mySelfie = selectedImage
             selectedImageData = selectedImage.jpegData(compressionQuality: 0.2)
             addPhotoLabel.isHidden = true
             validateInput()  // Call validation after selecting an image
@@ -352,7 +354,15 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
    
     func proceedIfLogUpdateSuccessful() {
         if status {
+            guard let thumbnail = mySelfie else {
+                // 에러 처리: 텍스트나 썸네일이 없을 때
+                let alert = UIAlertController(title: "경고", message: "썸네일 또는 텍스트가 없습니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "확인", style: .default))
+                present(alert, animated: true)
+                return
+            }
             let recordCompleteVC = SelfieRecordCompleteViewController()
+            recordCompleteVC.setVideoComplete(with: thumbnail)
             recordCompleteVC.modalPresentationStyle = .fullScreen
             present(recordCompleteVC, animated: true, completion: nil)
         }

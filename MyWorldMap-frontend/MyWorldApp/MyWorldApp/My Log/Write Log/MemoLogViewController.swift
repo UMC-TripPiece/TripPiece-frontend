@@ -79,7 +79,7 @@ class MemoLogViewController: UIViewController {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.textColor = UIColor(named: "Black3")
-        textView.text = "| 메모를 작성해주세요 (100자 이내)"
+        textView.text = "| 메모를 작성해주세요 (150자 이내)"
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.shadowColor = UIColor.black.cgColor
         textView.layer.shadowOpacity = 0.2
@@ -178,8 +178,8 @@ class MemoLogViewController: UIViewController {
     //MARK: - Function
     
     private func updateAddButtonState() {
-        addButton.isEnabled = memoTextView.text != "| 메모를 작성해주세요 (100자 이내)" && !memoTextView.text.isEmpty
-        addButton.backgroundColor = memoTextView.text != "| 메모를 작성해주세요 (100자 이내)" && !memoTextView.text.isEmpty ? UIColor(named: "Main3") : UIColor(named: "Cancel")
+        addButton.isEnabled = memoTextView.text != "| 메모를 작성해주세요 (150자 이내)" && !memoTextView.text.isEmpty
+        addButton.backgroundColor = memoTextView.text != "| 메모를 작성해주세요 (150자 이내)" && !memoTextView.text.isEmpty ? UIColor(named: "Main3") : UIColor(named: "Cancel")
     }
     
     ///뒤로가기 버튼
@@ -256,7 +256,7 @@ class MemoLogViewController: UIViewController {
 //MARK: - Extension
 extension MemoLogViewController: UITextViewDelegate, UINavigationControllerDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "| 메모를 작성해주세요 (100자 이내)" {
+        if textView.text == "| 메모를 작성해주세요 (150자 이내)" {
             textView.text = nil
             textView.textColor = .black
         }
@@ -264,7 +264,7 @@ extension MemoLogViewController: UITextViewDelegate, UINavigationControllerDeleg
 
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "| 메모를 작성해주세요 (100자 이내)"
+            textView.text = "| 메모를 작성해주세요 (150자 이내)"
             textView.textColor = UIColor(named: "Black3")
         }
         updateAddButtonState()
@@ -279,7 +279,7 @@ extension MemoLogViewController: UITextViewDelegate, UINavigationControllerDeleg
         let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
 
         // 100자 제한
-        return updatedText.count <= 100
+        return updatedText.count <= 150
     }
     
     func textViewDidChange(_ textView: UITextView) {

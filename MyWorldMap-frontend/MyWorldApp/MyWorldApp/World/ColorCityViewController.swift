@@ -411,21 +411,26 @@ class ColorCityViewController: UIViewController {
     }
     
     
-    func dismissAllViewControllers(from viewController: UIViewController?, completion: @escaping () -> Void) {
+    func dismissToWorldViewController(from viewController: UIViewController?, completion: @escaping () -> Void) {
         guard let viewController = viewController else {
+            completion()
+            return
+        }
+
+        // 현재 뷰 컨트롤러가 WorldViewController라면 dismiss 중지하고 completion 호출
+        if viewController is WorldViewController {
             completion()
             return
         }
 
         if let presentingViewController = viewController.presentingViewController {
             viewController.dismiss(animated: true) {
-                self.dismissAllViewControllers(from: presentingViewController, completion: completion)
+                self.dismissToWorldViewController(from: presentingViewController, completion: completion)
             }
         } else {
             completion()
         }
     }
-
     
     
     
@@ -442,7 +447,7 @@ class ColorCityViewController: UIViewController {
                             print("업로드 성공: \(value)")
                             DispatchQueue.main.async {
                                 // 이 코드를 사용하여 모든 모달 뷰 컨트롤러를 닫습니다.
-                                self.dismissAllViewControllers(from: self) {
+                                self.dismissToWorldViewController(from: self) {
                                     // 모든 모달이 닫힌 후 알림을 보냅니다.
                                     NotificationCenter.default.post(name: .didPostMapData, object: nil)
                                 }

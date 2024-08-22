@@ -88,7 +88,7 @@ class VideoLogViewController: UIViewController {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 15)
         textView.textColor = UIColor(named: "Black3")
-        textView.text = "| 영상에 대해 설명해주세요 (30자 이내)"
+        textView.text = "| 영상에 대해 설명해주세요 (100자 이내)"
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.shadowColor = UIColor.black.cgColor
         textView.layer.shadowOpacity = 0.2

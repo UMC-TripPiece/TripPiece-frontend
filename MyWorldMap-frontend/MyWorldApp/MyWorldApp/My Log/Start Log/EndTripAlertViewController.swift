@@ -9,7 +9,16 @@ import UIKit
 
 class EndTripAlertViewController: UIViewController {
     
-    
+    var travelId: Int
+
+    init(travelId: Int) {
+        self.travelId = travelId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     // MARK: - UI View
@@ -182,7 +191,40 @@ class EndTripAlertViewController: UIViewController {
         let puzzleViewController = PuzzleViewController()
         puzzleViewController.modalPresentationStyle = .overCurrentContext
         puzzleViewController.modalTransitionStyle = .crossDissolve
-        present(puzzleViewController, animated: true, completion: nil)
+        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/end") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let parameters: [String: Any] = ["travelId": travelId]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        } catch {
+            print("Failed to encode parameters: \(error.localizedDescription)")
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Failed to post end request: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received.")
+                return
+            }
+            
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("Response: \(responseString)")
+                // POST 요청이 성공하면 기록 완료 화면으로 이동
+                DispatchQueue.main.async {
+                    self.present(puzzleViewController, animated: true, completion: nil)
+                }
+            }
+        }
+        task.resume()
         
     }
 

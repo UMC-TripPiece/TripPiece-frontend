@@ -38,6 +38,7 @@
 		3363FFDF2C7207B8009FFF93 /* TravelInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */; };
 		337D7F492C767D2500C9BAA4 /* VideoCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337D7F482C767D2500C9BAA4 /* VideoCompleteViewController.swift */; };
 		337D7F4D2C76DA2500C9BAA4 /* PhotoCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337D7F4C2C76DA2500C9BAA4 /* PhotoCompleteViewController.swift */; };
+		337D7F512C773E8E00C9BAA4 /* LiveVideoCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337D7F502C773E8E00C9BAA4 /* LiveVideoCompleteViewController.swift */; };
 		33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */; };
 		674A11D52C7645250026938A /* InteractiveMap in Frameworks */ = {isa = PBXBuildFile; productRef = 674A11D42C7645250026938A /* InteractiveMap */; };
 		674A11D72C76463A0026938A /* world-low.svg in Resources */ = {isa = PBXBuildFile; fileRef = 674A11D62C76463A0026938A /* world-low.svg */; };
@@ -158,6 +159,7 @@
 		3363FFDE2C7207B8009FFF93 /* TravelInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelInfo.swift; sourceTree = "<group>"; };
 		337D7F482C767D2500C9BAA4 /* VideoCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompleteViewController.swift; sourceTree = "<group>"; };
 		337D7F4C2C76DA2500C9BAA4 /* PhotoCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCompleteViewController.swift; sourceTree = "<group>"; };
+		337D7F502C773E8E00C9BAA4 /* LiveVideoCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveVideoCompleteViewController.swift; sourceTree = "<group>"; };
 		33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientNavigationBar.swift; sourceTree = "<group>"; };
 		674A11D62C76463A0026938A /* world-low.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-low.svg"; sourceTree = "<group>"; };
 		674A11D82C7646A70026938A /* FloatingBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBadgeView.swift; sourceTree = "<group>"; };
@@ -415,10 +417,11 @@
 				335667692C5CBE6900100C0E /* VideoLogViewController.swift */,
 				337D7F482C767D2500C9BAA4 /* VideoCompleteViewController.swift */,
 				A9EECA862C74F5A4005AB0EC /* LiveVideoLogViewController.swift */,
+				337D7F502C773E8E00C9BAA4 /* LiveVideoCompleteViewController.swift */,
 				A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */,
+				A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */,
 				3356676B2C5CBE8100100C0E /* MemoLogViewController.swift */,
 				334A1B0E2C749BF30031C26C /* MemoCompleteViewController.swift */,
-				A9EECA882C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift */,
 				A979B17E2C764D40001D9535 /* EmojiLogViewController.swift */,
 				A979B1822C764D9B001D9535 /* EmojiCompleteViewController.swift */,
 			);
@@ -671,6 +674,7 @@
 				337D7F4D2C76DA2500C9BAA4 /* PhotoCompleteViewController.swift in Sources */,
 				674A11DD2C7646D90026938A /* ViewModel.swift in Sources */,
 				33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */,
+				337D7F512C773E8E00C9BAA4 /* LiveVideoCompleteViewController.swift in Sources */,
 				67A1CE242C76CF8A007FBC72 /* EndTripAlertViewController.swift in Sources */,
 				335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */,
 				335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */,

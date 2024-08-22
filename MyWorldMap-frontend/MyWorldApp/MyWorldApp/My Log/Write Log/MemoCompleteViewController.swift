@@ -122,20 +122,20 @@ class MemoCompleteViewController: UIViewController {
     func setPreviewText(_ text: String) {
         previewTextView.text = text
     }
-    
     @objc private func doneButtonTapped() {
-        // 모든 모달을 닫고 루트 뷰인 탭바로 이동
+        let puzzleIndex = 3
+        postPuzzleCompletion(index: puzzleIndex)
         var targetViewController = presentingViewController
-        
-        // MemoLogViewController와 RecordCompleteViewController를 모두 dismiss
+         
         while let presentingVC = targetViewController?.presentingViewController {
             targetViewController = presentingVC
         }
-        
+         
         targetViewController?.dismiss(animated: true) {
-            if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? TabBar {
-                tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let tabBarController = windowScene.windows.first?.rootViewController as? TabBar {
+                    tabBarController.selectedIndex = 1 // "나의 기록" 탭으로 이동
+                }
             }
-        }
     }
 }

@@ -82,7 +82,7 @@ class PhotoCompleteViewController: UIViewController {
     private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.setTitle("완료", for: .normal)
-        button.backgroundColor = UIColor(named: "Main2")
+        button.backgroundColor = UIColor(named: "Main")
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button

@@ -123,13 +123,6 @@ class WorldViewController: UIViewController {
         
         
         setupUI()
-        //setUpBadgeView()
-        
-        // Gesture Recognizer 설정
-        /*let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissSearch))
-        tapGesture.cancelsTouchesInView = false // 다른 터치 이벤트를 무시하지 않도록 설정
-        tapGesture.delegate = self
-        view.addGestureRecognizer(tapGesture)*/
         
         getColoredCountries { [weak self] in
             DispatchQueue.main.async {
@@ -142,10 +135,9 @@ class WorldViewController: UIViewController {
         // 알림 등록
         NotificationCenter.default.addObserver(self, selector: #selector(handleDidPostMapDataNotification), name: .didPostMapData, object: nil)
         
-        //user123CountryColors = ["VN": "RED", "US": "YELLOW"]
-        // 데이터를 전달합니다.
-        //userCountryColorsModel.user123CountryColors = user123CountryColors
     }
+    
+    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -154,14 +146,17 @@ class WorldViewController: UIViewController {
     
     
     override func viewDidLayoutSubviews() {
-            super.viewDidLayoutSubviews()
-            
-            // 레이아웃이 변경될 때 그라디언트 레이어의 프레임을 업데이트
-            if let gradientLayer = customNavBar.layer.sublayers?.first as? CAGradientLayer {
-                gradientLayer.frame = customNavBar.bounds
-            }
+        super.viewDidLayoutSubviews()
+        
+        // 레이아웃이 변경될 때 그라디언트 레이어의 프레임을 업데이트
+        if let gradientLayer = customNavBar.layer.sublayers?.first as? CAGradientLayer {
+            gradientLayer.frame = customNavBar.bounds
         }
-     
+        
+    }
+
+
+
      
     
     
@@ -185,6 +180,7 @@ class WorldViewController: UIViewController {
     }
     
     private func setupUI() {
+        
         addChild(hostingController) // new
         view.addSubview(hostingController.view)
         hostingController.didMove(toParent: self) // new
@@ -211,13 +207,13 @@ class WorldViewController: UIViewController {
         floatingBadgeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(floatingBadgeView)
                 
-        // 배지 뷰의 제약 조건을 설정합니다.
-        NSLayoutConstraint.activate([
-            floatingBadgeView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -42),
-            floatingBadgeView.widthAnchor.constraint(equalToConstant: 348),
-            floatingBadgeView.heightAnchor.constraint(equalToConstant: 111),
-            floatingBadgeView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+        
+        floatingBadgeView.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(42)
+            make.leading.trailing.equalToSuperview().inset(21)
+            make.height.equalTo(111)
+            make.centerX.equalToSuperview()
+        }
     }
     
     
@@ -253,7 +249,8 @@ class WorldViewController: UIViewController {
         searchTableViewHeightConstraint.isActive = true // 높이 제약 활성화
 
         hostingController.view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -617,5 +614,10 @@ extension WorldViewController: UISearchBarDelegate {
         // 테두리 추가
         searchBar.layer.borderWidth = 1.0
         searchBar.layer.borderColor = UIColor(named: "Main")?.cgColor
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        dismissSearch()
     }
 }

@@ -196,7 +196,7 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @objc func logoutTapped() {
         // 로그아웃 URL
-        guard let url = URL(string: "http://3.34.123.244:8080/user/logout") else {
+        guard let url = URL(string: "http://3.34.111.233:8080/user/logout") else {
             print("Invalid URL")
             return
         }
@@ -207,7 +207,11 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         // 요청 헤더 설정
         request.setValue("*/*", forHTTPHeaderField: "accept")
-        if let refreshToken = getRefreshToken(){request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")}
+        if let refreshToken = getRefreshToken(){
+            request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
+            print("refreshToken: \(refreshToken)")
+        }
+        
         
         // 비동기 네트워크 요청
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -241,7 +245,7 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func fetchUserProfile() {
-        guard let url = URL(string: "http://3.34.123.244:8080/user/myprofile") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/user/myprofile") else { return }
         var request = URLRequest(url: url)
                 request.httpMethod = "GET"
                 request.setValue("*/*", forHTTPHeaderField: "accept")

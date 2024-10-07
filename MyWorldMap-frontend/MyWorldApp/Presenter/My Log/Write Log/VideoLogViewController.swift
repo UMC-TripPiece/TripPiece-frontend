@@ -266,7 +266,7 @@ class VideoLogViewController: UIViewController {
             return
         }
 
-        let url = "http://3.34.123.244:8080/mytravels/\(travelId)/video"
+        let url = "http://3.34.111.233:8080/mytravels/\(travelId)/video"
 
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(getRefreshToken() ?? "")"

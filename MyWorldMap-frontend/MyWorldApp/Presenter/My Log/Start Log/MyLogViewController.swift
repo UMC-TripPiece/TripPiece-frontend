@@ -532,7 +532,7 @@ class MyLogViewController: UIViewController {
         return UserDefaults.standard.string(forKey: "refreshToken")
     }
     func updateUI() {
-        guard let url = URL(string: "http://3.34.123.244:8080/mytravels") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/mytravels") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("*/*", forHTTPHeaderField: "accept")
@@ -592,7 +592,7 @@ class MyLogViewController: UIViewController {
     
     //MARK: - TravelId 반환
     private func fetchOngoingTravelId() {
-        guard let url = URL(string: "http://3.34.123.244:8080/travels") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/travels") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("*/*", forHTTPHeaderField: "accept")

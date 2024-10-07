@@ -280,7 +280,7 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
     
     @objc private func addRecord() {
         // 기록 추가 기능 구현
-        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/selfie") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/mytravels/\(travelId)/selfie") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

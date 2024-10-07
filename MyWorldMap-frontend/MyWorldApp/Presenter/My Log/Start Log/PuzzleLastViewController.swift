@@ -690,7 +690,7 @@ class FinishPuzzleViewController: UIViewController {
     }
     //MARK: - GET
     func fetchTravelData(travelId: Int) {
-        guard let url = URL(string: "http://3.34.123.244:8080/travels/\(travelId)") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/travels/\(travelId)") else { return }
 
         // URLRequest 객체를 만듭니다.
         var request = URLRequest(url: url)

@@ -72,7 +72,7 @@ class NetworkManager {
     
     // 여행 기록 데이터와 썸네일 이미지를 POST 요청으로 전송하는 메서드
     func postTravelData(cityName: String, countryName: String, title: String, startDate: Date, endDate: Date, thumbnail: UIImage, completion: @escaping (Result<Any, Error>) -> Void) {
-        let url = "http://3.34.123.244:8080/mytravels"
+        let url = "http://3.34.111.233:8080/mytravels"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"

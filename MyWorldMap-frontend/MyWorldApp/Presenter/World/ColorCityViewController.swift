@@ -475,7 +475,7 @@ class ColorCityViewController: UIViewController {
     
     // 저장한 지도 여행 기록 post
     func postMapData(userId: Int, cityName: String, countryCode: String, color: String, completion: @escaping (Result<Any, Error>) -> Void) {
-        let url = "http://3.34.123.244:8080/api/maps"
+        let url = "http://3.34.111.233:8080/api/maps"
         
         guard let cityId = cityIds[cityName] else { return } // 만약 cityId를 찾을 수 없는 경우
                     

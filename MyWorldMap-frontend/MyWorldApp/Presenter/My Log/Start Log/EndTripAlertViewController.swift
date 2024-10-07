@@ -195,7 +195,7 @@ class EndTripAlertViewController: UIViewController {
         let puzzleViewController = PuzzleViewController()
         puzzleViewController.modalPresentationStyle = .overCurrentContext
         puzzleViewController.modalTransitionStyle = .crossDissolve
-        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/end") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/mytravels/\(travelId)/end") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

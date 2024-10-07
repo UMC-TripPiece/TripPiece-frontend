@@ -31,6 +31,7 @@ func appearance() {
         barAppearance.stackedLayoutAppearance.normal.iconColor = UIColor(named: "Not selected")
 
         self.tabBar.standardAppearance = barAppearance
+    
         self.tabBar.layer.cornerRadius = 20
         self.tabBar.layer.masksToBounds = false
         self.tabBar.tintColor = UIColor(named: "Main")

@@ -104,6 +104,7 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func setupViews() {
+        
         backgroundImageView = UIImageView(image: UIImage(named: "myPageTop"))
         backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)

@@ -273,7 +273,7 @@ class PhotoLogViewController: UIViewController {
 
     //MARK: - POST 요청
     private func postPhotoLog() {
-        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/picture") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/mytravels/\(travelId)/picture") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

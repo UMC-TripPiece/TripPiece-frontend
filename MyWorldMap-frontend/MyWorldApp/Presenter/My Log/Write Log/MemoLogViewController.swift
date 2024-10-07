@@ -207,7 +207,7 @@ class MemoLogViewController: UIViewController {
         return UserDefaults.standard.string(forKey: "refreshToken")
     }
     private func postMemo(for travelId: Int, description: String) {
-        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/memo") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/mytravels/\(travelId)/memo") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

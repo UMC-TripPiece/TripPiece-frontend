@@ -315,7 +315,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func sendSignupRequest() {
-        guard let url = URL(string: "http://3.34.123.244:8080/user/signup") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/user/signup") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

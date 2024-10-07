@@ -555,7 +555,7 @@ class StartLogViewController: UIViewController {
 
     //MARK: - Alamofire
     private func searchCities(keyword: String) {
-        let url = "http://3.34.123.244:8080/search/cities"
+        let url = "http://3.34.111.233:8080/search/cities"
         let parameters: [String: String] = ["keyword": keyword]
             
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in

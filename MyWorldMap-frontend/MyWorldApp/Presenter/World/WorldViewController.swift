@@ -320,7 +320,7 @@ class WorldViewController: UIViewController {
     private func getColoredCountries(completion: @escaping () -> Void) {
         guard let userId = getUserId() else { return }
         
-        let url = "http://3.34.123.244:8080/api/maps/\(userId)"
+        let url = "http://3.34.111.233:8080/api/maps/\(userId)"
         
         AF.request(url, method: .get).responseData { response in
             switch response.result {
@@ -372,7 +372,7 @@ class WorldViewController: UIViewController {
     private func getCountryCityCounts() {
         guard let userId = getUserId() else { return }
 
-        let url = "http://3.34.123.244:8080/api/maps/stats/\(userId)"
+        let url = "http://3.34.111.233:8080/api/maps/stats/\(userId)"
         
         AF.request(url, method: .get).responseData { response in
             switch response.result {
@@ -415,35 +415,49 @@ class WorldViewController: UIViewController {
     
     
     
-    private func searchCities(keyword: String) {
-        let url = "http://3.34.123.244:8080/search/cities"
-        let parameters: [String: String] = ["keyword": keyword]
-        
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                if let data = response.data, let jsonString = String(data: data, encoding: .utf8) {
-                    //print("전체 JSON 응답: \(jsonString)")
-                    if let json = value as? [String: Any], let cities = json["result"] as? [[String: Any]] {
-                        self.searchResults = cities.map { cityData in
-                            var cityDataDecoded = [String: String]()
-                            cityData.forEach { key, value in
-                                if let stringValue = value as? String {
-                                    cityDataDecoded[key] = stringValue
+    
+
+    
+
+        private func searchCities(keyword: String) {
+            let url = "http://3.34.111.233:8080/search/cities"
+            let parameters: [String: String] = ["keyword": keyword]
+            
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    if let data = response.data, let jsonString = String(data: data, encoding: .utf8) {
+                        //print("전체 JSON 응답: \(jsonString)")
+                        if let json = value as? [String: Any], let cities = json["result"] as? [[String: Any]] {
+                            self.searchResults = cities.map { cityData in
+                                var cityDataDecoded = [String: String]()
+                                cityData.forEach { key, value in
+                                    if let stringValue = value as? String {
+                                        cityDataDecoded[key] = stringValue
+                                    }
                                 }
+                                return cityDataDecoded
                             }
-                            return cityDataDecoded
+                            self.updateSearchTableViewHeight() // 테이블 뷰 높이 업데이트
+                            self.searchTableView.isHidden = self.searchResults.isEmpty
+                            self.searchTableView.reloadData()
                         }
-                        self.updateSearchTableViewHeight() // 테이블 뷰 높이 업데이트
-                        self.searchTableView.isHidden = self.searchResults.isEmpty
-                        self.searchTableView.reloadData()
                     }
+                case .failure(let error):
+                    print("Error: \(error)")
                 }
-            case .failure(let error):
-                print("Error: \(error)")
             }
+            
         }
-    }
+        
+        
+
+
+        
+        
+        
+
+    
     
     
     // 검색 결과 수에 따라 테이블 뷰 높이를 업데이트

@@ -275,7 +275,7 @@ class TravelRecordViewController: UIViewController {
     }
     
     func getTravelRecord() {
-        guard let url = URL(string: "http://3.34.123.244:8080/travels") else {
+        guard let url = URL(string: "http://3.34.111.233:8080/travels") else {
             print("Invalid URL")
             return
         }
@@ -476,7 +476,7 @@ class TravelRecordViewController: UIViewController {
     }
     
     func getPieceRecord() {
-        guard let url = URL(string: "http://3.34.123.244:8080/mytrippieces/all/earliest") else {
+        guard let url = URL(string: "http://3.34.111.233:8080/mytrippieces/all/earliest") else {
             print("Invalid URL")
             return
         }

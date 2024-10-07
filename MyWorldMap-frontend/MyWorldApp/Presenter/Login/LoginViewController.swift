@@ -241,7 +241,7 @@ class LoginViewController: UIViewController {
     }
     
     func sendLoginRequest() {
-        guard let url = URL(string: "http://3.34.123.244:8080/user/login") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/user/login") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

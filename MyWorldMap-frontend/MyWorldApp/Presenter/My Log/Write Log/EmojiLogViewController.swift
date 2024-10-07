@@ -312,7 +312,7 @@ class EmojiLogViewController: UIViewController, UITextViewDelegate, UITextFieldD
         let nonNilEmojis = selectedEmojis.compactMap { $0 }
         let emojiQuery = nonNilEmojis.map { "emojis=\($0)" }.joined(separator: "&")
 
-        guard let url = URL(string: "http://3.34.123.244:8080/mytravels/\(travelId)/emoji?\(emojiQuery)") else {
+        guard let url = URL(string: "http://3.34.111.233:8080/mytravels/\(travelId)/emoji?\(emojiQuery)") else {
             print("Invalid URL")
             return
         }

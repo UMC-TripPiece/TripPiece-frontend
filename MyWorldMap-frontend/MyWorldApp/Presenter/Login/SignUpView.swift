@@ -7,159 +7,12 @@
 
 import UIKit
 import SnapKit
-import FirebaseAuth
+//import FirebaseAuth
 import FirebaseCore
-
-extension UIView {
-    
-    func findViewController() -> UIViewController? {
-        if let nextResponder = self.next as? UIViewController {
-            return nextResponder
-        } else if let nextResponder = self.next as? UIView {
-            return nextResponder.findViewController()
-        } else {
-            return nil
-        }
-    }
-}
-
 
 class SignUpView: UIView {
 
     var userInfo: [String: Any] = [:]
-    
-    class PaddedTextField: UITextField {
-        var padding: UIEdgeInsets
-        
-        init(padding: UIEdgeInsets) {
-            self.padding = padding
-            super.init(frame: .zero)
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        // 텍스트 영역의 위치를 조정
-        override func textRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // 편집 시 텍스트 영역의 위치를 조정
-        override func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // 플레이스홀더 텍스트 영역의 위치를 조정
-        override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-    }
-
-    class CustomLabelTextFieldView2: UIView {
-        // Components
-        let label: UILabel
-        let textField: PaddedTextField
-        let validationLabel: UILabel
-
-        // Public property to access the text field's text
-        var text: String? {
-            return textField.text
-        }
-
-        // Initializer
-        init(labelText: String, textFieldPlaceholder: String, validationText: String) {
-            self.label = UILabel()
-            self.textField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-            self.validationLabel = UILabel()
-
-            super.init(frame: .zero)
-
-            // Label setup
-            label.text = labelText
-            label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-            label.textColor = .black
-            label.textAlignment = .left
-
-            // TextField setup
-            textField.placeholder = textFieldPlaceholder
-            textField.borderStyle = .none
-            textField.font = UIFont.systemFont(ofSize: 16)
-            textField.backgroundColor = UIColor(hex: "#FFFFFF")
-            
-            textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
-            textField.layer.borderWidth = 1.0  // 원하는 테두리 두께로 설정
-            textField.layer.cornerRadius = 5.0  // 테두리에 둥근 모서리를 주고 싶을 때 설정
-            
-            textField.layer.shadowColor = UIColor.black.cgColor
-            textField.layer.shadowOpacity = 0.1 // 투명도 설정 (0.0 ~ 1.0)
-            textField.layer.shadowOffset = CGSize(width: 3, height: 3) // 섀도우의 위치 설정
-            textField.layer.shadowRadius = 5.0 // 섀도우의 블러 정도 설정
-
-            // ValidationLabel setup
-            validationLabel.text = validationText
-            validationLabel.textColor = UIColor(hex: "#FD2D69")
-            validationLabel.font = UIFont.systemFont(ofSize: 12)
-            validationLabel.isHidden = true // Initially hidden
-
-            // Add subviews
-            addSubview(label)
-            addSubview(textField)
-            addSubview(validationLabel)
-
-            // Set constraints
-            label.snp.makeConstraints { make in
-                make.top.leading.equalToSuperview()
-            }
-            validationLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(label.snp.centerY)
-                make.trailing.lessThanOrEqualToSuperview()
-            }
-            textField.snp.makeConstraints { make in
-                make.top.equalTo(label.snp.bottom).offset(8)
-                make.leading.trailing.bottom.equalToSuperview()
-                make.height.equalTo(50)
-            }
-        }
-
-        // Required initializer for NSCoder (not used in this example)
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    }
-    
-    class CheckBoxButton: UIButton {
-        init(title: String) {
-            super.init(frame: .zero)
-            self.setImage(UIImage(named: "uncheckedBox"), for: .normal)
-            self.setImage(UIImage(named: "checkedBox"), for: .selected)
-            self.setTitle(title, for: .normal)
-            self.setTitleColor(.black, for: .normal)
-            self.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            
-            self.imageView?.translatesAutoresizingMaskIntoConstraints = false
-                    self.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-            
-            if let imageView = self.imageView, let titleLabel = self.titleLabel {
-                imageView.snp.makeConstraints { make in
-                                make.leading.equalToSuperview()
-                                make.centerY.equalToSuperview()
-                                make.width.equalTo(20)
-                                make.height.equalTo(20)
-                            }
-                            titleLabel.snp.makeConstraints { make in
-                                make.leading.equalTo(imageView.snp.trailing).offset(10)
-                                make.trailing.equalToSuperview()
-                                make.centerY.equalToSuperview()
-                            }
-            }
-            self.contentHorizontalAlignment = .left
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    }
     
     private lazy var usernameField = CustomLabelTextFieldView2(labelText: "이름", textFieldPlaceholder: "| 이름을 입력해 주세요", validationText: "이름을 입력해주세요")
     private lazy var emailField = CustomLabelTextFieldView2(labelText: "이메일", textFieldPlaceholder: "| 사용할 이메일 주소를 입력해 주세요", validationText: "사용할 수 없는 이메일입니다")
@@ -179,7 +32,7 @@ class SignUpView: UIView {
         let label = UILabel()
         label.text = "SIGN UP"
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = UIColor(hex: "#5833FF")
+        label.textColor = Constants.Colors.mainPurple
         label.textAlignment = .center
         return label
     }()
@@ -201,7 +54,7 @@ class SignUpView: UIView {
         button.setTitle("가입하기", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        button.backgroundColor = UIColor(hex: "#D3D3D3")
+        button.backgroundColor = Constants.Colors.bgGray
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         return button
@@ -210,7 +63,7 @@ class SignUpView: UIView {
     private lazy var termsValidationLabel: UILabel = {
         let label = UILabel()
         label.text = "이용 약관 및 개인정보 수집에 동의해주세요"
-        label.textColor = .red
+        label.textColor = Constants.Colors.mainPink
         label.font = UIFont.systemFont(ofSize: 12)
         label.isHidden = true
         return label
@@ -247,7 +100,7 @@ class SignUpView: UIView {
         addSubview(signUpButton)
         addSubview(termsValidationLabel)
         
-        backgroundColor = UIColor(hex: "#F8F8F8")
+        backgroundColor = Constants.Colors.bg4
     }
     
     private func setupConstraints() {
@@ -387,34 +240,34 @@ class SignUpView: UIView {
     @objc func usernameValidate(){
         if let username = usernameField.text, !username.isEmpty {
             usernameField.validationLabel.isHidden = true
-            usernameField.textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
+            usernameField.textField.layer.borderColor = Constants.Colors.mainPurple?.cgColor
             isUsernameValid = true
         } else {
             usernameField.validationLabel.isHidden = false
-            usernameField.textField.layer.borderColor = UIColor(hex: "#FE2494").cgColor
+            usernameField.textField.layer.borderColor = Constants.Colors.mainPink?.cgColor
         }
         validateInputs()
     }
     
     @objc func emailValidate(){
-        if let email = emailField.text, isValidEmail(email) {
+        if let email = emailField.text, ValidationUtility.isValidEmail(email) {
             emailField.validationLabel.isHidden = true
-            emailField.textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
+            emailField.textField.layer.borderColor = Constants.Colors.mainPurple?.cgColor
             isEmailValid = true
         } else {
             emailField.validationLabel.isHidden = false
-            emailField.textField.layer.borderColor = UIColor(hex: "#FE2494").cgColor
+            emailField.textField.layer.borderColor = Constants.Colors.mainPink?.cgColor
         }
     }
     
     @objc func passwordValidate(){
-        if let password = passwordField.text, isValidPassword(password) {
+        if let password = passwordField.text, ValidationUtility.isValidPassword(password) {
             passwordField.validationLabel.isHidden = true
-            passwordField.textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
+            passwordField.textField.layer.borderColor = Constants.Colors.mainPurple?.cgColor
             isPasswordValid = true
         } else {
             passwordField.validationLabel.isHidden = false
-            passwordField.textField.layer.borderColor = UIColor(hex: "#FE2494").cgColor
+            passwordField.textField.layer.borderColor = Constants.Colors.mainPink?.cgColor
         }
         validateInputs()
     }
@@ -422,11 +275,11 @@ class SignUpView: UIView {
     @objc func confirmPasswordValidate() {
         if let confirmPassword = confirmPasswordField.text, confirmPassword == passwordField.text {
             confirmPasswordField.validationLabel.isHidden = true
-            confirmPasswordField.textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
+            confirmPasswordField.textField.layer.borderColor = Constants.Colors.mainPurple?.cgColor
             isConfirmPasswordValid = true
         } else {
             confirmPasswordField.validationLabel.isHidden = false
-            confirmPasswordField.textField.layer.borderColor = UIColor(hex: "#FE2494").cgColor
+            confirmPasswordField.textField.layer.borderColor = Constants.Colors.mainPink?.cgColor
         }
         validateInputs()
     }
@@ -445,20 +298,7 @@ class SignUpView: UIView {
     @objc func validateInputs() {
         isValid = isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isTermsAgreeValid
         signUpButton.isEnabled = isValid
-        signUpButton.backgroundColor = isValid ? UIColor(hex: "6744FF") : UIColor(hex: "D3D3D3")
-    }
-    
-    func isValidEmail(_ email: String) -> Bool {
-        // Basic email validation regex
-        let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegex)
-        return emailPred.evaluate(with: email)
-    }
-    
-    func isValidPassword(_ password: String) -> Bool {
-        let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=?.,<>]).{8,15}$"
-        let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
-        return passwordTest.evaluate(with: password)
+        signUpButton.backgroundColor = isValid ? Constants.Colors.mainPurple : Constants.Colors.bgGray
     }
     
 }

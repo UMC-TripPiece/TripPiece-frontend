@@ -87,7 +87,7 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
         let button = UIButton(type: .system)
         button.setTitle("로그아웃", for: .normal)
         button.setTitleColor(UIColor(hex: "FD2D69"), for: .normal)
-        button.backgroundColor = UIColor(hex: "FD2D69", alpha: 0.1)
+        button.backgroundColor = UIColor(hex: "6644FF")?.withAlphaComponent(0.1)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)

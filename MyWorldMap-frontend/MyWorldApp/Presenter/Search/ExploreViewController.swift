@@ -53,7 +53,7 @@ class ExploreViewController: UIViewController {
         searchField.placeholder = " | 도시 및 국가를 검색해보세요"
         searchField.borderStyle = .roundedRect
         searchField.layer.borderWidth = 1
-        searchField.layer.borderColor = UIColor(hex: "6644FF").cgColor
+        searchField.layer.borderColor = UIColor(hex: "6644FF")?.cgColor
         searchField.layer.cornerRadius = 8
         searchField.rightViewMode = .always
         let magnifyingGlassImageView = UIImageView(image: UIImage(named: "magnifyingGlass"))

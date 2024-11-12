@@ -66,7 +66,7 @@ class TravelRecordViewController: UIViewController {
             self.layer.cornerRadius = 15
             self.tag = tag
 
-            self.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
+            self.layer.borderColor = UIColor(hex: "#D8D8D8")?.cgColor
             self.layer.borderWidth = 1.0  // 원하는 테두리 두께로 설정
 
             self.layer.shadowColor = UIColor.black.cgColor
@@ -91,12 +91,12 @@ class TravelRecordViewController: UIViewController {
         
         func updateSelection(isSelected: Bool) {
             if isSelected {
-                self.backgroundColor = UIColor(hex: "6644FF").withAlphaComponent(0.1)
-                self.layer.borderColor = UIColor(hex: "6644FF").cgColor
+                self.backgroundColor = UIColor(hex: "6644FF")?.withAlphaComponent(0.1)
+                self.layer.borderColor = UIColor(hex: "6644FF")?.cgColor
                 self.setTitleColor(UIColor(hex: "6644FF"), for: .normal)
             } else {
                 self.backgroundColor = UIColor.white
-                self.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor  // 기본 테두리 색상
+                self.layer.borderColor = UIColor(hex: "#D8D8D8")?.cgColor  // 기본 테두리 색상
                 self.setTitleColor(.black, for: .normal)
             }
         }
@@ -457,8 +457,8 @@ class TravelRecordViewController: UIViewController {
         }
         
         if isONGOING {
-            shadowView.layer.borderColor = UIColor(hex: "FD2D69").cgColor
-            shadowView.layer.shadowColor = UIColor(hex: "FD2D69").cgColor
+            shadowView.layer.borderColor = UIColor(hex: "FD2D69")?.cgColor
+            shadowView.layer.shadowColor = UIColor(hex: "FD2D69")?.cgColor
             shadowView.layer.shadowOpacity = 0.4
             shadowView.layer.shadowOffset = CGSize(width: 0, height: 0)
             shadowView.layer.shadowRadius = 5.0

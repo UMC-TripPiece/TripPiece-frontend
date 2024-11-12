@@ -51,7 +51,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         // Method to setup the default style for the text field
         private func setupDefaultStyle() {
             self.borderStyle = .none
-            self.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
+            self.layer.borderColor = UIColor(hex: "#D8D8D8")?.cgColor
             self.layer.borderWidth = 1.0
             self.layer.cornerRadius = 5.0
             self.layer.shadowColor = UIColor.black.cgColor

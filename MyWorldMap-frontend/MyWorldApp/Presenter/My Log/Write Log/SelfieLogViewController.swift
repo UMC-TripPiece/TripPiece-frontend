@@ -78,7 +78,7 @@ class SelfieLogViewController: UIViewController, UIImagePickerControllerDelegate
         view.backgroundColor = .white
         view.layer.cornerRadius = 5
         view.clipsToBounds = true
-        view.layer.borderColor = UIColor(hex: "A7A7A7").cgColor // 테두리 색상 설정
+        view.layer.borderColor = UIColor(hex: "A7A7A7")?.cgColor // 테두리 색상 설정
         view.layer.borderWidth = 1.0
         return view
     }()

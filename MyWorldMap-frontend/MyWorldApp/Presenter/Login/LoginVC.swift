@@ -6,7 +6,6 @@
 //
 
 import Alamofire
-import SwiftyJSON
 import UIKit
 import AuthenticationServices
 import KakaoSDKUser
@@ -16,119 +15,6 @@ class LoginViewController: UIViewController {
     
     var loginInfo: [String: Any]? = [:]
     
-    class PaddedTextField: UITextField {
-        var padding: UIEdgeInsets
-        
-        init(padding: UIEdgeInsets) {
-            self.padding = padding
-            super.init(frame: .zero)
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        // 텍스트 영역의 위치를 조정
-        override func textRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // 편집 시 텍스트 영역의 위치를 조정
-        override func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // 플레이스홀더 텍스트 영역의 위치를 조정
-        override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-    }
-
-    class CustomLabelTextFieldView: UIView {
-        let label: UILabel
-        let emailField: PaddedTextField
-        let passwordField: PaddedTextField
-        let validationLabel: UILabel
-
-        var text1: String? {
-            return emailField.text
-        }
-        
-        var text2: String? {
-            return passwordField.text
-        }
-
-        init(labelText: String, emailPlaceholder: String, passwordPlaceholder: String, validationText: String) {
-            self.label = UILabel()
-            self.emailField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-            self.passwordField = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-            self.validationLabel = UILabel()
-
-            super.init(frame: .zero)
-
-            // Label setup
-            label.text = labelText
-            label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-            label.textColor = .black
-            label.textAlignment = .left
-
-            // Simplified TextField setup
-            setupTextField(emailField, placeholder: emailPlaceholder)
-            setupTextField(passwordField, placeholder: passwordPlaceholder)
-            self.passwordField.isSecureTextEntry = true
-
-            // ValidationLabel setup
-            validationLabel.text = validationText
-            validationLabel.textColor = UIColor(hex: "#FD2D69")
-            validationLabel.font = UIFont.systemFont(ofSize: 12)
-            validationLabel.isHidden = true
-
-            // Add subviews
-            addSubview(label)
-            addSubview(emailField)
-            addSubview(passwordField)
-            addSubview(validationLabel)
-
-            // Set constraints
-            label.snp.makeConstraints { make in
-                make.top.equalToSuperview()
-            }
-            validationLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(label.snp.centerY)
-                make.trailing.lessThanOrEqualToSuperview()
-            }
-            emailField.snp.makeConstraints { make in
-                make.top.equalTo(label.snp.bottom).offset(8)
-                make.leading.trailing.equalToSuperview() // Match leading and trailing edges
-                make.height.equalTo(50)
-            }
-
-            passwordField.snp.makeConstraints { make in
-                make.top.equalTo(emailField.snp.bottom).offset(20)
-                make.leading.trailing.equalToSuperview() // Match leading and trailing edges
-                make.height.equalTo(50)
-            }
-        }
-
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-
-        private func setupTextField(_ textField: PaddedTextField, placeholder: String) {
-            textField.placeholder = placeholder
-            textField.borderStyle = .none
-            textField.font = UIFont.systemFont(ofSize: 16)
-            textField.backgroundColor = UIColor.white
-            textField.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
-            textField.layer.borderWidth = 1.0
-            textField.layer.cornerRadius = 5.0
-            textField.layer.shadowColor = UIColor.black.cgColor
-            textField.layer.shadowOpacity = 0.1
-            textField.layer.shadowOffset = CGSize(width: 3, height: 3)
-            textField.layer.shadowRadius = 5.0
-        }
-    }
-    
     var status = false
     
     let loginField = CustomLabelTextFieldView(labelText: "로그인", emailPlaceholder: "| 이메일을 입력해 주세요", passwordPlaceholder: "| 비밀번호를 입력해 주세요", validationText: "아이디 혹은 비밀번호를 확인해 주세요")
@@ -137,12 +23,11 @@ class LoginViewController: UIViewController {
         let label = UILabel()
         label.text = "Log In"
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = UIColor(hex: "#5833FF")
+        label.textColor = Constants.Colors.mainPurple
         label.textAlignment = .center
         return label
     }()
     
-    // UI Elements
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "welcomeImage")
@@ -153,7 +38,7 @@ class LoginViewController: UIViewController {
     let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("로그인", for: .normal)
-        button.backgroundColor = UIColor(hex: "#D3D3D3")
+        button.backgroundColor = Constants.Colors.bgGray
         button.layer.cornerRadius = 5
         button.setTitleColor(.white, for: .normal)
         return button
@@ -212,32 +97,19 @@ class LoginViewController: UIViewController {
     @objc func checkFormValidity() {
         let email = loginField.text1 ?? ""
         let password = loginField.text2 ?? ""
-        let isFormValid = (isValidEmail(email)) && (isValidPassword(password))
+        let isFormValid = (ValidationUtility.isValidEmail(email)) && (ValidationUtility.isValidPassword(password))
         
         loginInfo?["email"] = loginField.text1
         loginInfo?["password"] = loginField.text2
         
        loginButton.isEnabled = isFormValid
-        loginButton.backgroundColor = isFormValid ? UIColor(hex: "#6744FF") : UIColor(hex: "#D3D3D3")
+        loginButton.backgroundColor = isFormValid ? Constants.Colors.mainPurple : Constants.Colors.bgGray
     }
     
     func checkLoginInfo() {
-        loginField.emailField.layer.borderColor = UIColor(hex: "#FE2494").cgColor
-        loginField.passwordField.layer.borderColor = UIColor(hex: "#FE2494").cgColor
+        loginField.emailField.layer.borderColor = Constants.Colors.mainPink?.cgColor
+        loginField.passwordField.layer.borderColor = Constants.Colors.mainPink?.cgColor
         loginField.validationLabel.isHidden = false
-    }
-    
-    func isValidEmail(_ email: String) -> Bool {
-        // Basic email validation regex
-        let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegex)
-        return emailPred.evaluate(with: email)
-    }
-    
-    func isValidPassword(_ password: String) -> Bool {
-        let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=?.,<>]).{8,15}$"
-        let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
-        return passwordTest.evaluate(with: password)
     }
     
     func sendLoginRequest() {
@@ -319,14 +191,11 @@ class LoginViewController: UIViewController {
     
     private func setupNavigationBar() {
         let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(named: "back"), for: .normal)
-        backButton.tintColor = UIColor(hex: "A7A7A7")
+        backButton.setImage(UIImage(systemName: "chevron.left")?.withTintColor(Constants.Colors.black3 ?? .systemGray , renderingMode: .alwaysOriginal), for: .normal)
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         
-        // Add the button to the view
         view.addSubview(backButton)
         
-        // Set up constraints using SnapKit
         backButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.leading.equalToSuperview().offset(20)
@@ -338,4 +207,3 @@ class LoginViewController: UIViewController {
     }
     
 }
-

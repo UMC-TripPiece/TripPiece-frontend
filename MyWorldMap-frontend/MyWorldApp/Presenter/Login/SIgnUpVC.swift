@@ -12,22 +12,6 @@ import AuthenticationServices
 import KakaoSDKUser
 import SnapKit
 
-extension UIColor {
-    convenience init(hex: String, alpha: CGFloat = 1.0) {
-        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
-
-        var rgb: UInt64 = 0
-        Scanner(string: hexSanitized).scanHexInt64(&rgb)
-
-        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
-        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
-        let blue = CGFloat(rgb & 0x0000FF) / 255.0
-
-        self.init(red: red, green: green, blue: blue, alpha: alpha)
-    }
-}
-
 class SignUpViewController: UIViewController {
     
     var userInfo: [String: Any] = [:]
@@ -132,42 +116,6 @@ class SignUpViewController: UIViewController {
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true, completion: nil)
     }
-
-//    @objc func kakaoButtonTapped(_ sender: UIButton) {
-//        Task {
-//            if await kakaoAuthVM.KakaoLogin() {
-//                DispatchQueue.main.async {
-//                    UserApi.shared.me() { [weak self] (user, error) in
-//                        guard let self = self else { return }
-//                        if let error = error {
-//                            print(error)
-//                            return
-//                        }
-//
-//                        var userInfo: [String: Any] = [:]
-//                        
-//                        // Safely unwrap user information
-//                        let userID = user?.id ?? nil
-//                        let userEmail = user?.kakaoAccount?.email ?? ""
-//
-//                        userInfo["providerId"] = userID
-//                        userInfo["email"] = userEmail
-//                        print(userInfo)
-//                        // Initialize ProfileViewController
-//                        let profileVC = KakaoProfileViewController()
-//                        profileVC.userInfo = userInfo
-//                        profileVC.loginPath = "/kakao"
-//
-//                        // Present ProfileViewController modally
-//                        profileVC.modalPresentationStyle = .fullScreen
-//                        self.present(profileVC, animated: true, completion: nil)
-//                    }
-//                }
-//            } else {
-//                print("Login failed.")
-//            }
-//        }
-//    }
     
     @objc func kakaoButtonTapped(_ sender: UIButton) {
         Task {
@@ -180,14 +128,13 @@ class SignUpViewController: UIViewController {
                             return
                         }
                         
-                        // Safely unwrap user information
                         let userID = user?.id ?? nil
                         let userEmail = user?.kakaoAccount?.email ?? ""
 
                         userInfo["providerId"] = userID
                         userInfo["email"] = userEmail
                         print(userInfo)
-                        // Initialize ProfileViewController
+
                         sendLoginRequest()
                     }
                 }
@@ -254,7 +201,6 @@ class SignUpViewController: UIViewController {
                                        let result = json["result"] as? [String: Any],
                                        let refreshToken = result["refreshToken"] as? String {
                                         
-                                        // refreshToken을 UserDefaults에 저장
                                         UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
                                         
                                         self.proceedIfLoginSuccessful()
@@ -275,4 +221,3 @@ class SignUpViewController: UIViewController {
             present(tabBarController, animated: true, completion: nil)
     }
 }
-

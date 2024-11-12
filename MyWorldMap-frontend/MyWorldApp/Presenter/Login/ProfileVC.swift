@@ -8,64 +8,13 @@
 import UIKit
 import SnapKit
 
-class KakaoProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var userInfo: [String: Any]?
     var selectedImageData: Data?
     var status = false
     lazy var loginPath = ""
-    class PaddedTextField: UITextField {
-        
-        var padding: UIEdgeInsets
-        
-        init(padding: UIEdgeInsets) {
-            self.padding = padding
-            super.init(frame: .zero)
-            setupDefaultStyle()
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        // Adjusts the text position within the field
-        override func textRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // Adjusts the text position during editing
-        override func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // Adjusts the placeholder text position
-        override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // Method to setup the default style for the text field
-        private func setupDefaultStyle() {
-            self.borderStyle = .none
-            self.layer.borderColor = UIColor(hex: "#D8D8D8").cgColor
-            self.layer.borderWidth = 1.0
-            self.layer.cornerRadius = 5.0
-            self.layer.shadowColor = UIColor.black.cgColor
-            self.layer.shadowOpacity = 0.1 // Shadow opacity (0.0 ~ 1.0)
-            self.layer.shadowOffset = CGSize(width: 3, height: 3) // Shadow offset position
-            self.layer.shadowRadius = 5.0
-            self.backgroundColor = UIColor(hex: "#FFFFFF")
-        }
-        
-        // Optional: Method to easily update the placeholder text
-        func setPlaceholder(_ placeholder: String, color: UIColor = .lightGray) {
-                self.attributedPlaceholder = NSAttributedString(
-                    string: placeholder,
-                    attributes: [NSAttributedString.Key.foregroundColor: color]
-                )
-            }
-    }
     
-    // UI 요소 선언
     let profileLabel = UILabel()
     let profileImageView = UIImageView()
     let profileImageIconView = UIImageView()
@@ -81,12 +30,11 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hex: "#F8F8F8")
+        view.backgroundColor = Constants.Colors.bg4
         // 뷰 설정 및 초기화
         setupViews()
         setupConstraints()
         
-        // 기타 설정
         configureTapGestureForProfileImage()
         configureTapGestureForDismissingPicker()
         configureDatePicker()
@@ -96,7 +44,7 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
         // 프로필 라벨 설정
         profileLabel.text = "PROFILE"
         profileLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        profileLabel.textColor = UIColor(hex: "#5833FF")
+        profileLabel.textColor = Constants.Colors.mainPurple
         
         // 프로필 이미지 설정
         profileImageView.image = UIImage(named: "profileExample")
@@ -132,7 +80,7 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
         startButton.setTitleColor(.white, for: .normal)
         startButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         startButton.isEnabled = false
-        startButton.backgroundColor = UIColor(hex: "#D3D3D3")
+        startButton.backgroundColor = Constants.Colors.bgGray
         startButton.layer.cornerRadius = 8
         startButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         
@@ -228,7 +176,6 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
         }
     
     @objc func signUpButtonTapped() {
-        print(userInfo)
         sendSignupRequest()
     }
     
@@ -319,11 +266,11 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
         userInfo?["country"] = "South Korea"
         
         startButton.isEnabled = isFormValid
-        startButton.backgroundColor = isFormValid ? UIColor(hex: "#6744FF") : UIColor(hex: "#D3D3D3")
+        startButton.backgroundColor = isFormValid ? Constants.Colors.mainPurple : Constants.Colors.bgGray
     }
     
     func sendSignupRequest() {
-        guard let url = URL(string: "http://3.34.111.233:8080/user/kakao/signup") else { return }
+        guard let url = URL(string: "http://3.34.111.233:8080/user/signup") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -394,6 +341,6 @@ class KakaoProfileViewController: UIViewController, UIImagePickerControllerDeleg
             let VC = SignUpViewController()
             VC.modalPresentationStyle = .fullScreen
             present(VC, animated: true, completion: nil)
-        }   
+        }
     }
 }

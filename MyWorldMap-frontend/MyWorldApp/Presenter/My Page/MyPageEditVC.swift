@@ -11,64 +11,10 @@ import SDWebImage
 
 class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func getRefreshToken() -> String? {
-        return UserDefaults.standard.string(forKey: "refreshToken")
-    }
-    
     var userInfo: [String: Any]?
     
     var selectedImageData: Data?
     var status = false
-    class PaddedTextField: UITextField {
-        
-        var padding: UIEdgeInsets
-        
-        init(padding: UIEdgeInsets) {
-            self.padding = padding
-            super.init(frame: .zero)
-            setupDefaultStyle()
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        // Adjusts the text position within the field
-        override func textRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // Adjusts the text position during editing
-        override func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // Adjusts the placeholder text position
-        override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        
-        // Method to setup the default style for the text field
-        private func setupDefaultStyle() {
-            self.borderStyle = .none
-            self.layer.borderColor = UIColor(hex: "#D8D8D8")?.cgColor
-            self.layer.borderWidth = 1.0
-            self.layer.cornerRadius = 5.0
-            self.layer.shadowColor = UIColor.black.cgColor
-            self.layer.shadowOpacity = 0.1 // Shadow opacity (0.0 ~ 1.0)
-            self.layer.shadowOffset = CGSize(width: 3, height: 3) // Shadow offset position
-            self.layer.shadowRadius = 5.0
-            self.backgroundColor = UIColor(hex: "#FFFFFF")
-        }
-        
-        // Optional: Method to easily update the placeholder text
-        func setPlaceholder(_ placeholder: String, color: UIColor = .lightGray) {
-                self.attributedPlaceholder = NSAttributedString(
-                    string: placeholder,
-                    attributes: [NSAttributedString.Key.foregroundColor: color]
-                )
-            }
-    }
     
     // UI 요소 선언
     let profileLabel = UILabel()
@@ -86,7 +32,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hex: "#F8F8F8")
+        view.backgroundColor = Constants.Colors.bg4
         // 뷰 설정 및 초기화
         setupViews()
         setupConstraints()
@@ -101,7 +47,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         // 프로필 라벨 설정
         profileLabel.text = "PROFILE"
         profileLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        profileLabel.textColor = UIColor(hex: "#5833FF")
+        profileLabel.textColor = Constants.Colors.mainPurple
         
         // 프로필 이미지 설정
         if let userInfo = userInfo as? [String: Any],
@@ -158,7 +104,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         countryTextField.isUserInteractionEnabled = false
         
         updateButton.setTitle("완료", for: .normal)
-        updateButton.setTitleColor(UIColor(hex: "7E7E7E"), for: .normal)
+        updateButton.setTitleColor(Constants.Colors.black3, for: .normal)
         updateButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         updateButton.addTarget(self, action: #selector(updateButtonTapped), for: .touchUpInside)
         
@@ -457,7 +403,7 @@ class MyPageEditViewController: UIViewController, UIImagePickerControllerDelegat
         
         let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        if let refreshToken = getRefreshToken() {
+        if let refreshToken = getRefreshToken.getRefreshToken() {
             request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
         }
         

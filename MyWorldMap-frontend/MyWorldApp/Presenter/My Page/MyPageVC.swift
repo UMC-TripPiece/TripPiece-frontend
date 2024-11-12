@@ -23,7 +23,7 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
         let label = UILabel()
         label.text = "My Page"
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = UIColor(hex: "#FFFFFF")
+        label.textColor = Constants.Colors.white
         label.textAlignment = .center
         return label
     }()
@@ -86,8 +86,8 @@ class MyPageViewController: UIViewController, UIImagePickerControllerDelegate, U
     let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("로그아웃", for: .normal)
-        button.setTitleColor(UIColor(hex: "FD2D69"), for: .normal)
-        button.backgroundColor = UIColor(hex: "6644FF")?.withAlphaComponent(0.1)
+        button.setTitleColor(Constants.Colors.mainPink, for: .normal)
+        button.backgroundColor = Constants.Colors.mainPink?.withAlphaComponent(0.1)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)

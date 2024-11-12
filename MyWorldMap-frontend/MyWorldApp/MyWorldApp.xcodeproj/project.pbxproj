@@ -25,7 +25,7 @@
 		335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666D92C4F96B600100C0E /* WorldViewController.swift */; };
 		335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DB2C4F96F200100C0E /* MyLogViewController.swift */; };
 		335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DD2C4F970200100C0E /* ExploreViewController.swift */; };
-		335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DF2C4F971500100C0E /* MyPageViewController.swift */; };
+		335666E02C4F971500100C0E /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DF2C4F971500100C0E /* MyPageVC.swift */; };
 		335666E32C4F973400100C0E /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666E22C4F973400100C0E /* LoginVC.swift */; };
 		335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666E42C5254C300100C0E /* PuzzleViewCell.swift */; };
 		335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335667632C5765BF00100C0E /* PuzzleItem.swift */; };
@@ -47,6 +47,7 @@
 		337D7F5A2C77D63800C9BAA4 /* PuzzleLastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337D7F592C77D63800C9BAA4 /* PuzzleLastViewController.swift */; };
 		337D7F5C2C77D6F800C9BAA4 /* FinishNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337D7F5B2C77D6F800C9BAA4 /* FinishNavigationBar.swift */; };
 		33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */; };
+		3D2DA2DA2CE39904005C4168 /* getRefreshToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2DA2D92CE39904005C4168 /* getRefreshToken.swift */; };
 		3DA6E2072CE3913E00553BD0 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA6E2062CE3913E00553BD0 /* PaddedTextField.swift */; };
 		3DA6E2092CE3915800553BD0 /* CustomLabelTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA6E2082CE3915800553BD0 /* CustomLabelTextFieldView.swift */; };
 		3DA6E20B2CE3915C00553BD0 /* CustomLabelTextFieldView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA6E20A2CE3915C00553BD0 /* CustomLabelTextFieldView2.swift */; };
@@ -76,7 +77,7 @@
 		A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */; };
 		A90C354E2C67D02600FCE186 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35492C67D02500FCE186 /* ProfileVC.swift */; };
 		A926CB5B2C6A59DD00DDADE0 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A926CB5A2C6A59DC00DDADE0 /* SplashVC.swift */; };
-		A926CB5D2C6A855900DDADE0 /* MyPageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */; };
+		A926CB5D2C6A855900DDADE0 /* MyPageEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A926CB5C2C6A855900DDADE0 /* MyPageEditVC.swift */; };
 		A95303572C6B62A900D0A8AA /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = A95303562C6B62A900D0A8AA /* SDWebImage */; };
 		A95303592C6B62A900D0A8AA /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A95303582C6B62A900D0A8AA /* SDWebImageMapKit */; };
 		A9596B4E2C67CD2600950E12 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A9596B4D2C67CD2600950E12 /* FirebaseAnalytics */; };
@@ -163,7 +164,7 @@
 		335666D92C4F96B600100C0E /* WorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldViewController.swift; sourceTree = "<group>"; };
 		335666DB2C4F96F200100C0E /* MyLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLogViewController.swift; sourceTree = "<group>"; };
 		335666DD2C4F970200100C0E /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		335666DF2C4F971500100C0E /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		335666DF2C4F971500100C0E /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
 		335666E22C4F973400100C0E /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		335666E42C5254C300100C0E /* PuzzleViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewCell.swift; sourceTree = "<group>"; };
 		335667632C5765BF00100C0E /* PuzzleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleItem.swift; sourceTree = "<group>"; };
@@ -184,6 +185,7 @@
 		337D7F592C77D63800C9BAA4 /* PuzzleLastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleLastViewController.swift; sourceTree = "<group>"; };
 		337D7F5B2C77D6F800C9BAA4 /* FinishNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishNavigationBar.swift; sourceTree = "<group>"; };
 		33CA2E1B2C6C75EA00DD0394 /* GradientNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientNavigationBar.swift; sourceTree = "<group>"; };
+		3D2DA2D92CE39904005C4168 /* getRefreshToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRefreshToken.swift; sourceTree = "<group>"; };
 		3DA6E2062CE3913E00553BD0 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		3DA6E2082CE3915800553BD0 /* CustomLabelTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTextFieldView.swift; sourceTree = "<group>"; };
 		3DA6E20A2CE3915C00553BD0 /* CustomLabelTextFieldView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTextFieldView2.swift; sourceTree = "<group>"; };
@@ -212,7 +214,7 @@
 		A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kakaoAuthVM.swift; sourceTree = "<group>"; };
 		A90C35492C67D02500FCE186 /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		A926CB5A2C6A59DC00DDADE0 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
-		A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditViewController.swift; sourceTree = "<group>"; };
+		A926CB5C2C6A855900DDADE0 /* MyPageEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditVC.swift; sourceTree = "<group>"; };
 		A979B17E2C764D40001D9535 /* EmojiLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiLogViewController.swift; sourceTree = "<group>"; };
 		A979B1822C764D9B001D9535 /* EmojiCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCompleteViewController.swift; sourceTree = "<group>"; };
 		A9EECA842C74F59E005AB0EC /* SelfieLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieLogViewController.swift; sourceTree = "<group>"; };
@@ -442,8 +444,8 @@
 		335666D52C4F952800100C0E /* My Page */ = {
 			isa = PBXGroup;
 			children = (
-				335666DF2C4F971500100C0E /* MyPageViewController.swift */,
-				A926CB5C2C6A855900DDADE0 /* MyPageEditViewController.swift */,
+				335666DF2C4F971500100C0E /* MyPageVC.swift */,
+				A926CB5C2C6A855900DDADE0 /* MyPageEditVC.swift */,
 			);
 			path = "My Page";
 			sourceTree = "<group>";
@@ -517,6 +519,7 @@
 		3363FFDD2C7207A7009FFF93 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3D2DA2D82CE3973B005C4168 /* Cells */,
 				3DA6E2162CE391DE00553BD0 /* Extensions */,
 				3DA6E2102CE3919F00553BD0 /* Models */,
 				3DA6E2032CE3911400553BD0 /* Views */,
@@ -524,6 +527,13 @@
 				33459C7A2C9681160062CFB7 /* Application */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		3D2DA2D82CE3973B005C4168 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		3DA6E2032CE3911400553BD0 /* Views */ = {
@@ -550,6 +560,7 @@
 			children = (
 				3DA6E2132CE391BE00553BD0 /* Auth */,
 				3DA6E2112CE391A800553BD0 /* Constants.swift */,
+				3D2DA2D92CE39904005C4168 /* getRefreshToken.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -787,7 +798,7 @@
 				335667682C5CBE5700100C0E /* PhotoLogViewController.swift in Sources */,
 				3356677F2C60A4E000100C0E /* StartLogViewController.swift in Sources */,
 				335667752C609AE400100C0E /* LogStartNavigationBar.swift in Sources */,
-				A926CB5D2C6A855900DDADE0 /* MyPageEditViewController.swift in Sources */,
+				A926CB5D2C6A855900DDADE0 /* MyPageEditVC.swift in Sources */,
 				674A11E72C7647780026938A /* VisitRecordCell.swift in Sources */,
 				A9EECA852C74F59F005AB0EC /* SelfieLogViewController.swift in Sources */,
 				337D7F5C2C77D6F800C9BAA4 /* FinishNavigationBar.swift in Sources */,
@@ -816,8 +827,9 @@
 				3DA6E2182CE391E500553BD0 /* UIView.swift in Sources */,
 				A979B17F2C764D40001D9535 /* EmojiLogViewController.swift in Sources */,
 				335667642C5765BF00100C0E /* PuzzleItem.swift in Sources */,
-				335666E02C4F971500100C0E /* MyPageViewController.swift in Sources */,
+				335666E02C4F971500100C0E /* MyPageVC.swift in Sources */,
 				33459C732C967FE70062CFB7 /* POST.swift in Sources */,
+				3D2DA2DA2CE39904005C4168 /* getRefreshToken.swift in Sources */,
 				33459C772C9680BC0062CFB7 /* Ext + URL.swift in Sources */,
 				3DA6E2092CE3915800553BD0 /* CustomLabelTextFieldView.swift in Sources */,
 				A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */,

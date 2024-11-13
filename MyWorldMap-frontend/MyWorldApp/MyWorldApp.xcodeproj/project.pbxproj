@@ -72,6 +72,12 @@
 		674A11F02C764F7A0026938A /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11EF2C764F7A0026938A /* PuzzleViewController.swift */; };
 		67A1CE242C76CF8A007FBC72 /* EndTripAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */; };
 		67A1CE282C77EA6D007FBC72 /* PuzzleLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */; };
+		965FD0B42CE4D88C00E0904D /* BlankMapWorld.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965FD0B22CE4D88C00E0904D /* BlankMapWorld.svg */; };
+		965FD0B52CE4D88C00E0904D /* BlankMapWorldOrigin.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965FD0B32CE4D88C00E0904D /* BlankMapWorldOrigin.svg */; };
+		965FD0B82CE4D8AF00E0904D /* MacawWorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965FD0B72CE4D8AF00E0904D /* MacawWorldViewController.swift */; };
+		965FD0B92CE4D8AF00E0904D /* MacawWorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965FD0B62CE4D8AF00E0904D /* MacawWorldView.swift */; };
+		965FD0BB2CE4D8CD00E0904D /* world.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965FD0BA2CE4D8CD00E0904D /* world.svg */; };
+		965FD0BE2CE4D93E00E0904D /* Macaw in Frameworks */ = {isa = PBXBuildFile; productRef = 965FD0BD2CE4D93E00E0904D /* Macaw */; };
 		A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35452C67D02500FCE186 /* SignUpView.swift */; };
 		A90C354B2C67D02600FCE186 /* SIgnUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35462C67D02500FCE186 /* SIgnUpVC.swift */; };
 		A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */; };
@@ -209,6 +215,11 @@
 		674A11EF2C764F7A0026938A /* PuzzleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
 		67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTripAlertViewController.swift; sourceTree = "<group>"; };
 		67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleLogViewController.swift; sourceTree = "<group>"; };
+		965FD0B22CE4D88C00E0904D /* BlankMapWorld.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BlankMapWorld.svg; sourceTree = "<group>"; };
+		965FD0B32CE4D88C00E0904D /* BlankMapWorldOrigin.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BlankMapWorldOrigin.svg; sourceTree = "<group>"; };
+		965FD0B62CE4D8AF00E0904D /* MacawWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacawWorldView.swift; sourceTree = "<group>"; };
+		965FD0B72CE4D8AF00E0904D /* MacawWorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacawWorldViewController.swift; sourceTree = "<group>"; };
+		965FD0BA2CE4D8CD00E0904D /* world.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = world.svg; sourceTree = "<group>"; };
 		A90C35452C67D02500FCE186 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A90C35462C67D02500FCE186 /* SIgnUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIgnUpVC.swift; sourceTree = "<group>"; };
 		A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kakaoAuthVM.swift; sourceTree = "<group>"; };
@@ -232,6 +243,7 @@
 				A9596B7D2C67CD3900950E12 /* SwiftyJSON in Frameworks */,
 				3363FFDB2C7206CB009FFF93 /* GoogleMaps in Frameworks */,
 				A9596B562C67CD2600950E12 /* FirebaseAppDistribution-Beta in Frameworks */,
+				965FD0BE2CE4D93E00E0904D /* Macaw in Frameworks */,
 				A9596B942C67CD5B00950E12 /* KakaoSDKTemplate in Frameworks */,
 				A9596B862C67CD5B00950E12 /* KakaoSDKCertCore in Frameworks */,
 				A9596B622C67CD2600950E12 /* FirebaseFirestore in Frameworks */,
@@ -408,9 +420,14 @@
 			isa = PBXGroup;
 			children = (
 				674A11D62C76463A0026938A /* world-low.svg */,
+				965FD0BA2CE4D8CD00E0904D /* world.svg */,
+				965FD0B22CE4D88C00E0904D /* BlankMapWorld.svg */,
+				965FD0B32CE4D88C00E0904D /* BlankMapWorldOrigin.svg */,
 				335666D92C4F96B600100C0E /* WorldViewController.swift */,
 				674A11D82C7646A70026938A /* FloatingBadgeView.swift */,
 				674A11DC2C7646D90026938A /* ViewModel.swift */,
+				965FD0B62CE4D8AF00E0904D /* MacawWorldView.swift */,
+				965FD0B72CE4D8AF00E0904D /* MacawWorldViewController.swift */,
 				674A11DA2C7646C20026938A /* MapView.swift */,
 				674A11DE2C7646FA0026938A /* ZoomableContainer.swift */,
 				674A11E02C7647120026938A /* SelectedCityViewController.swift */,
@@ -651,6 +668,7 @@
 				A95303582C6B62A900D0A8AA /* SDWebImageMapKit */,
 				3363FFDA2C7206CB009FFF93 /* GoogleMaps */,
 				674A11D42C7645250026938A /* InteractiveMap */,
+				965FD0BD2CE4D93E00E0904D /* Macaw */,
 			);
 			productName = MyWorldApp;
 			productReference = 3356669B2C4F92E800100C0E /* MyWorldApp.app */;
@@ -733,6 +751,7 @@
 				A95303552C6B62A800D0A8AA /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				3363FFD92C7206CB009FFF93 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 				674A11D32C7645250026938A /* XCRemoteSwiftPackageReference "InteractiveMap" */,
+				965FD0BC2CE4D93E00E0904D /* XCLocalSwiftPackageReference "Macaw" */,
 			);
 			productRefGroup = 3356669C2C4F92E800100C0E /* Products */;
 			projectDirPath = "";
@@ -750,6 +769,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				965FD0B42CE4D88C00E0904D /* BlankMapWorld.svg in Resources */,
+				965FD0BB2CE4D8CD00E0904D /* world.svg in Resources */,
+				965FD0B52CE4D88C00E0904D /* BlankMapWorldOrigin.svg in Resources */,
 				335666AB2C4F92EA00100C0E /* LaunchScreen.storyboard in Resources */,
 				335666A82C4F92EA00100C0E /* Assets.xcassets in Resources */,
 				674A11D72C76463A0026938A /* world-low.svg in Resources */,
@@ -782,6 +804,8 @@
 				A9EECA892C74FAA9005AB0EC /* SelfieLogCompleteViewController.swift in Sources */,
 				335666E32C4F973400100C0E /* LoginVC.swift in Sources */,
 				A90C354E2C67D02600FCE186 /* ProfileVC.swift in Sources */,
+				965FD0B82CE4D8AF00E0904D /* MacawWorldViewController.swift in Sources */,
+				965FD0B92CE4D8AF00E0904D /* MacawWorldView.swift in Sources */,
 				335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */,
 				A9EECA8B2C750B81005AB0EC /* KakaoProfileVC.swift in Sources */,
 				A90C354B2C67D02600FCE186 /* SIgnUpVC.swift in Sources */,
@@ -1188,6 +1212,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		965FD0BC2CE4D93E00E0904D /* XCLocalSwiftPackageReference "Macaw" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Macaw;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		335666CE2C4F937400100C0E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1275,6 +1306,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 674A11D32C7645250026938A /* XCRemoteSwiftPackageReference "InteractiveMap" */;
 			productName = InteractiveMap;
+		};
+		965FD0BD2CE4D93E00E0904D /* Macaw */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Macaw;
 		};
 		A95303562C6B62A900D0A8AA /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

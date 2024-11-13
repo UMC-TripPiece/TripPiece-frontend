@@ -7,6 +7,244 @@
 
 import Foundation
 
+protocol Country {
+    var name: String { get }
+    var emoji: String { get }
+}
+
+protocol City {
+    var country: CountryEnum { get }
+}
+
+enum CountryEnum: String, CaseIterable {
+    // TODO
+    /*
+    case unitedArabEmirates = "AE"
+    case afghanistan = "AF"
+    case albania = "AL"
+    case armenia = "AM"
+    case angola = "AO"
+    case argentina = "AR"
+    case austria = "AT"
+    case australia = "AU"
+    case azerbaijan = "AZ"
+    case bosniaAndHerzegovina = "BA"
+    case bangladesh = "BD"
+    case belgium = "BE"
+    case burkinaFaso = "BF"
+    case bulgaria = "BG"
+    case burundi = "BI"
+    case benin = "BJ"
+    case bruneiDarussalam = "BN"
+    case bolivia = "BO"
+    case brazil = "BR"
+    case bahamas = "BS"
+    case bhutan = "BT"
+     */
+    
+    case southKorea             = "KR"
+    case vietnam                = "VN"
+    case thailand               = "TH"
+    case philippines            = "PH"
+    case taiwan                 = "TW"
+    case indonesia              = "ID"
+    case japan                  = "JP"
+    case australia              = "AU"
+    case china                  = "CN"
+    case france                 = "FR"
+    case italy                  = "IT"
+    case germany                = "DE"
+    case unitedKingdom          = "GB"
+    case spain                  = "ES"
+    case turkey                 = "TR"
+    case usa                    = "US"
+    case canada                 = "CA"
+    case switzerland            = "CH"
+    case austria                = "AT"
+    case czechRepublic          = "CZ"
+    case egypt                  = "EG"
+    case mongolia               = "MN"
+    case mexico                 = "MX"
+    case unitedArabEmirates     = "AE"
+    case singapore              = "SG"
+    case hongKong               = "HK"
+    case macau                  = "MO"
+    case newZealand             = "NZ"
+}
+extension CountryEnum: Country {
+    var name: String {
+        switch self {
+        case .southKorea:           return "한국"
+        case .vietnam:              return "베트남"
+        case .thailand:             return "태국"
+        case .philippines:          return "필리핀"
+        case .taiwan:               return "대만"
+        case .indonesia:            return "인도네시아"
+        case .japan:                return "일본"
+        case .australia:            return "호주"
+        case .china:                return "중국"
+        case .france:               return "프랑스"
+        case .italy:                return "이탈리아"
+        case .germany:              return "독일"
+        case .unitedKingdom:        return "영국"
+        case .spain:                return "스페인"
+        case .turkey:               return "튀르키예"
+        case .usa:                  return "미국"
+        case .canada:               return "캐나다"
+        case .switzerland:          return "스위스"
+        case .austria:              return "오스트리아"
+        case .czechRepublic:        return "체코"
+        case .egypt:                return "이집트"
+        case .mongolia:             return "몽골"
+        case .mexico:               return "멕시코"
+        case .unitedArabEmirates:   return "아랍에미리트"
+        case .singapore:            return "싱가포르"
+        case .hongKong:             return "홍콩"
+        case .macau:                return "마카오"
+        case .newZealand:           return "뉴질랜드"
+        }
+    }
+    
+    var emoji: String {
+        switch self {
+        case .southKorea:           return "🇰🇷"
+        case .vietnam:              return "🇻🇳"
+        case .thailand:             return "🇹🇭"
+        case .philippines:          return "🇵🇭"
+        case .taiwan:               return "🇹🇼"
+        case .indonesia:            return "🇮🇩"
+        case .japan:                return "🇯🇵"
+        case .australia:            return "🇦🇺"
+        case .china:                return "🇨🇳"
+        case .france:               return "🇫🇷"
+        case .italy:                return "🇮🇹"
+        case .germany:              return "🇩🇪"
+        case .unitedKingdom:        return "🇬🇧"
+        case .spain:                return "🇪🇸"
+        case .turkey:               return "🇹🇷"
+        case .usa:                  return "🇺🇸"
+        case .canada:               return "🇨🇦"
+        case .switzerland:          return "🇨🇭"
+        case .austria:              return "🇦🇹"
+        case .czechRepublic:        return "🇨🇿"
+        case .egypt:                return "🇪🇬"
+        case .mongolia:             return "🇲🇳"
+        case .mexico:               return "🇲🇽"
+        case .unitedArabEmirates:   return "🇦🇪"
+        case .singapore:            return "🇸🇬"
+        case .hongKong:             return "🇭🇰"
+        case .macau:                return "🇲🇴"
+        case .newZealand:           return "🇳🇿"
+        }
+    }
+}
+
+enum CityEnum: String, CaseIterable {
+    case hanoi          = "하노이"
+    case daNang         = "다낭"
+    case hoChiMinh      = "호치민"
+    case nhaTrang       = "나트랑"
+    case bangkok        = "방콕"
+    case cebu           = "세부"
+    case manila         = "마닐라"
+    case singapore      = "싱가포르"
+    case taipei         = "타이페이"
+    case denfasar       = "덴파사르"
+    case osaka          = "오사카"
+    case fukuoka        = "후쿠오카"
+    case tokyo          = "도쿄"
+    case okinawa        = "오키나와"
+    case nagoya         = "나고야"
+    case brisbane       = "브리즈번"
+    case sydney         = "시드니"
+    case melbourne      = "멜버른"
+    case oakland        = "오클랜드"
+    case shanghai       = "상하이"
+    case beijing        = "베이징"
+    case simcheon       = "심천"
+    case guangzhou      = "광저우"
+    case cheongdo       = "청도"
+    case yeongil        = "연길"
+    case paris          = "파리"
+    case roma           = "로마"
+    case frankfurt      = "프랑크푸르트"
+    case london         = "런던"
+    case barcelona      = "바르셀로나"
+    case istanbul       = "이스탄불"
+    case losAngeles     = "로스엔젤러스"
+    case newYork        = "뉴욕"
+    case vancouver      = "벤쿠버"
+    case honolulu       = "호놀룰루"
+    case sanFrancisco   = "센프란시스코"
+    case guam           = "괌"
+    case saipan         = "사이판"
+    case toronto        = "토론토"
+    case zurich         = "취리히"
+    case vienna         = "비엔나"
+    case praha          = "프라하"
+    case kairo          = "카이로"
+    case hongKong       = "홍콩"
+    case macao          = "마카오"
+    case ulaanbaatar    = "올란바토르"
+    case cancun         = "칸쿤"
+    case dubai          = "두바이"
+}
+extension CityEnum: City {
+    var country: CountryEnum {
+        switch self {
+        case .hanoi:            return .vietnam
+        case .daNang:           return .vietnam
+        case .hoChiMinh:        return .vietnam
+        case .nhaTrang:         return .vietnam
+        case .bangkok:          return .thailand
+        case .cebu:             return .philippines
+        case .manila:           return .philippines
+        case .singapore:        return .singapore
+        case .taipei:           return .taiwan
+        case .denfasar:         return .indonesia
+        case .osaka:            return .japan
+        case .fukuoka:          return .japan
+        case .tokyo:            return .japan
+        case .okinawa:          return .japan
+        case .nagoya:           return .japan
+        case .brisbane:         return .australia
+        case .sydney:           return .australia
+        case .melbourne:        return .australia
+        case .oakland:          return .newZealand
+        case .shanghai:         return .china
+        case .beijing:          return .china
+        case .simcheon:         return .china
+        case .guangzhou:        return .china
+        case .cheongdo:         return .china
+        case .yeongil:          return .china
+        case .paris:            return .france
+        case .roma:             return .italy
+        case .frankfurt:        return .germany
+        case .london:           return .unitedKingdom
+        case .barcelona:        return .spain
+        case .istanbul:         return .turkey
+        case .losAngeles:       return .usa
+        case .newYork:          return .usa
+        case .vancouver:        return .usa
+        case .honolulu:         return .usa
+        case .sanFrancisco:     return .usa
+        case .guam:             return .usa
+        case .saipan:           return .usa
+        case .toronto:          return .canada
+        case .zurich:           return .switzerland
+        case .vienna:           return .austria
+        case .praha:            return .czechRepublic
+        case .kairo:            return .egypt
+        case .hongKong:         return .china
+        case .macao:            return .china
+        case .ulaanbaatar:      return .mongolia
+        case .cancun:           return .mexico
+        case .dubai:            return .unitedArabEmirates
+        }
+    }
+}
+
+/****/
 let countryCodes: [String: String] = [
     "한국": "KR",
     "베트남": "VN",
@@ -172,3 +410,4 @@ let findCountry: [Int: String] = [
     48: "멕시코",
     49: "아랍에미리트"
 ]
+/****/

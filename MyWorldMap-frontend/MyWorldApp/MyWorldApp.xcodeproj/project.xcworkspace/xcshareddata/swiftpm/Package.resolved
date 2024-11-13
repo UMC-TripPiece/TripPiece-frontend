@@ -1,4 +1,5 @@
 {
+  "originHash" : "1a0ee8db3b35ef0a3939a9a817d99fc4d7c1ba07843c276ca0f7d6683fc266ae",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -179,7 +180,16 @@
         "revision" : "af76cf3ef710b6ca5f8c05f3a31307d44a3c5828",
         "version" : "5.0.2"
       }
+    },
+    {
+      "identity" : "swxmlhash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/drmohundro/SWXMLHash",
+      "state" : {
+        "revision" : "6469881a3f30417c5bb02404ea4b69207f297592",
+        "version" : "6.0.0"
+      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>GOOGLE_MAP_KEY</key>
-	<string>${GOOGLE_MAP_KEY}</string>
+	<string>$(GOOGLE_MAP_KEY)</string>
 	<key>KAKAO_NATIVE_APP_KEY</key>
-	<string>b30c067a8e1ee82121d9dad510240fbe</string>
+	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

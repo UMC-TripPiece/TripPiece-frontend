@@ -22,7 +22,6 @@
 		335666C22C4F92EB00100C0E /* MyWorldAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666C12C4F92EB00100C0E /* MyWorldAppUITestsLaunchTests.swift */; };
 		335666D02C4F937400100C0E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 335666CF2C4F937400100C0E /* SnapKit */; };
 		335666D82C4F965700100C0E /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666D72C4F965700100C0E /* TabBar.swift */; };
-		335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666D92C4F96B600100C0E /* WorldViewController.swift */; };
 		335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DB2C4F96F200100C0E /* MyLogViewController.swift */; };
 		335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DD2C4F970200100C0E /* ExploreViewController.swift */; };
 		335666E02C4F971500100C0E /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335666DF2C4F971500100C0E /* MyPageVC.swift */; };
@@ -72,12 +71,12 @@
 		674A11F02C764F7A0026938A /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674A11EF2C764F7A0026938A /* PuzzleViewController.swift */; };
 		67A1CE242C76CF8A007FBC72 /* EndTripAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */; };
 		67A1CE282C77EA6D007FBC72 /* PuzzleLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */; };
-		965FD0B42CE4D88C00E0904D /* BlankMapWorld.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965FD0B22CE4D88C00E0904D /* BlankMapWorld.svg */; };
-		965FD0B52CE4D88C00E0904D /* BlankMapWorldOrigin.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965FD0B32CE4D88C00E0904D /* BlankMapWorldOrigin.svg */; };
 		965FD0B82CE4D8AF00E0904D /* MacawWorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965FD0B72CE4D8AF00E0904D /* MacawWorldViewController.swift */; };
 		965FD0B92CE4D8AF00E0904D /* MacawWorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965FD0B62CE4D8AF00E0904D /* MacawWorldView.swift */; };
 		965FD0BB2CE4D8CD00E0904D /* world.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965FD0BA2CE4D8CD00E0904D /* world.svg */; };
 		965FD0BE2CE4D93E00E0904D /* Macaw in Frameworks */ = {isa = PBXBuildFile; productRef = 965FD0BD2CE4D93E00E0904D /* Macaw */; };
+		9679CFFB2D0FF347006FF126 /* MarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9679CFFA2D0FF347006FF126 /* MarkerView.swift */; };
+		9679D0B62D101885006FF126 /* korea.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9679D0B52D101885006FF126 /* korea.jpeg */; };
 		A90C354A2C67D02500FCE186 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35452C67D02500FCE186 /* SignUpView.swift */; };
 		A90C354B2C67D02600FCE186 /* SIgnUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35462C67D02500FCE186 /* SIgnUpVC.swift */; };
 		A90C354C2C67D02600FCE186 /* kakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */; };
@@ -167,7 +166,6 @@
 		335666BF2C4F92EB00100C0E /* MyWorldAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWorldAppUITests.swift; sourceTree = "<group>"; };
 		335666C12C4F92EB00100C0E /* MyWorldAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWorldAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		335666D72C4F965700100C0E /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
-		335666D92C4F96B600100C0E /* WorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldViewController.swift; sourceTree = "<group>"; };
 		335666DB2C4F96F200100C0E /* MyLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLogViewController.swift; sourceTree = "<group>"; };
 		335666DD2C4F970200100C0E /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		335666DF2C4F971500100C0E /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
@@ -215,11 +213,11 @@
 		674A11EF2C764F7A0026938A /* PuzzleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
 		67A1CE232C76CF8A007FBC72 /* EndTripAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTripAlertViewController.swift; sourceTree = "<group>"; };
 		67A1CE272C77EA6D007FBC72 /* PuzzleLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleLogViewController.swift; sourceTree = "<group>"; };
-		965FD0B22CE4D88C00E0904D /* BlankMapWorld.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BlankMapWorld.svg; sourceTree = "<group>"; };
-		965FD0B32CE4D88C00E0904D /* BlankMapWorldOrigin.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BlankMapWorldOrigin.svg; sourceTree = "<group>"; };
 		965FD0B62CE4D8AF00E0904D /* MacawWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacawWorldView.swift; sourceTree = "<group>"; };
 		965FD0B72CE4D8AF00E0904D /* MacawWorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacawWorldViewController.swift; sourceTree = "<group>"; };
 		965FD0BA2CE4D8CD00E0904D /* world.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = world.svg; sourceTree = "<group>"; };
+		9679CFFA2D0FF347006FF126 /* MarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerView.swift; sourceTree = "<group>"; };
+		9679D0B52D101885006FF126 /* korea.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = korea.jpeg; sourceTree = "<group>"; };
 		A90C35452C67D02500FCE186 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A90C35462C67D02500FCE186 /* SIgnUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIgnUpVC.swift; sourceTree = "<group>"; };
 		A90C35472C67D02500FCE186 /* kakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kakaoAuthVM.swift; sourceTree = "<group>"; };
@@ -421,9 +419,6 @@
 			children = (
 				674A11D62C76463A0026938A /* world-low.svg */,
 				965FD0BA2CE4D8CD00E0904D /* world.svg */,
-				965FD0B22CE4D88C00E0904D /* BlankMapWorld.svg */,
-				965FD0B32CE4D88C00E0904D /* BlankMapWorldOrigin.svg */,
-				335666D92C4F96B600100C0E /* WorldViewController.swift */,
 				674A11D82C7646A70026938A /* FloatingBadgeView.swift */,
 				674A11DC2C7646D90026938A /* ViewModel.swift */,
 				965FD0B62CE4D8AF00E0904D /* MacawWorldView.swift */,
@@ -442,10 +437,12 @@
 		335666D32C4F94EA00100C0E /* My Log */ = {
 			isa = PBXGroup;
 			children = (
+				9679D0B52D101885006FF126 /* korea.jpeg */,
 				335667762C609D9800100C0E /* LogViewController.swift */,
 				335667812C60AEE500100C0E /* Write Log */,
 				335667802C60AEB300100C0E /* Start Log */,
 				A9EECA8C2C7514BB005AB0EC /* LogViewControllerDemo.swift */,
+				9679CFFA2D0FF347006FF126 /* MarkerView.swift */,
 			);
 			path = "My Log";
 			sourceTree = "<group>";
@@ -769,9 +766,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				965FD0B42CE4D88C00E0904D /* BlankMapWorld.svg in Resources */,
 				965FD0BB2CE4D8CD00E0904D /* world.svg in Resources */,
-				965FD0B52CE4D88C00E0904D /* BlankMapWorldOrigin.svg in Resources */,
+				9679D0B62D101885006FF126 /* korea.jpeg in Resources */,
 				335666AB2C4F92EA00100C0E /* LaunchScreen.storyboard in Resources */,
 				335666A82C4F92EA00100C0E /* Assets.xcassets in Resources */,
 				674A11D72C76463A0026938A /* world-low.svg in Resources */,
@@ -807,6 +803,7 @@
 				965FD0B82CE4D8AF00E0904D /* MacawWorldViewController.swift in Sources */,
 				965FD0B92CE4D8AF00E0904D /* MacawWorldView.swift in Sources */,
 				335666DE2C4F970200100C0E /* ExploreViewController.swift in Sources */,
+				9679CFFB2D0FF347006FF126 /* MarkerView.swift in Sources */,
 				A9EECA8B2C750B81005AB0EC /* KakaoProfileVC.swift in Sources */,
 				A90C354B2C67D02600FCE186 /* SIgnUpVC.swift in Sources */,
 				335666DC2C4F96F200100C0E /* MyLogViewController.swift in Sources */,
@@ -839,7 +836,6 @@
 				33CA2E1C2C6C75EA00DD0394 /* GradientNavigationBar.swift in Sources */,
 				337D7F512C773E8E00C9BAA4 /* LiveVideoCompleteViewController.swift in Sources */,
 				67A1CE242C76CF8A007FBC72 /* EndTripAlertViewController.swift in Sources */,
-				335666DA2C4F96B600100C0E /* WorldViewController.swift in Sources */,
 				335666E52C5254C300100C0E /* PuzzleViewCell.swift in Sources */,
 				A9EECA872C74F5A4005AB0EC /* LiveVideoLogViewController.swift in Sources */,
 				3DA6E2122CE391A800553BD0 /* Constants.swift in Sources */,
@@ -1043,9 +1039,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = JU27F4BHH8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWorldApp_iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1072,9 +1069,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = JU27F4BHH8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWorldApp_iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -50,7 +50,7 @@ class MacawWorldViewController: UIViewController {
     }()
     
     private lazy var mapView: MacawWorldView = {
-        let svg = try! SVGParser.parse(resource: "BlankMapWorld")
+        let svg = try! SVGParser.parse(resource: "world")
         let map = Group(contents: [svg], place: .identity)
 //        let mapView = WorldMacawView(frame: scrollView.frame)
         let mapView = MacawWorldView(frame: map.bounds!.toCG())
@@ -73,12 +73,6 @@ class MacawWorldViewController: UIViewController {
     
     private lazy var customSearchBar: CustomSearchBar = {
         let searchBarVC = CustomSearchBar()
-        searchBarVC.onTextDidChange = { [weak self] text in
-            // 테두리 추가
-            searchBarVC.searchBar.layer.borderWidth = 1.0
-            searchBarVC.searchBar.layer.borderColor = UIColor(named: "Main")?.cgColor
-//            self?.searchCities(keyword: text)
-        }
         
         let searchBar = searchBarVC.searchBar
         searchBar.layer.cornerRadius = 5
@@ -86,10 +80,10 @@ class MacawWorldViewController: UIViewController {
         searchBar.backgroundImage = UIImage()  // 서치바의 기본 배경을 제거
         searchBar.barTintColor = .clear
         searchBar.backgroundColor = UIColor(white: 1, alpha: 0.8)// 약간 투명한 배경 설정
-        searchBar.layer.shadowColor = UIColor.black.cgColor
-        searchBar.layer.shadowOpacity = 0.1
-        searchBar.layer.shadowOffset = CGSize(width: 0, height: 4)
-        searchBar.layer.shadowRadius = 10
+        searchBarVC.layer.shadowColor = UIColor.black.cgColor
+        searchBarVC.layer.shadowOpacity = 0.2
+        searchBarVC.layer.shadowOffset = CGSize(width: 0, height: 4)
+        searchBarVC.layer.shadowRadius = 10
         
         if let textField = searchBar.searchTextField as? UITextField {
             textField.backgroundColor = UIColor.clear
@@ -158,7 +152,7 @@ class MacawWorldViewController: UIViewController {
     
     // MARK: - Setup UI
     
-    @objc func dismissSearch() {
+    func dismissSearch() {
         // searchBar 포커스 해제
         customSearchBar.resignFirstResponder()
         
@@ -184,14 +178,13 @@ class MacawWorldViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(mapView)
         
-        view.addSubview(customSearchBar.view)
+        view.addSubview(customSearchBar)
         view.addSubview(searchTableView)
-        
-        addChild(customSearchBar)
-        customSearchBar.didMove(toParent: self)
         
         setupConstraints()
         addGradientLayer(to: customNavBar)
+        // TODO: API 이후 지울 것!!!!!!!!!!!!!!!!
+        setUpBadgeView()
     }
     
     private func setUpBadgeView() {
@@ -232,14 +225,14 @@ class MacawWorldViewController: UIViewController {
             make.centerY.equalTo(navIconImageView)
         }
 
-        customSearchBar.view.snp.makeConstraints { make in
+        customSearchBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(customNavBar.snp.bottom).offset(10)
             make.height.equalTo(48)
         }
 
         searchTableView.snp.makeConstraints { make in
-            make.top.equalTo(customSearchBar.view.snp.bottom).offset(3)
+            make.top.equalTo(customSearchBar.snp.bottom).offset(3)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
@@ -253,11 +246,8 @@ class MacawWorldViewController: UIViewController {
         mapView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalTo(mapView.map.bounds!.w)
-            print(mapView.map.bounds!.w)
             make.height.equalTo(mapView.map.bounds!.h)
-            print(mapView.map.bounds!.h)
         }
-        
         
     }
     
@@ -273,8 +263,7 @@ class MacawWorldViewController: UIViewController {
         navBar.layer.insertSublayer(gradientLayer, at: 0)
     }
     
-    // WorldViewController의 UI를 업데이트하는 메서드
-    func updateWorldViewUI(with country: CountryEnum) {
+    func focusOnCountry(with country: CountryEnum) {
         let scrollViewSize = scrollView.bounds.size
         guard let countryBounds = mapView.getCountryBounds(country: country) else { return }
         
@@ -291,7 +280,6 @@ class MacawWorldViewController: UIViewController {
         
         let newContentOffset = CGPoint(x: max(offsetX, 0), y: max(offsetY, 0))
         scrollView.setContentOffset(newContentOffset, animated: true)
-//        print("scrollview\(scrollViewSize)\ncountryBounds\(countryBounds)\nzoomScale\(newZoomScale)\noffset\(newContentOffset)")
     }
     
     
@@ -460,14 +448,6 @@ class MacawWorldViewController: UIViewController {
             }
             
         }
-        
-        
-
-
-        
-        
-        
-
     
     
     
@@ -494,16 +474,6 @@ class MacawWorldViewController: UIViewController {
         let visitRecordsViewController = VisitRecordsViewController()
         visitRecordsViewController.visitRecords = dataToSend
         navigationController?.pushViewController(visitRecordsViewController, animated: true)
-    }
-    
-    
-    
-    
-    
-    
-    // 옵저버 제거 (deinit에서 옵저버 해제)
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .didPostMapData, object: nil)
     }
     
     
@@ -593,25 +563,13 @@ extension MacawWorldViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 extension MacawWorldViewController: UIScrollViewDelegate {
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        print("zoom")
-    }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scroll")
-        print(scrollView.contentOffset)
-        print(scrollView.contentSize)
-    }
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return mapView
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         // 확대 끝나고 해상도 높이기
-        DispatchQueue.global().async { [weak self] in
-            DispatchQueue.main.async {
-                self?.mapView.contentScaleFactor = scrollView.zoomScale
-            }
-        }
+        mapView.contentScaleFactor = scrollView.zoomScale+3
     }
 }
 
@@ -622,10 +580,51 @@ extension MacawWorldViewController: MapDelegate {
         if let country = country {
             // 나라 클릭됐을 때, 구현할 것
             print("onClicked\nID: \(country.rawValue), name: \(country.name), flag: \(country.emoji)")
-            updateWorldViewUI(with: country)
+            focusOnCountry(with: country)
         } else {
             // 바다 클릭됐을 때, 구현할 것
             print("onClickedSea")
         }
     }
+}
+
+// 각 방문 기록을 나타내는 구조체
+struct VisitCities: Codable {
+    let cityId: Int
+    let cityName: String
+    let countryName: String
+    let color: String
+}
+
+struct Visit: Codable {
+    let visitId: Int
+    let userId: Int
+    let countryCode: String
+    let color: String
+}
+
+
+// 전체 응답을 나타내는 구조체
+struct APIMapsResponse: Codable {
+    let success: Bool
+    let data: [Visit]
+    let message: String
+}
+
+
+// `data` 필드에 대한 구조체 정의
+struct CountryCityData: Codable {
+    let countryCount: Int
+    let cityCount: Int
+    let countryCodes: [String]
+    let cityIds: [Int]
+    let profileImg: String
+    let nickname: String
+}
+
+// 전체 응답을 나타내는 구조체 정의
+struct APIStatsResponse: Codable {
+    let success: Bool
+    let data: CountryCityData
+    let message: String
 }

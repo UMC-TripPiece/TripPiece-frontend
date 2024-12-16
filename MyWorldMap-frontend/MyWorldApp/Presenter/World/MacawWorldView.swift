@@ -15,7 +15,7 @@ class MacawWorldView: MacawView {
     
     override init(frame: CGRect) {
         map = Group()
-        let svg = try! SVGParser.parse(resource: "world-low")
+        let svg = try! SVGParser.parse(resource: "world")
 //        let svg = try! SVGParser.parse(resource: "BlankMapWorld")
         super.init(frame: svg.bounds!.toCG())
 //        let rate = min(bounds.width/svg.bounds!.w, bounds.height/svg.bounds!.h)
@@ -30,18 +30,13 @@ class MacawWorldView: MacawView {
                 if let shape = touch.node as? Shape {
                     let select: Shape = Shape(
                         form: shape.form,
-                        stroke: Stroke(fill: Color.red, width: 0.2),
+                        stroke: Stroke(fill: Color.red, width: shape.stroke!.width*3),
                         place: shape.place,
                         clip: shape.clip
                     )
                     self?.map.contents.append(select)
                 }
             })
-            
-            if let mapShape = map.nodeBy(tag: countryEnum.rawValue) as? Shape {
-                mapShape.fill = Color.gray
-            }
-            
         }
         setBackGroundColor(countryEnum: .southKorea, color: UIColor.blue)
     }

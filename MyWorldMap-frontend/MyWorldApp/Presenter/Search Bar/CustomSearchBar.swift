@@ -7,41 +7,41 @@
 
 import UIKit
 
-class CustomSearchBar: UIViewController {
+class CustomSearchBar: UIView {
     
     // MARK: - Properties
-    
-    var onTextDidChange: ((String) -> Void)? // 텍스트 변경 시 호출될 클로저
     
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
         searchBar.placeholder = "도시 및 국가를 검색해 보세요."
+        searchBar.layer.borderColor = UIColor(named: "Main")?.cgColor
         return searchBar
     }()
     
     // MARK: - Lifecycle
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupUI()
+    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Setup UI
     
     private func setupUI() {
-        view.addSubview(searchBar)
+        self.addSubview(searchBar)
         setupConstraints()
     }
     
     private func setupConstraints() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            searchBar.topAnchor.constraint(equalTo: view.topAnchor),
-            searchBar.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        searchBar.snp.makeConstraints({ make in
+            make.edges.equalToSuperview()
+            
+        })
     }
 }
 
@@ -49,6 +49,6 @@ class CustomSearchBar: UIViewController {
 
 extension CustomSearchBar: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        onTextDidChange?(searchText) // 텍스트가 변경될 때 클로저 호출
+        searchBar.layer.borderWidth = searchBar.text == "" ? 0 : 1
     }
 }

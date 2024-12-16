@@ -114,10 +114,18 @@ class TravelRecordViewController: UIViewController {
     
     
     private lazy var mapView: GMSMapView = {
-        let camera = GMSCameraPosition.camera(withLatitude: 37.5665, longitude: 126.9780, zoom: 6.0)
+        let camera = GMSCameraPosition.camera(withLatitude: 37.5665, longitude: 126.9780, zoom: 2.0)
         let mapView = GMSMapView.map(withFrame: .zero, camera: camera)
+        
         return mapView
     }()
+    
+    private func appendMarker(position: CLLocationCoordinate2D, color: UIColor, image: UIImage) {
+        let marker = GMSMarker(position: position)
+        marker.title = "Hello World"
+        marker.map = mapView
+        marker.iconView = MarkerView(frame: CGRect(x: 0, y: 0, width: 32, height: 32), color: color, image: image)
+    }
     
     let tripSectionTitle = UILabel() // "생성된 여행기" 제목
     let TravelLogScrollView = UIScrollView()
@@ -166,6 +174,9 @@ class TravelRecordViewController: UIViewController {
         getPieceRecord()
         setupView()
         setupConstraints()
+        
+        // TEST CODE
+        appendMarker(position: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), color: UIColor.red, image: UIImage(named: "korea.jpeg")!)
     }
     
     func setupView() {

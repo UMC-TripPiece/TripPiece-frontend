@@ -153,7 +153,8 @@ class VisitRecordsViewController: UIViewController, UITableViewDelegate, UITable
             let colorCityViewController = ColorCityViewController()
             colorCityViewController.modalPresentationStyle = .overCurrentContext
             colorCityViewController.modalTransitionStyle = .crossDissolve
-            colorCityViewController.cityData = ["cityName": cityName, "countryName": countryName, "countryImage": countryEmoji]
+            colorCityViewController.cityData = SearchedCityData(cityName: cityName, countryName: countryName, cityDescription: "", countryImage: countryEmoji, logCount: 0, cityId: 0)
+            
             present(colorCityViewController, animated: true, completion: nil)
         }
         

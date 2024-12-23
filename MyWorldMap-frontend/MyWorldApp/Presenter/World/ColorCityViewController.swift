@@ -10,7 +10,7 @@ import Alamofire
 
 class ColorCityViewController: UIViewController {
     
-    var cityData: [String: String]? // 받아올 도시 정보
+    var cityData: SearchedCityData? // 받아올 도시 정보
     
 
     
@@ -214,8 +214,8 @@ class ColorCityViewController: UIViewController {
         saveButton.isEnabled = false // 기본적으로 비활성화
         
         if let cityData = cityData {
-            titleLabel.text = "\(cityData["cityName"] ?? ""), \(cityData["countryName"] ?? "")"
-            emojiLabel.text = cityData["countryImage"]
+            titleLabel.text = "\(cityData.cityName ?? ""), \(cityData.countryName ?? "")"
+            emojiLabel.text = cityData.countryImage
         }
         
         uiAddSubViews()
@@ -437,7 +437,9 @@ class ColorCityViewController: UIViewController {
         guard let userId = getUserId() else { return }
         
         guard let cityData = cityData else { return }
-        if let countryName = cityData["countryName"], let cityName =  cityData["cityName"], let selectedColor = selectedButton?.accessibilityIdentifier {
+        if let selectedColor = selectedButton?.accessibilityIdentifier {
+            let countryName = cityData.countryName
+            let cityName =  cityData.cityName
             guard let countryCode = countryCodes[countryName] else { return }
             //print(countryCode)
             //print(selectedColor)

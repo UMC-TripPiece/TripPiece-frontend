@@ -11,6 +11,8 @@ class CustomSearchBar: UIView {
     
     // MARK: - Properties
     
+    var onTextDidChange: ((String) -> Void)? // 텍스트 변경 시 호출될 클로저
+    
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
@@ -50,5 +52,6 @@ class CustomSearchBar: UIView {
 extension CustomSearchBar: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.layer.borderWidth = searchBar.text == "" ? 0 : 1
+        onTextDidChange?(searchText) // 텍스트가 변경될 때 클로저 호출
     }
 }

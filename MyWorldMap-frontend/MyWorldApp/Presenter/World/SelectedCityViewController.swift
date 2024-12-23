@@ -9,7 +9,7 @@ import UIKit
 
 class SelectedCityViewController: UIViewController {
     
-    var cityData: [String: String]? // 받아올 도시 정보
+    var cityData: SearchedCityData? // 받아올 도시 정보
 
     
     
@@ -151,9 +151,9 @@ class SelectedCityViewController: UIViewController {
         numberOfPeoleLabel.text = "\(randomInt)명이 여행했어요!"
         
         if let cityData = cityData {
-            titleLabel.text = "\(cityData["cityName"] ?? ""), \(cityData["countryName"] ?? "")"
-            cityExplainLabel.text = cityData["cityDescription"]
-            emojiLabel.text = cityData["countryImage"]
+            titleLabel.text = "\(cityData.cityName ?? ""), \(cityData.countryName ?? "")"
+            cityExplainLabel.text = cityData.cityDescription
+            emojiLabel.text = cityData.countryImage
             
         }
         

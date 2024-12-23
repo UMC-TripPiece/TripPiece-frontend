@@ -22,7 +22,7 @@ class MacawWorldViewController: UIViewController {
     private var visitedCityNum: Int = 0
     var userCountryColorsModel = UserCountryColorsModel() // viewModel 선언해주기
     
-    private var searchResults: [[String: String]] = []
+    private var searchResults: [SearchedCityData] = []
     
     
     
@@ -73,6 +73,13 @@ class MacawWorldViewController: UIViewController {
     
     private lazy var customSearchBar: CustomSearchBar = {
         let searchBarVC = CustomSearchBar()
+        
+        searchBarVC.onTextDidChange = { [weak self] text in
+            // 테두리 추가
+            searchBarVC.searchBar.layer.borderWidth = 1.0
+            searchBarVC.searchBar.layer.borderColor = UIColor(named: "Main")?.cgColor
+            self?.searchCities(keyword: text)
+        }
         
         let searchBar = searchBarVC.searchBar
         searchBar.layer.cornerRadius = 5
@@ -319,7 +326,7 @@ class MacawWorldViewController: UIViewController {
     private func getColoredCountries(completion: @escaping () -> Void) {
         guard let userId = getUserId() else { return }
         
-        let url = "http://3.34.111.233:8080/api/maps/\(userId)"
+        let url = "http://43.203.61.175:8080/api/maps/\(userId)"
         
         AF.request(url, method: .get).responseData { response in
             switch response.result {
@@ -371,7 +378,7 @@ class MacawWorldViewController: UIViewController {
     private func getCountryCityCounts() {
         guard let userId = getUserId() else { return }
 
-        let url = "http://3.34.111.233:8080/api/maps/stats/\(userId)"
+        let url = "http://43.203.61.175:8080/maps/\(userId)"
         
         AF.request(url, method: .get).responseData { response in
             switch response.result {
@@ -412,42 +419,41 @@ class MacawWorldViewController: UIViewController {
     }
     
     
-    
-    
-    
+    private func searchCities(keyword: String) {
+        let url = "http://43.203.61.175:8080/maps/search"
+        let parameters: [String: String] = ["keyword": keyword]
 
-    
+        AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default).responseDecodable(of: CitySearchResponse.self) { response in
+            switch response.result {
+            case .success(let citySearchResponse):
+                // JSON 디코딩 성공
+                let cities = citySearchResponse.result
+                print("디코딩 성공: \(cities)")
 
-        private func searchCities(keyword: String) {
-            let url = "http://3.34.111.233:8080/search/cities"
-            let parameters: [String: String] = ["keyword": keyword]
-            
-            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
-                switch response.result {
-                case .success(let value):
-                    if let data = response.data, let jsonString = String(data: data, encoding: .utf8) {
-                        //print("전체 JSON 응답: \(jsonString)")
-                        if let json = value as? [String: Any], let cities = json["result"] as? [[String: Any]] {
-                            self.searchResults = cities.map { cityData in
-                                var cityDataDecoded = [String: String]()
-                                cityData.forEach { key, value in
-                                    if let stringValue = value as? String {
-                                        cityDataDecoded[key] = stringValue
-                                    }
-                                }
-                                return cityDataDecoded
-                            }
-                            self.updateSearchTableViewHeight() // 테이블 뷰 높이 업데이트
-                            self.searchTableView.isHidden = self.searchResults.isEmpty
-                            self.searchTableView.reloadData()
-                        }
-                    }
-                case .failure(let error):
-                    print("Error: \(error)")
+                self.searchResults = cities.map { city in
+                    SearchedCityData(
+                        cityName: city.cityName,
+                        countryName: city.countryName,
+                        cityDescription: city.cityDescription,
+                        countryImage: city.countryImage,
+                        logCount: city.logCount,
+                        cityId: city.cityId
+                    )
                 }
+
+                self.updateSearchTableViewHeight()
+                self.searchTableView.isHidden = self.searchResults.isEmpty
+                self.searchTableView.reloadData()
+                
+            case .failure(let error):
+                print("디코딩 실패: \(error)")
             }
-            
         }
+    }
+
+    
+
+
     
     
     
@@ -511,9 +517,9 @@ extension MacawWorldViewController: UITableViewDataSource, UITableViewDelegate {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.identifier, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
                 
             let cityData = searchResults[indexPath.row - 1]  // -1을 하여 첫 번째 셀을 건너뜁니다.
-            let cityName = cityData["cityName"] ?? ""
-            let countryName = cityData["countryName"] ?? ""
-            let countryImage = cityData["countryImage"] ?? ""
+            let cityName = cityData.cityName ?? ""
+            let countryName = cityData.countryName ?? ""
+            let countryImage = cityData.countryImage ?? ""
                 
             cell.configure(cityName: cityName, countryName: countryName, countryImage: countryImage)
             return cell
@@ -536,7 +542,7 @@ extension MacawWorldViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cityData = searchResults[indexPath.row - 1]
         
-        customSearchBar.searchBar.text = cityData["cityName"]
+        customSearchBar.searchBar.text = cityData.cityName
         searchTableView.isHidden = true
         
         let selectedCityViewController = SelectedCityViewController()
@@ -594,6 +600,25 @@ struct VisitCities: Codable {
     let cityName: String
     let countryName: String
     let color: String
+}
+
+struct CitySearchResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: [SearchedCityData]
+}
+
+
+
+struct SearchedCityData: Codable {
+    let cityName: String
+    let countryName: String
+    let cityDescription: String
+    let countryImage: String
+    let logCount: Int
+    let cityId: Int
+    
 }
 
 struct Visit: Codable {
